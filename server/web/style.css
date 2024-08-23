@@ -1,15 +1,21 @@
 body {
-    font-family: 'Qartella';
-    font-weight: 300;
+	font-family: 'Qartella';
+	font-weight: 300;
+	font-style: normal;
+	margin: 0;
+	background: #ebebeb;
+	overflow: hidden;
+}
+.ww {
+    font-family: 'Neon Bold Outline';
+    font-weight: bold;
     font-style: normal;
-    margin: 0;
-    background: #ebebeb;
-    overflow: hidden;
+    font-size: 17px;
 }
 
 .container {
 	width: calc(100% - 20px);
-	max-width: 700px;
+	max-width: 900px;
 	height: calc(100vh - 200px);
 	margin: auto;
 	padding-top: 100px;
@@ -24,8 +30,13 @@ body {
 	height: fit-content;
 	border-radius: 40px;
 	padding: 20px;
-	box-shadow: 8px 8px 16px #b0b0b0,
-		-8px -8px 16px #ffffff;
+	box-shadow: 8px 8px 16px rgba(255, 255, 255, 0.69),
+		-8px -8px 16px rgba(255, 255, 255, 1);
+}
+
+body:has(img.bg) .card {
+	box-shadow: 8px 8px 16px rgba(255, 255, 255, 0.6),
+		-8px -8px 16px rgba(255, 255, 255, 0.4);
 }
 
 .form {
@@ -154,4 +165,33 @@ a:focus::before,
 a.active::before {
 	transform-origin: left top;
 	transform: scale(1, 1);
+}
+.records {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0px;
+    padding: 10px;
+}
+.records p {
+    margin: 0;
+}
+.records p:nth-child(1) {
+    width: 20%;
+}
+.records p:nth-child(2) {
+    width: 30%;
+}
+.records p:nth-child(3) {
+    width: 50%;
+}
+.embed {
+    width: calc(100% - 20px);
+    height: fit-content;
+    background-color: #FFF;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: auto;
+}
+.embed xmp {
+    margin: 0;
 }

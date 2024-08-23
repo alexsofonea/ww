@@ -15,7 +15,7 @@
         include "../account/accountId.php";
     ?>
 
-    <div class="container">
+    <div class="container" id="name">
         <h1>Let's start with a name for your project</h1>
         <div class="form">
             <input class="input" placeholder="Enter the name of the project" required="" type="text" id="projectName">
@@ -24,18 +24,41 @@
         <br />
         <button class="action" onclick="validateName()">Next</button>
     </div>
-    <div class="container">
-    <a href="javascript:changeContainer(0)">Back</a>
+    <div class="container" id="domain">
+        <a href="javascript:changeContainer('name')">Back</a>
         <h1>Customize with your own domain</h1>
         <div class="form">
             <input class="input" placeholder="Enter your domain or subdomain" required="" type="text" id="projectDomain">
             <span class="input-border"></span>
         </div>
         <br />
-        <a href="javascript:changeContainer(2)" class="action">I don't have a domain</a>
+        <a href="javascript:changeContainer('domainconfirm')" class="action">I don't have a domain</a>
         <button class="action" onclick="validateDomain()">Next</button>
     </div>
-    <div class="container">
+    <div class="container" id="domainconfirm">
+        <a href="javascript:changeContainer('domain')">Back</a>
+        <h1>Note that some functionality might not be available without a domain.</h1>
+        <button class="action" onclick="changeContainer('uniqueId')">I understand</button>
+    </div>
+    <div class="container" id="domainadd">
+        <a href="javascript:changeContainer('domain')">Back</a>
+        <h1>Let's verify your domain.</h1>
+
+        <p>Please add the following domain records.</p>
+        <div class="records">
+            <p>Type</p>
+            <p>Host</p>
+            <p>Value</p>
+        </div>
+        <div class="records embed">
+            <p>TXT</p>
+            <p>ww-domain-verification</p>
+            <p>ww_gsAt6dhsaXshZHZ</p>
+        </div>
+
+        <button class="action" onclick="verfiyDomain(3)">I understand</button>
+    </div>
+    <div class="container" id="uniqueId">
         <a href="javascript:changeContainer(1)">Back</a>
         <h1>Choose a unique id</h1>
         <div class="form">
@@ -49,23 +72,30 @@
 
 <script>
     var curentContainer = 0;
-    function changeContainer(c) {
+    function changeContainer(c = -1) {
         var containers = document.getElementsByClassName("container");
+        console.log(c);
+
+        if (typeof c === "string")
+            c = [...containers].findIndex(tab => tab.id === c);
+
+        console.log(c);
+
         const height = containers[0].getBoundingClientRect().height;
-        if (curentContainer < c) 
+        if (curentContainer < c && c != -1) 
             for (const cont of containers) {
-                var h = Number(cont.getAttribute("data-h") ?? 0) + height;
+                var h = Number(cont.getAttribute("data-h") ?? 0) + (height * Math.abs(curentContainer - c));
                 cont.setAttribute("data-h", h);
                 cont.style.transform = `translateY(-${h}px)`;
             }
-        else if (c > curentContainer)
+        else if (c > curentContainer && c != -1)
             for (const cont of containers) {
-                var h = Number(cont.getAttribute("data-h") ?? 0) - height;
+                var h = Number(cont.getAttribute("data-h") ?? 0) - (height * Math.abs(curentContainer - c));
                 cont.setAttribute("data-h", h);
                 cont.style.transform = `translateY(-${h}px)`;
             }
-        else {
-            var curentSlide = containers[c];
+        else if (c == curentContainer || c == -1) {
+            var curentSlide = containers[curentContainer];
             var h = Number(curentSlide.getAttribute("data-h") ?? 0);
             var time = 100;
 
@@ -89,23 +119,24 @@
                 }, time);
             }, time);
         }
-        curentContainer = c;
+        if (c != -1 && typeof c === "number")
+            curentContainer = c;
     }
 
 
     function validateName() {
         var value = document.getElementById('projectName').value;
         if (/^[a-zA-Z0-9\s]+$/.test(value) && value.length != 0)
-            changeContainer(1);
+            changeContainer('domain');
         else
-            changeContainer(0);
+            changeContainer();
     }
     function validateDomain() {
         var value = document.getElementById('projectDomain').value;
         if (/^(?!:\/\/)([a-zA-Z0-9-_]{1,63}\.)+[a-zA-Z]{2,}$/.test(value) && value.length != 0)
-            changeContainer(2);
+            changeContainer('domainadd');
         else
-            changeContainer(1);
+            changeContainer();
     }
 </script>
 
