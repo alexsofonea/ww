@@ -11,6 +11,11 @@ body{
     height: 100vh;
     background: hsl(227, 10%, 10%);
     font-family: 'Poppins';
+    margin: 20px;
+}
+
+wwDesign-button {
+    margin: 40px;
 }
 
 /*########## Style 1 ##########*/

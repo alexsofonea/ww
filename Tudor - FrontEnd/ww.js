@@ -66,7 +66,6 @@ function wwDesignButton6(button) {
 }
 
 function wwDesignButton7(button) {
-    button.setAttribute("style");
     button.innerHTML = `${button.innerHTML}`;
 }
 
