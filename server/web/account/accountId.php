@@ -16,6 +16,15 @@ if (!isset($_COOKIE['session'])) {
     die();
 }
 
+function generateProjectId($name) {
+    $id = strtolower($name);
+    $id = preg_replace('/[^a-z0-9\s]/', '', $id);
+    $id = trim($id);
+    $id = preg_replace('/\s+/', '-', $id);
+
+    return $id;
+}
+
 
 $session = $_COOKIE['session'];
 $time = time();
@@ -39,6 +48,8 @@ if ($row = $stmt->fetch()) {
     $name = $row['name'];
     $mail = $row['mail'];
     $publicId = $row['publicId'];
+
+    $urlId = generateProjectId($name);
 
     $picture = str_contains($row['picture'], ".") ? "https://cloud-api.ww.alexsofonea.com/" . $row['picture'] : "/account/userImage/?name=" . str_replace(" ", "+", $name) . "&color=" . $row['picture'];
     if (!isset($noHTML) && intval($row['confirm']) == 0) {

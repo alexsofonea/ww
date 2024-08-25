@@ -13,21 +13,25 @@
 <?php
     include "../db.php";
     include "../account/accountId.php";
+
+
+    $sql = "SELECT * FROM `projects` WHERE publicId = '$_GET[id]' AND `owner` = '$myId';";
+    $stmt = $conn->query($sql);
+    if ($row = $stmt->fetch()) {
+
+    }
 ?>
 
 <body onload="loadProject()">
     <div class="container">
         <div class="left-column">
-            <p class="project"><img src="<?php echo $picture; ?>"> <a href="/<?php echo $name; ?>/"><?php echo $name; ?></a> / <b><a href="/<?php echo $name; ?>/<?php echo $_GET['id']; ?>"><?php echo $_GET['id']; ?></a></b></p><br />
+            <p class="project"><img src="<?php echo $picture; ?>"> <a href="/<?php echo $urlId; ?>/"><?php echo $urlId; ?></a> / <b><a href="/<?php echo $urlId; ?>/<?php echo $row['publicId']; ?>"><?php echo $row['publicId']; ?></a></b></p><br />
             <div class="tags">
-                <tag>this</tag>
-                <tag>is</tag>
-                <tag>a</tag>
-                <tag>tag</tag>
-                <tag>this</tag>
-                <tag>is</tag>
-                <tag>a</tag>
-                <tag>tag</tag>
+                <?php
+                    if ($row['tags'] != "")
+                        foreach(json_decode($row['tags']) as $tag)
+                            echo "<tag>$tag</tag>";
+                ?>
             </div>
 
             <div class="tabs">
@@ -219,7 +223,7 @@
                             </tr>
                         </table>
 
-                        <div class="embed"><xmp><?php echo strtolower($_GET['id']); ?>.hosting.ww.alexsofonea.com</xmp></div>
+                        <div class="embed"><xmp><?php echo $row['publicId']; ?>.<?php echo $row['publicId']; ?>.hosting.ww.alexsofonea.com</xmp></div>
                     </div>
                     <div class="card disabled">
                         <table>
@@ -235,7 +239,7 @@
                         </table>
 
                         <div class="form">
-                            <input class="input" placeholder="Enter your domain name" required="" type="text" id="projectName">
+                            <input class="input" placeholder="Enter your domain name" required="" type="text" id="projectName" value="<?php echo $row['domain']; ?>">
                             <span class="input-border"></span>
                         </div>
 
@@ -243,11 +247,6 @@
                             <p>Type</p>
                             <p>Host</p>
                             <p>Value</p>
-                        </div>
-                        <div class="records embed">
-                            <p>TXT</p>
-                            <p>ww-domain-verification</p>
-                            <p>ww_gsAt6dhsaXshZHZ</p>
                         </div>
                         <div class="records embed">
                             <p>CNAME</p>
@@ -272,8 +271,9 @@
             </div>
         </div>
         <div class="right-column">
-            <h1>Project Title</h1><br />
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consectetur accusamus itaque unde fugit reprehenderit iste non quidem numquam. Tempore vel in magnam maiores distinctio doloremque ipsam error molestiae nostrum modi.</p>
+            <?php echo $row['picture'] != "" ? "<img id='projectPicture' src='https://ww.alexsofonea.com/cloud/$row[picture]'>" : ""; ?>
+            <h1><?php echo $row['name']; ?></h1><br />
+            <p><?php echo $row['description']; ?></p>
 
             <hr style="margin-top: 20px;" />
 

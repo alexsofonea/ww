@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" contents="viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>New wwProject</title>
     <link rel="stylesheet" href="/assets/font/stylesheet.css">
     <link rel="stylesheet" href="/style.css">
+    <script src="/assets/lib/jquery.js"></script>
 </head>
 
 <body>
@@ -15,33 +16,29 @@
         include "../account/accountId.php";
     ?>
 
-    <div class="container" id="name">
+    <div class="contents active" id="name">
         <h1>Let's start with a name for your project</h1>
         <div class="form">
-            <input class="input" placeholder="Enter the name of the project" required="" type="text" id="projectName">
+            <input class="input" placeholder="Enter the name of the project" required="" type="text" id="projectName" onkeyup="updateName(this)">
             <span class="input-border"></span>
         </div>
         <br />
-        <button class="action" onclick="validateName()">Next</button>
+        <p>https://ww.alexsofonea.com/<?php echo $urlId; ?>/<b id="projectUrl"></b><font id="nameResponse"></font></p>
+        <br />
+        <button class="action" onclick="validateName()" disabled>Next</button>
     </div>
-    <div class="container" id="domain">
-        <a href="javascript:changeContainer('name')">Back</a>
+    <div class="contents" id="domain">
         <h1>Customize with your own domain</h1>
         <div class="form">
             <input class="input" placeholder="Enter your domain or subdomain" required="" type="text" id="projectDomain">
             <span class="input-border"></span>
         </div>
         <br />
-        <a href="javascript:changeContainer('domainconfirm')" class="action">I don't have a domain</a>
+        <a href="javascript:changecontents('domainconfirm')" class="action">I don't have a domain</a>
         <button class="action" onclick="validateDomain()">Next</button>
     </div>
-    <div class="container" id="domainconfirm">
-        <a href="javascript:changeContainer('domain')">Back</a>
-        <h1>Note that some functionality might not be available without a domain.</h1>
-        <button class="action" onclick="changeContainer('uniqueId')">I understand</button>
-    </div>
-    <div class="container" id="domainadd">
-        <a href="javascript:changeContainer('domain')">Back</a>
+    <div class="contents" id="domainadd">
+        <a href="javascript:changecontents('domain')">Back</a>
         <h1>Let's verify your domain.</h1>
 
         <p>Please add the following domain records.</p>
@@ -53,92 +50,60 @@
         <div class="records embed">
             <p>TXT</p>
             <p>ww-domain-verification</p>
-            <p>ww_gsAt6dhsaXshZHZ</p>
+            <p id="domainVerifyId"></p>
         </div>
 
-        <button class="action" onclick="verfiyDomain(3)">I understand</button>
-    </div>
-    <div class="container" id="uniqueId">
-        <a href="javascript:changeContainer(1)">Back</a>
-        <h1>Choose a unique id</h1>
-        <div class="form">
-            <input class="input" placeholder="Choose an id for your project" required="" onkeyup="document.getElementById('customId').innerText = this.value;" type="text">
-            <span class="input-border"></span>
-        </div>
         <br />
-        <p>https://ww.alexsofonea.com/<?php echo strtolower(str_replace(" ", "+", $name)); ?>/<b id='customId'></b></p>
-        <button class="action">Create</button>
+        <p>Note that it might take some time to verify the domain.</p>
+
+        <a href="javascript:changecontents('domainconfirm2')" class="action">Skip verification</a>
+
+        <button class="action" onclick="verfiyDomain(this)">Verify</button>
     </div>
+    <div class="contents" id="domainconfirm">
+        <a href="javascript:changecontents('domain')">Back</a>
+        <h1>Note that some functionality might not be available without a domain.</h1>
+        <button class="action" onclick="changecontents('domainconfirm2')">I understand</button>
+    </div>
+    <div class="contents" id="domainconfirm2">
+        <a href="javascript:changecontents('domainadd')">Back</a>
+        <h1>Note that some functionality might not be available until verification.</h1>
+        <button class="action" onclick="changecontents('picture')">I understand</button>
+    </div>
+    <div class="contents" id="verify">
+        <a href="javascript:changecontents('domainadd')">Back</a>
+        <h1>Couldn't verify.</h1>
+        <p>Ensure that the records are accurately set. If you have recently updated them, wait until the records are updated to continue verification.</p>
+
+        <a href="javascript:changecontents('domainconfirm2')" class="action">Skip verification</a>
+        <button class="action" onclick="changecontents('domainadd')">Try again</button>
+    </div>
+    <div class="contents" id="picture">
+        <h1>Customize your project picture.</h1>
+
+        <?php
+            $uploadText = "Drag & drop the image file here.";
+            $upload = "cloudapi/upload.php";
+            $fileName = hash("md2", uniqid());
+            $otherFunc = "savePicture('$fileName.jpg')";
+            include "cloudapi/index.php";
+        ?>
+
+        <a href="javascript:changecontents('set')" class="action">I don't need a picture.</a>
+    </div>
+
+    <div class="contents" id="set">
+        <h1>You're all set!</h1>
+
+        <button class="action" id="lastButton">Open project</button>
+    </div>
+
 
 <script>
-    var curentContainer = 0;
-    function changeContainer(c = -1) {
-        var containers = document.getElementsByClassName("container");
-        console.log(c);
-
-        if (typeof c === "string")
-            c = [...containers].findIndex(tab => tab.id === c);
-
-        console.log(c);
-
-        const height = containers[0].getBoundingClientRect().height;
-        if (curentContainer < c && c != -1) 
-            for (const cont of containers) {
-                var h = Number(cont.getAttribute("data-h") ?? 0) + (height * Math.abs(curentContainer - c));
-                cont.setAttribute("data-h", h);
-                cont.style.transform = `translateY(-${h}px)`;
-            }
-        else if (c > curentContainer && c != -1)
-            for (const cont of containers) {
-                var h = Number(cont.getAttribute("data-h") ?? 0) - (height * Math.abs(curentContainer - c));
-                cont.setAttribute("data-h", h);
-                cont.style.transform = `translateY(-${h}px)`;
-            }
-        else if (c == curentContainer || c == -1) {
-            var curentSlide = containers[curentContainer];
-            var h = Number(curentSlide.getAttribute("data-h") ?? 0);
-            var time = 100;
-
-            curentSlide.style.transition = "transform 0.2s";
-            curentSlide.style.transform = `translateY(${-h + 0}px)`;
-            curentSlide.style.transform = `translateY(${-h - 30}px)`;
-            setTimeout(function () {
-                curentSlide.style.transform = `translateY(${-h + 0}px)`;
-                setTimeout(function () {
-                    curentSlide.style.transform = `translateY(${-h + 15}px)`;
-                    setTimeout(function () {
-                        curentSlide.style.transform = `translateY(${-h + 0}px)`;
-                        setTimeout(function () {
-                            curentSlide.style.transform = `translateY(${-h - 15}px)`;
-                            setTimeout(function () {
-                                curentSlide.style.transform = `translateY(${-h + 0}px)`;
-                                curentSlide.style.transition = "transform 0.4s ease-in-out";
-                            }, time);
-                        }, time);
-                    }, time);
-                }, time);
-            }, time);
-        }
-        if (c != -1 && typeof c === "number")
-            curentContainer = c;
-    }
-
-
-    function validateName() {
-        var value = document.getElementById('projectName').value;
-        if (/^[a-zA-Z0-9\s]+$/.test(value) && value.length != 0)
-            changeContainer('domain');
-        else
-            changeContainer();
-    }
-    function validateDomain() {
-        var value = document.getElementById('projectDomain').value;
-        if (/^(?!:\/\/)([a-zA-Z0-9-_]{1,63}\.)+[a-zA-Z]{2,}$/.test(value) && value.length != 0)
-            changeContainer('domainadd');
-        else
-            changeContainer();
-    }
+    const userName = "<?php echo $urlId; ?>";
 </script>
+
+<script src="/setup/script.js"></script>
 
 </body>
 </html>

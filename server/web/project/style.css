@@ -256,3 +256,11 @@ img.bg {
     filter: blur(100px);
     opacity: 0.2;
 }
+#projectPicture {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}

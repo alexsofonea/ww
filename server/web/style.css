@@ -24,6 +24,29 @@ body {
 	position: relative;
 	transition: transform 0.4s ease-in-out;
 }
+.contents {
+	width: calc(100% - 20px);
+	max-width: 900px;
+	height: calc(100vh - 200px);
+	padding-top: 100px;
+	padding-bottom: 100px;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+
+	position: absolute;
+	transform: translateY(100%);
+
+	opacity: 0;
+	pointer-events: none;
+}
+.contents.active {
+	transform: translateY(0%);
+	opacity: 1;
+	pointer-events: all;
+}
 
 .card {
 	width: calc(70% - 40px);
@@ -107,6 +130,10 @@ button.action {
 	position: absolute;
 	bottom: 100px;
 	right: 0;
+}
+button:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
 }
 
 
@@ -194,4 +221,47 @@ a.active::before {
 }
 .embed xmp {
     margin: 0;
+}
+
+
+#nameResponse {
+	float: right;
+	height: 30px;
+}
+svg.loader {
+ width: 30px;
+ transform-origin: center;
+ animation: rotate4 2s linear infinite;
+}
+
+circle {
+ fill: none;
+ stroke: #1181A9;
+ stroke-width: 5;
+ stroke-dasharray: 1, 200;
+ stroke-dashoffset: 0;
+ stroke-linecap: round;
+ animation: dash4 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate4 {
+ 100% {
+  transform: rotate(360deg);
+ }
+}
+
+@keyframes dash4 {
+ 0% {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+ }
+
+ 50% {
+  stroke-dasharray: 90, 200;
+  stroke-dashoffset: -35px;
+ }
+
+ 100% {
+  stroke-dashoffset: -125px;
+ }
 }
