@@ -9,7 +9,6 @@ body{
     padding: 0;
     width: 100%;
     height: 100vh;
-    background: hsl(227, 10%, 10%);
     font-family: 'Poppins';
     margin: 20px;
 }
@@ -299,4 +298,154 @@ wwDesign-button.style-9:hover{
 wwDesign-button.style-9:active{
     border-color: var(--first-primary-color);
     color: var(--first-primary-color);
+}
+
+/*Style 10*/
+wwDesign-button.style-10{
+    height: fit-content;
+    width: fit-content;
+    background-color: var(--text-color-white);
+    border: 1px solid var(--first-primary-color);
+    border-radius: 5px;
+    color: var(--text-color-black);
+    padding: 10px 20px;
+    user-select: none;
+    transition: all 0.12s;
+}
+
+wwDesign-button.style-10:active{
+    border-color: var(--text-color-black);
+}
+
+wwDesign-button.style-10:hover{
+    border-color: var(--second-primary-color);
+}
+
+/*Style 11*/
+wwDesign-button.style-11{
+    height: fit-content;
+    width: fit-content;
+    padding: 10px 20px;
+    background: linear-gradient(to bottom right, var(--first-primary-color), var(--second-primary-color));
+    border-radius: 10px;
+    color: var(--text-color-black);
+    outline: transparent;
+    transition: box-shadow 0.2s ease-in-out;
+    user-select: none;
+}
+
+wwDesign-button.style-11:hover{
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.5), -4px -4px 18px var(--first-primary-color), 4px 4px 18px var(--second-primary-color);
+}
+
+/*Style 12*/
+wwDesign-button.style-12{
+    height: fit-content;
+    width: fit-content;
+    padding: 2.5px;
+    background-image: linear-gradient(to bottom right, var(--first-primary-color), var(--second-primary-color));
+    border-radius: 10px;
+    box-shadow: var(--first-primary-color) 0 0 100px 5px;
+    box-sizing: border-box;
+    color: var(--text-color-black);
+    display: flex;
+    font-size: 20px;
+    user-select: none;
+}
+
+wwDesign-button.style-12 span {
+    background: var(--text-color-white);
+    padding: 16px 32px;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+}
+
+wwDesign-button.style-12:hover span{
+    background: none;
+}
+
+/*Style 13*/
+wwDesign-button.style-13{
+    height: fit-content;
+    width: fit-content;
+    padding: 15px 30px;
+    text-transform: uppercase;
+    transition: background-position 0.5s ease-in-out;
+    background-size: 200% auto;
+    color: var(--text-color-white);
+    border-radius: 10px;
+    font-weight: 700;
+    box-shadow: 0px 0px 10px 0px var(--first-primary-color);
+    background-image: linear-gradient(45deg, var(--second-primary-color) 0%, var(--first-primary-color)  51%, #FF512F  100%);
+    user-select: none;
+}
+
+wwDesign-button.style-13:hover{
+    background-position: right center;
+    color: var(--text-color-white);
+}
+
+/*Style-14*/
+wwDesign-button.style-14 {
+    padding: 10px 30px;
+    color: var(--text-color-white);
+    font-weight: 500;
+    position: relative;
+    z-index: 0;
+    border-radius: 12px; 
+    user-select: none;
+}
+
+wwDesign-button.style-14:before {
+    content: "";
+    background: linear-gradient(
+        45deg,
+        var(--first-primary-color),
+        var(--second-primary-color),
+        var(--third-primary-color),
+        var(--fourth-primary-color),
+        var(--fifth-primary-color),
+        var(--sixth-primary-color),
+        var(--seventh-primary-color),
+        var(--eighth-primary-color),
+        var(--first-primary-color)
+    );
+    position: absolute;
+    top: -3px; 
+    left: -3px;
+    background-size: 300%;
+    z-index: -1;
+    filter: blur(7px);
+    -webkit-filter: blur(7px);
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+    animation: wwDesign-button_style-14 12s linear infinite;
+    transition: opacity 0.25s ease-in-out;
+    border-radius: 12px;
+}
+
+@keyframes wwDesign-button_style-14 {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 300% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+wwDesign-button.style-14:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: hsl(227, 10%, 10%);
+    left: 0;
+    top: 0;
+    border-radius: 12px;
 }
