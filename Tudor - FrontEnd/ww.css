@@ -479,6 +479,7 @@ wwDesign-button.style-16{
     font-weight: 500;
     user-select: none;
     display: block;
+    transition: background 200ms;
 }
 
 wwDesign-button.style-16:hover {
@@ -488,4 +489,25 @@ wwDesign-button.style-16:hover {
 wwDesign-button.style-16:active {
     box-shadow: var(--text-color-black) 2px 2px 0 0;
     transform: translate(3px, 3px);
+}
+
+/*Style 17*/
+wwDesign-button.style-17{
+    height: fit-content;
+    width: fit-content;
+    padding: 10px 20px;
+    background-image: linear-gradient(var(--first-primary-color), var(--second-primary-color));
+    border-radius: 10px;
+    color: var(--text-color-white);
+    user-select: none;
+    display: block;
+}
+
+wwDesign-button.style-17 span{
+    display: inline-block;
+    transition: all 200ms;
+}
+
+wwDesign-button.style-17:hover span{
+    transform: scale(1.04);
 }
