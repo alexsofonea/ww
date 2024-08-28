@@ -459,6 +459,7 @@ wwDesign-button.style-15{
     border-radius: 20px;
     color: var(--text-color-white);
     transition: all 300ms;
+    display: block;
 }
 
 wwDesign-button.style-15:hover{
@@ -477,6 +478,7 @@ wwDesign-button.style-16{
     color: var(--text-color-black);
     font-weight: 500;
     user-select: none;
+    display: block;
 }
 
 wwDesign-button.style-16:hover {
