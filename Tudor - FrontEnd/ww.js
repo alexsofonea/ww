@@ -58,6 +58,9 @@ function wwDesignButtons () {
             case "style-19":
                 wwDesignButton19(button);
                 break;
+            case "style-20":
+                wwDesignButton20(button)
+                break
         }
     }
 }
@@ -157,6 +160,11 @@ function wwDesignButton18(button) {
 
 function wwDesignButton19(button) {
     button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(249, 58, 19)"}; --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgb(203, 34, 0)"}; `);
+    button.innerHTML = `${button.innerHTML}`;
+}
+
+function wwDesignButton20(button) {
+    button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(23, 114, 250)"}; --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgb(1, 93, 221)"}; `);
     button.innerHTML = `${button.innerHTML}`;
 }
 

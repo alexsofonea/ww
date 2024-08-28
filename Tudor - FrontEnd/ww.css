@@ -561,3 +561,20 @@ wwDesign-button.style-19:hover{
     transform: translateY(0);
     transition-duration: .40s;
 }
+
+/*Style 20*/
+wwDesign-button.style-20{
+    background-color: var(--first-primary-color);
+    border-radius: 5px;
+    box-shadow: rgba(1,60,136,.5) 0 -1px 3px 0 inset,rgba(0,44,97,.1) 0 3px 6px 0;
+    color: var(--text-color-white);
+    font-size: 18px;
+    font-weight: 400;
+    padding: 16px 20px;
+    transition: all .2s cubic-bezier(.22, .61, .36, 1);
+}
+
+wwDesign-button.style-20:hover{
+    background-color: var(--second-primary-color);
+    transform: translateY(-2px);
+}
