@@ -511,3 +511,32 @@ wwDesign-button.style-17 span{
 wwDesign-button.style-17:hover span{
     transform: scale(1.04);
 }
+
+/*Style 18*/
+wwDesign-button.style-18{
+    background-color: var(--first-primary-color);
+    border-radius: 30px;
+    color: var(--text-color-white);
+    display: inline-block;
+    padding: 16px 32px;
+    position: relative;
+    transition: all .3s;
+}
+
+wwDesign-button.style-18:before{
+    background-image: linear-gradient(var(--text-color-white) 0, rgba(255, 255, 255, 0) 100%);
+    border-radius: 100px;
+    content: "";
+    height: 70%;
+    left: 1%;
+    opacity: .5;
+    position: absolute;
+    top: 0;
+    transition: all .3s;
+    width: 92%;
+}
+
+wwDesign-button.style-18:hover{
+    box-shadow: rgba(255, 255, 255, .2) 0 3px 15px inset, rgba(0, 0, 0, .1) 0 3px 5px, rgba(0, 0, 0, .1) 0 10px 13px;
+    transform: scale(1.07);
+}
