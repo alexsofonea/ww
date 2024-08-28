@@ -540,3 +540,24 @@ wwDesign-button.style-18:hover{
     box-shadow: rgba(255, 255, 255, .2) 0 3px 15px inset, rgba(0, 0, 0, .1) 0 3px 5px, rgba(0, 0, 0, .1) 0 10px 13px;
     transform: scale(1.07);
 }
+
+/*Style 19*/
+wwDesign-button.style-19{
+    appearance: none;
+    backface-visibility: hidden;
+    background-color: var(--first-primary-color);
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: var(--text-color-white);
+    cursor: pointer;
+    display: inline-block;
+    padding: 15px 30px;
+    transition: all .3s;
+}
+
+wwDesign-button.style-19:hover{
+    background-color: var(--second-primary-color);
+    box-shadow: rgba(0, 0, 0, .1) 0 5px 25px, rgba(0, 0, 0, .4) 0 1px 5px;
+    transform: translateY(0);
+    transition-duration: .40s;
+}
