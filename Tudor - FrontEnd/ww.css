@@ -578,3 +578,20 @@ wwDesign-button.style-20:hover{
     background-color: var(--second-primary-color);
     transform: translateY(-2px);
 }
+
+/*Style 21*/
+wwDesign-button.style-21{
+    height: fit-content;
+    width: fit-content;
+    padding: 15px 30px;
+    background-color: var(--first-primary-color);
+    border-radius: 5px;
+    color: var(--text-color-black);
+    display: inline-block;
+    font-weight: 500;
+    user-select: none;
+}
+
+wwDesign-button.style-21:hover{
+    opacity: .8;
+}
