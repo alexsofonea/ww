@@ -595,3 +595,27 @@ wwDesign-button.style-21{
 wwDesign-button.style-21:hover{
     opacity: .8;
 }
+
+/*Style 22*/
+wwDesign-button.style-22{
+    height: fit-content;
+    width: fit-content;
+    padding: 15px 30px;
+    background-color: var(--first-primary-color);
+    border-radius: 10px;
+    box-shadow: rgba(90, 89, 91, 0.68) 0 2px 4px,rgba(176, 165, 199, 0.3) 0 7px 13px -3px,var(--second-primary-color) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: var(--text-color-black);
+    display: inline-block;
+    user-select: none;
+}
+
+wwDesign-button.style-22:hover{
+    box-shadow: rgba(90, 89, 91, 0.68) 0 4px 8px, rgba(176, 165, 199, 0.3) 0 7px 13px -3px, var(--second-primary-color) 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+wwDesign-button.style-22:active {
+    box-shadow: var(--second-primary-color) 0 3px 7px inset;
+    transform: translateY(3px);
+}
