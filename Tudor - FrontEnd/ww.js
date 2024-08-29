@@ -67,6 +67,12 @@ function wwDesignButtons () {
             case "style-22":
                 wwDesignButton22(button)
                 break;
+            case "style-23":
+                wwDesignButton23(button);
+                break
+            case "style-24":
+                wwDesignButton24(button);
+                break;
         }
     }
 }
@@ -175,12 +181,22 @@ function wwDesignButton20(button) {
 }
 
 function wwDesignButton21(button) {
-    button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(0, 249, 104)"};  --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgba(0, 249, 104, 0.9)"};`);
+    button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(0, 249, 104)"}; --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgba(0, 249, 104, 0.9)"};`);
     button.innerHTML = `${button.innerHTML}`;
 }
 
 function wwDesignButton22(button) {
-    button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(247, 247, 247)"};  --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgb(214, 214, 235)"};`);
+    button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(247, 247, 247)"}; --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgb(214, 214, 235)"};`);
+    button.innerHTML = `${button.innerHTML}`;
+}
+
+function wwDesignButton23(button) {
+    button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(249, 228, 0)"}; --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgb(255, 175, 0)"}; --third-primary-color: ${button.getAttribute("third-primary-color") ?? "rgb(249, 58, 19)"}; `);
+    button.innerHTML = `${button.innerHTML}`;
+}
+
+function wwDesignButton24(button) {
+    button.setAttribute("style", `--first-primary-color: ${button.getAttribute("first-primary-color") ?? "rgb(157, 241, 223)"}; --second-primary-color: ${button.getAttribute("second-primary-color") ?? "rgba(21, 146, 96, 0.4)"};`);
     button.innerHTML = `${button.innerHTML}`;
 }
 
