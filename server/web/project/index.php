@@ -15,7 +15,7 @@
     include "../account/accountId.php";
 
 
-    $sql = "SELECT * FROM `projects` WHERE publicId = '$_GET[id]' AND `owner` = '$myId';";
+    $sql = "SELECT * FROM `projects` WHERE publicId = '$_GET[id]' AND `ownerName` = '$_GET[user]';";
     $stmt = $conn->query($sql);
     if ($row = $stmt->fetch()) {
 
@@ -26,7 +26,7 @@
     <div class="container">
         <div class="left-column">
             <p class="project"><img src="<?php echo $picture; ?>"> <a href="/<?php echo $urlId; ?>/"><?php echo $urlId; ?></a> / <b><a href="/<?php echo $urlId; ?>/<?php echo $row['publicId']; ?>"><?php echo $row['publicId']; ?></a></b></p><br />
-            <div class="tags">
+            <div class="tags" id="tags">
                 <?php
                     if ($row['tags'] != "")
                         foreach(json_decode($row['tags']) as $tag)
@@ -80,13 +80,20 @@
                         </table>
 
                         <div class="row">
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
-                                <img src="/assets/logos/wwConnect.png">
-                                <p><font class="ww">ww</font>Connect</p>
+                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/liveSocketServer');">
+                                <img src="/assets/icons/server.svg">
+                                <p>Manage Server</p>
                             </div>
                             <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/privte-routing');">
                                 <img src="/assets/logos/wwKey.png">
                                 <p>Private Routing</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                                <img src="/assets/logos/wwConnect.png">
+                                <p><font class="ww">ww</font>Connect</p>
                             </div>
                         </div>
                     </div>
@@ -223,7 +230,7 @@
                             </tr>
                         </table>
 
-                        <div class="embed"><xmp><?php echo $row['publicId']; ?>.<?php echo $row['publicId']; ?>.hosting.ww.alexsofonea.com</xmp></div>
+                        <div class="embed"><xmp><?php echo $row['publicId']; ?>.<?php echo $row['ownerName']; ?>.hosting.ww.alexsofonea.com</xmp></div>
                     </div>
                     <div class="card disabled">
                         <table>
@@ -266,14 +273,43 @@
                     </div>
                 </div>
                 <div class="tabGroup">
-
+                    <div class="card">
+                        <div class="form">
+                            <textarea class="input" placeholder="Add a description" required=""></textarea>
+                            <span class="input-border"></span>
+                            <a onclick="updateDescription(this)">Update</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="form">
+                            <input class="input" placeholder="Add a tag" required="" type="text">
+                            <span class="input-border"></span>
+                            <a onclick="addTag(this)">Add Tag</a>
+                        </div>
+                        <div class="tags" id="tags2">
+                            <?php
+                                if ($row['tags'] != "")
+                                    foreach(json_decode($row['tags']) as $tag)
+                                        echo "<tag onclick='removeTag(this)'>$tag</tag>";
+                            ?>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <?php
+                            $uploadText = "Update picture. Drag & drop it here.";
+                            $upload = "../setup/cloudapi/upload.php";
+                            $fileName = hash("md2", uniqid());
+                            $otherFunc = "savePicture('$fileName.jpg')";
+                            include "../setup/cloudapi/index.php";
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="right-column">
             <?php echo $row['picture'] != "" ? "<img id='projectPicture' src='https://ww.alexsofonea.com/cloud/$row[picture]'>" : ""; ?>
             <h1><?php echo $row['name']; ?></h1><br />
-            <p><?php echo $row['description']; ?></p>
+            <p id="description"><?php echo base64_decode($row['description']); ?></p>
 
             <hr style="margin-top: 20px;" />
 
@@ -281,6 +317,10 @@
         </div>
     </div>
 </body>
+
+<script>
+    const projectId = "<?php echo $row['publicId']; ?>";
+</script>
 
 <script src="/project/script.js"></script>
 

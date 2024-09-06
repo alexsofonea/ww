@@ -94,15 +94,26 @@ body:has(img.bg) .card {
 	transition: 0.3s;
 }
 
-input:hover {
+.form:has(textarea) .input-border {
+	bottom: 2px;
+}
+.form textarea {
+	resize: vertical;
+}
+.form a {
+	float: right;
+	transform: translateY(-55px);
+}
+
+input:hover, textarea:hover {
 	background: var(--input-hovered-color);
 }
 
-input:focus {
+input:focus, textarea:focus {
 	outline: none;
 }
 
-input:focus~.input-border {
+input:focus~.input-border, textarea:focus~.input-border {
 	width: 100%;
 }
 
@@ -187,7 +198,7 @@ a:active::before {
 	background-color: #000;
 }
 
-a:hover::before,
+a:not(a:has(svg)):hover::before,
 a:focus::before,
 a.active::before {
 	transform-origin: left top;
