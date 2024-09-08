@@ -58,6 +58,9 @@ h2:has(img) {
     margin-bottom: 20px;
     border-radius: 30px;
 }
+.card table a {
+    float: right;
+}
 .switch {
     font-size: 17px;
     position: relative;

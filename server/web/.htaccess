@@ -1,0 +1,34 @@
+AddType application/x-httpd-php .php .html
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+
+    # wwConnect
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^connect/([^/]+)/([^/]+)/?$ connect/$2/index.php?id=$1 [NC,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^connect/([^/]+)/([^/]+)/([^/]+)/?$ connect/$2/$3/index.php?id=$1 [NC,L]
+
+    
+    # wwUser
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^user/([^/]+)/?$  user/index.php?id=$1 [NC,L]
+
+
+    # wwProject Manager
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^([^/]+)/([^/]+)/?$ project/index.php?user=$1&id=$2 [NC,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^([^/]+)/([^/]+)/([^/]+)/?$ project/$3/index.php?user=$1&id=$2 [NC,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$ project/$3/index.php?user=$1&id=$2&use=$4 [NC,L]
+
+</IfModule>

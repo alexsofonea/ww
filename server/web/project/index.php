@@ -36,8 +36,9 @@
 
             <div class="tabs">
                 <a href="javascript: changeTab(0);" class="active">Capabilities</a>
-                <a href="javascript: changeTab(1);">Domain</a>
-                <a href="javascript: changeTab(2);">Settings</a>
+                <a href="javascript: changeTab(1);">Keys</a>
+                <a href="javascript: changeTab(2);">Domain</a>
+                <a href="javascript: changeTab(3);">Settings</a>
             </div>
 
             <div class="content">
@@ -214,6 +215,56 @@
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="tabGroup">
+                    <div class="card">
+                        <table>
+                            <tr>
+                                <td><h2><img src="/assets/logos/wwAccounts.png"> <font class="ww">ww</font>Accounts</h2></td>
+                                <td><a href="keyGen/wwAccounts">Add</a></td>
+                            </tr>
+                        </table>
+
+                        <div class="embed"><xmp>Private Key #1</xmp></div>
+                        <div class="embed"><xmp>Private Key #2</xmp></div>
+                        <div class="embed"><xmp>Private Key #3</xmp></div>
+                    </div>
+                    <div class="card">
+                        <table>
+                            <tr>
+                                <td><h2><img src="/assets/logos/wwLiveSocket Server.png"> <font class="ww">ww</font>LiveSocket Server</h2></td>
+                                <td><a onclick="">Add</a></td>
+                            </tr>
+                        </table>
+
+                        <div class="embed"><xmp>Private Key #1</xmp></div>
+                        <div class="embed"><xmp>Private Key #2</xmp></div>
+                        <div class="embed"><xmp>Private Key #3</xmp></div>
+                    </div>
+                    <div class="card">
+                        <table>
+                            <tr>
+                                <td><h2><img src="/assets/logos/wwAI Models.png"> <font class="ww">ww</font>AI Models</h2></td>
+                                <td><a onclick="">Add</a></td>
+                            </tr>
+                        </table>
+
+                        <div class="embed"><xmp>Private Key #1</xmp></div>
+                        <div class="embed"><xmp>Private Key #2</xmp></div>
+                        <div class="embed"><xmp>Private Key #3</xmp></div>
+                    </div>
+                    <div class="card">
+                        <table>
+                            <tr>
+                                <td><h2><img src="/assets/logos/wwSecure DataBase.png"> <font class="ww">ww</font>Secure DataBase</h2></td>
+                                <td><a onclick="">Add</a></td>
+                            </tr>
+                        </table>
+
+                        <div class="embed"><xmp>Private Key #1</xmp></div>
+                        <div class="embed"><xmp>Private Key #2</xmp></div>
+                        <div class="embed"><xmp>Private Key #3</xmp></div>
                     </div>
                 </div>
                 <div class="tabGroup">
