@@ -218,6 +218,18 @@
                     </div>
                 </div>
                 <div class="tabGroup">
+                    <?php
+                        $sql = "SELECT * FROM `keys` WHERE projectId = (SELECT id FROM projects WHERE publicId = '$_GET[id]' AND ownerName = '$_GET[user]');";
+                        $stmt = $conn->query($sql);
+                        
+                        $keys = array();
+
+                        while ($row2 = $stmt->fetch()) {
+                            $keys[$row2['use']][] = $row2;
+                        }
+                    ?>
+
+
                     <div class="card">
                         <table>
                             <tr>
@@ -226,45 +238,61 @@
                             </tr>
                         </table>
 
-                        <div class="embed"><xmp>Private Key #1</xmp></div>
-                        <div class="embed"><xmp>Private Key #2</xmp></div>
-                        <div class="embed"><xmp>Private Key #3</xmp></div>
+                        <?php
+                            if (isset($keys['wwAccounts']))
+                                foreach ($keys['wwAccounts'] as $key)
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                            else    
+                                echo "<div class='embed center'>No keys.</div>";
+                        ?>
                     </div>
                     <div class="card">
                         <table>
                             <tr>
                                 <td><h2><img src="/assets/logos/wwLiveSocket Server.png"> <font class="ww">ww</font>LiveSocket Server</h2></td>
-                                <td><a onclick="">Add</a></td>
+                                <td><a href="keyGen/wwLiveSocket">Add</a></td>
                             </tr>
                         </table>
 
-                        <div class="embed"><xmp>Private Key #1</xmp></div>
-                        <div class="embed"><xmp>Private Key #2</xmp></div>
-                        <div class="embed"><xmp>Private Key #3</xmp></div>
+                        <?php
+                            if (isset($keys['wwLiveSocket']))
+                                foreach ($keys['wwLiveSocket'] as $key)
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                            else    
+                                echo "<div class='embed center'>No keys.</div>";
+                        ?>
                     </div>
                     <div class="card">
                         <table>
                             <tr>
                                 <td><h2><img src="/assets/logos/wwAI Models.png"> <font class="ww">ww</font>AI Models</h2></td>
-                                <td><a onclick="">Add</a></td>
+                                <td><a href="keyGen/wwAI">Add</a></td>
                             </tr>
                         </table>
 
-                        <div class="embed"><xmp>Private Key #1</xmp></div>
-                        <div class="embed"><xmp>Private Key #2</xmp></div>
-                        <div class="embed"><xmp>Private Key #3</xmp></div>
+                        <?php
+                            if (isset($keys['wwAI']))
+                                foreach ($keys['wwAI'] as $key)
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                            else    
+                                echo "<div class='embed center'>No keys.</div>";
+                        ?>
                     </div>
                     <div class="card">
                         <table>
                             <tr>
                                 <td><h2><img src="/assets/logos/wwSecure DataBase.png"> <font class="ww">ww</font>Secure DataBase</h2></td>
-                                <td><a onclick="">Add</a></td>
+                                <td><a href="keyGen/wwDB">Add</a></td>
                             </tr>
                         </table>
 
-                        <div class="embed"><xmp>Private Key #1</xmp></div>
-                        <div class="embed"><xmp>Private Key #2</xmp></div>
-                        <div class="embed"><xmp>Private Key #3</xmp></div>
+                        <?php
+                            if (isset($keys['wwDB']))
+                                foreach ($keys['wwDB'] as $key)
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                            else    
+                                echo "<div class='embed center'>No keys.</div>";
+                        ?>
                     </div>
                 </div>
                 <div class="tabGroup">
