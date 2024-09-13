@@ -14,7 +14,6 @@
     include "../db.php";
     include "../account/accountId.php";
 
-
     $sql = "SELECT * FROM `projects` WHERE publicId = '$_GET[id]' AND `ownerName` = '$_GET[user]';";
     $stmt = $conn->query($sql);
     if ($row = $stmt->fetch()) {
@@ -241,7 +240,7 @@
                         <?php
                             if (isset($keys['wwAccounts']))
                                 foreach ($keys['wwAccounts'] as $key)
-                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp><a href='keyManage/$key[id]'>Manage</a></div>";
                             else    
                                 echo "<div class='embed center'>No keys.</div>";
                         ?>
@@ -257,7 +256,7 @@
                         <?php
                             if (isset($keys['wwLiveSocket']))
                                 foreach ($keys['wwLiveSocket'] as $key)
-                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp><a href='keyManage/$key[id]'>Manage</a></div>";
                             else    
                                 echo "<div class='embed center'>No keys.</div>";
                         ?>
@@ -273,7 +272,7 @@
                         <?php
                             if (isset($keys['wwAI']))
                                 foreach ($keys['wwAI'] as $key)
-                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp><a href='keyManage/$key[id]'>Manage</a></div>";
                             else    
                                 echo "<div class='embed center'>No keys.</div>";
                         ?>
@@ -289,7 +288,7 @@
                         <?php
                             if (isset($keys['wwDB']))
                                 foreach ($keys['wwDB'] as $key)
-                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp></div>";
+                                    echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp><a href='keyManage/$key[id]'>Manage</a></div>";
                             else    
                                 echo "<div class='embed center'>No keys.</div>";
                         ?>
@@ -354,7 +353,7 @@
                 <div class="tabGroup">
                     <div class="card">
                         <div class="form">
-                            <textarea class="input" placeholder="Add a description" required=""></textarea>
+                            <textarea class="input" placeholder="Add a description" required="" rows="7"><?php echo base64_decode($row['description']); ?></textarea>
                             <span class="input-border"></span>
                             <a onclick="updateDescription(this)">Update</a>
                         </div>

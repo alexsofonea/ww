@@ -54,7 +54,7 @@ body {
 	border-radius: 40px;
 	padding: 20px;
 	box-shadow: 8px 8px 16px rgba(255, 255, 255, 0.69),
-		-8px -8px 16px rgba(255, 255, 255, 1);
+		-8px -8px 16px rgba(255, 255, 255, 0.5);
 }
 
 body:has(img.bg) .card {
@@ -105,9 +105,9 @@ body:has(img.bg) .card {
 	transform: translateY(-55px);
 }
 
-input:hover, textarea:hover {
+/*input:hover, textarea:hover {
 	background: var(--input-hovered-color);
-}
+}*/
 
 input:focus, textarea:focus {
 	outline: none;
@@ -177,6 +177,7 @@ a {
 	font-size: 12px;
 	line-height: 16px;
 	font-weight: 900;
+	cursor: pointer;
 	transition: color 0.1s, background-color 0.1s, padding 0.2s ease-in;
 }
 

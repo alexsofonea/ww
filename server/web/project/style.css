@@ -58,6 +58,10 @@ h2:has(img) {
     margin-bottom: 20px;
     border-radius: 30px;
 }
+.card:not(.card:has(.row)):not(.card:has(.embed)) {
+    padding-bottom: 0px !important;
+    cursor: pointer;
+}
 .card table a {
     float: right;
 }
@@ -155,7 +159,7 @@ p.project img {
     margin-bottom: 20px;
     padding-top: 20px;
     padding-left: 30px;
-    padding-bottom: 17px;
+    padding-bottom: 25px;
     position: static;
     position: -webkit-sticky;
     top: 0px;
@@ -163,8 +167,25 @@ p.project img {
     transform: translateX(-40px);
     z-index: 9;
 
-    overflow: scroll;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
+.tabs::-webkit-scrollbar {
+  width: 3px;
+  height: 3px
+}
+.tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tabs::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 20px;
+}
+.tabs::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .tabs a {
     display: inline;
     font-size: 30px;
@@ -238,8 +259,14 @@ p.project img {
     font-size: 24px;
     display: block;
 }
+.embed a {
+	float: right;
+}
 .card.disabled h2 img {
     filter: saturate(0);
+}
+h2 img {
+    border-radius: 5px;
 }
 hr {
     margin-bottom: 20px;
