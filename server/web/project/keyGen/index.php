@@ -26,7 +26,7 @@
             <h1><font class="ww">ww</font>Keys Generation</h1>
         </div>
 
-        <img src="/assets/logos/wwKey.png" class="bg">
+        <div class="bgContainer" style="background-image: url('/assets/logos/wwKey.png')"></div>
 
         <div class="content">
             <div class="tabs">

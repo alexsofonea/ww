@@ -17,7 +17,7 @@
     $sql = "SELECT * FROM `projects` WHERE publicId = '$_GET[id]' AND `ownerName` = '$_GET[user]';";
     $stmt = $conn->query($sql);
     if ($row = $stmt->fetch()) {
-
+        $projectId = $row['id'];
     }
 ?>
 
@@ -33,6 +33,43 @@
                 ?>
             </div>
 
+
+            <?php
+                $sql = "SELECT
+                            `keys`.id,
+                            `keys`.name,
+                            apps.url AS `use`,
+                            capabilities.capId
+                        FROM `keys`
+                        LEFT JOIN capabilities ON capabilities.capId = `keys`.use
+                        RIGHT JOIN apps ON `keys`.`use` = apps.id
+                        WHERE capabilities.id = '$projectId' OR capabilities.id IS NULL
+
+                        UNION
+
+                        SELECT
+                            `keys`.id,
+                            `keys`.name,
+                            apps.url AS `use`,
+                            capabilities.capId
+                        FROM capabilities
+                        LEFT JOIN apps ON `capabilities`.`capId` = apps.id
+                        LEFT JOIN `keys` ON capabilities.capId = `keys`.use
+                        WHERE capabilities.id = '$projectId' OR `keys`.id IS NULL;";
+                $stmt = $conn->query($sql);
+                
+                $keys = array();
+                $capabilities = array();
+
+                while ($row2 = $stmt->fetch()) {
+                    if ($row2['capId'] != null)
+                        $capabilities[$row2['use']] = true;
+                    $keys[$row2['use']][$row2['id']] = $row2;
+                }
+
+            ?>
+
+
             <div class="tabs">
                 <a href="javascript: changeTab(0);" class="active">Capabilities</a>
                 <a href="javascript: changeTab(1);">Keys</a>
@@ -47,8 +84,8 @@
                             <tr>
                                 <td><h2><img src="/assets/logos/wwAccounts.png"> <font class="ww">ww</font>Accounts</h2></td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                    <label class="switch" value="wwAccounts">
+                                        <input type="checkbox" onchange="switchCapability(this)" <?php if (isset($capabilities['wwAccounts'])) echo "checked"; ?>>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -60,7 +97,7 @@
                                 <img src="/assets/icons/user.svg">
                                 <p>Manage Accounts</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/wwAccounts/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -71,8 +108,8 @@
                             <tr>
                                 <td><h2><img src="/assets/logos/wwLiveSocket Server.png"> <font class="ww">ww</font>LiveSocket Server</h2></td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                    <label class="switch" value="wwLiveSocket">
+                                        <input type="checkbox" onchange="switchCapability(this)" <?php if (isset($capabilities['wwLiveSocket'])) echo "checked"; ?>>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -80,7 +117,7 @@
                         </table>
 
                         <div class="row">
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/liveSocketServer');">
+                            <div class="option" onclick="location.assign('wwLiveSocket/');">
                                 <img src="/assets/icons/server.svg">
                                 <p>Manage Server</p>
                             </div>
@@ -91,7 +128,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwLiveSocket/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -102,8 +139,8 @@
                             <tr>
                                 <td><h2><img src="/assets/logos/wwAnalytics.png"> <font class="ww">ww</font>Analytics</h2></td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                    <label class="switch" value="wwAnalytics">
+                                        <input type="checkbox" onchange="switchCapability(this)" <?php if (isset($capabilities['wwAnalytics'])) echo "checked"; ?>>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -126,8 +163,8 @@
                             <tr>
                                 <td><h2><img src="/assets/logos/wwAI Models.png"> <font class="ww">ww</font>AI Models</h2></td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                    <label class="switch" value="wwAI">
+                                        <input type="checkbox" onchange="switchCapability(this)" <?php if (isset($capabilities['wwAI'])) echo "checked"; ?>>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -156,8 +193,8 @@
                             <tr>
                                 <td><h2><img src="/assets/logos/wwKit for AppStore.png"> <font class="ww">ww</font>Kit for AppStore</h2></td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                    <label class="switch" value="wwKit">
+                                        <input type="checkbox" onchange="switchCapability(this)" <?php if (isset($capabilities['wwKit'])) echo "checked"; ?>>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -190,8 +227,8 @@
                             <tr>
                                 <td><h2><img src="/assets/logos/wwSecure DataBase.png"> <font class="ww">ww</font>Secure DataBase</h2></td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                    <label class="switch" value="wwDB">
+                                        <input type="checkbox" onchange="switchCapability(this)" <?php if (isset($capabilities['wwDB'])) echo "checked"; ?>>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -217,18 +254,6 @@
                     </div>
                 </div>
                 <div class="tabGroup">
-                    <?php
-                        $sql = "SELECT * FROM `keys` WHERE projectId = (SELECT id FROM projects WHERE publicId = '$_GET[id]' AND ownerName = '$_GET[user]');";
-                        $stmt = $conn->query($sql);
-                        
-                        $keys = array();
-
-                        while ($row2 = $stmt->fetch()) {
-                            $keys[$row2['use']][] = $row2;
-                        }
-                    ?>
-
-
                     <div class="card">
                         <table>
                             <tr>
@@ -270,7 +295,7 @@
                         </table>
 
                         <?php
-                            if (isset($keys['wwAI']))
+                            if (isset($keys['wwAI']) && count($keys['wwAI']) > 0)
                                 foreach ($keys['wwAI'] as $key)
                                     echo "<div class='embed'><font>$key[name]</font><xmp>$key[id]</xmp><a href='keyManage/$key[id]'>Manage</a></div>";
                             else    
@@ -301,7 +326,7 @@
                                 <td><h2><img src="/assets/logos/wwSecure DataBase.png"> <font class="ww">ww</font>Domain</h2></td>
                                 <td>
                                     <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                        <input type="checkbox" onchange="switchCapability(this)" checked>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -316,7 +341,7 @@
                                 <td><h2><img src="/assets/logos/wwSecure DataBase.png"> Custom Domain</h2></td>
                                 <td>
                                     <label class="switch">
-                                        <input type="checkbox" onchange="enable(this)" checked>
+                                        <input type="checkbox" onchange="switchCapability(this)" checked>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -398,6 +423,7 @@
 
 <script>
     const projectId = "<?php echo $row['publicId']; ?>";
+    const owner = "<?php echo $row['ownerName']; ?>";
 </script>
 
 <script src="/project/script.js"></script>

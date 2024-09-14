@@ -58,7 +58,7 @@ h2:has(img) {
     margin-bottom: 20px;
     border-radius: 30px;
 }
-.card:not(.card:has(.row)):not(.card:has(.embed)) {
+.card:not(.card:has(.row)):not(.card:has(.embed)):not(.card:has(.form)):not(.card:has(div)):not(.card:has(p)) {
     padding-bottom: 0px !important;
     cursor: pointer;
 }
@@ -119,9 +119,6 @@ input:checked + .slider:before {
     margin-top: -6px;
 }
 .card table:first-of-type {
-    margin-bottom: 10px;
-}
-.card p {
     margin-bottom: 10px;
 }
 .card table tr td:nth-child(2) {
@@ -289,13 +286,17 @@ hr {
     margin-top: 10px;
 }
 
-img.bg {
-    width: 120vw;
+.bgContainer {
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     z-index: -1;
     top: 0;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
+    background-size: 120%;
+    background-position: 50% -100%;
     filter: blur(100px);
     opacity: 0.2;
 }

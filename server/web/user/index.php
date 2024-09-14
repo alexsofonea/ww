@@ -28,6 +28,7 @@
 
             <div class="tabs">
                 <a href="javascript: changeTab(0);" class="active"><font class="ww">WW</font>Projects</a>
+                <a href="/design"><font class="ww">WW</font>Design</a>
             </div>
 
             <div class="content">

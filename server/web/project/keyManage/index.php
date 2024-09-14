@@ -26,13 +26,20 @@
             <h1><font class="ww">ww</font>Keys Manager</h1>
         </div>
 
-        <img src="/assets/logos/wwKey.png" class="bg">
+        <div class="bgContainer" style="background-image: url('/assets/logos/wwKey.png')"></div>
 
         <div class="content">
             <div class="tabGroup active">
                 <div class="card" id="generate">
                     <?php
-                        $sql = "SELECT * FROM `keys` WHERE projectId = (SELECT id FROM projects WHERE publicId = '$_GET[id]' AND ownerName = '$_GET[user]') AND id = '$_GET[use]';";
+                        $sql = "SELECT
+                            keys.id,
+                            keys.name,
+                            keys.publicKey,
+                            apps.url AS `use`
+                        FROM `keys`
+                        INNER JOIN apps ON keys.use = apps.id
+                        WHERE keys.projectId = (SELECT id FROM projects WHERE publicId = '$_GET[id]' AND ownerName = '$_GET[user]') AND keys.id = '$_GET[use]';";
                         $stmt = $conn->query($sql);
                         if ($row2 = $stmt->fetch()) {
                             echo "<h4>Key Nam</h4>";

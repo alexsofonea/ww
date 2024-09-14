@@ -123,3 +123,28 @@ function addTag(but) {
             document.getElementById("description").innerText = val;
         });
 }
+
+function switchCapability(but) {
+    enable(but);
+    const check = but.checked;
+    but = but.parentElement;
+    but.innerHTML = `<svg class="loader" viewBox="25 25 50 50"><circle r="20" cy="50" cx="50"></circle></svg>`;
+    but.setAttribute("onclick", "");
+
+    const val = but.getAttribute("value");
+    console.log(val, check);
+
+    $.post("/project/php/capabilitiesConfig.php",
+        {
+            capability: val,
+            check: check,
+            projectPublicId: projectId,
+            owner: owner
+        },
+        function(data, status){
+            if (check)
+                but.innerHTML = `<input type="checkbox" onchange="switchCapability(this)" checked><span class="slider"></span>`;
+            else
+                but.innerHTML = `<input type="checkbox" onchange="switchCapability(this)"><span class="slider"></span>`;
+        });
+}

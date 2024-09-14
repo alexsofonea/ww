@@ -20,7 +20,7 @@ function decryptWithPublicKey($encryptedData, $publicKey) {
 $id = hash("sha256", openssl_random_pseudo_bytes(64));
 
 include "../../db.php";
-$sql = "INSERT INTO `keys`(`id`, `accountId`, `projectId`, `name`, `publicKey`, `use`) VALUES ('$id', (SELECT accountId from `session` WHERE id = '$_COOKIE[session]'), (SELECT id FROM projects WHERE publicId = '$_POST[projectPublicId]' AND ownerName = '$_POST[owner]'), '$_POST[name]', '$publicKey', '$_POST[use]')";
+$sql = "INSERT INTO `keys`(`id`, `accountId`, `projectId`, `name`, `publicKey`, `use`) VALUES ('$id', (SELECT accountId from `session` WHERE id = '$_COOKIE[session]'), (SELECT id FROM projects WHERE publicId = '$_POST[projectPublicId]' AND ownerName = '$_POST[owner]'), '$_POST[name]', '$publicKey', (SELECT `id` FROM `apps` WHERE url = '$_POST[use]'))";
 $stmt = $conn->query($sql);
 
 $customArray = array(

@@ -24,7 +24,7 @@
             <h1>Private Routing</h1>
         </div>
 
-        <img src="/assets/logos/wwKey.png" class="bg">
+        <div class="bgContainer" style="background-image: url('/assets/logos/wwKey.png')"></div>
 
         <div class="tabs">
             <a>Capabilities</a>
