@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #141414;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s, transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+            background-color: transparent;
+            background: #000;
+            border: 2px solid #ff007f;
+            border-radius: 50px;
+            box-shadow: 0 0 15px #ff007f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,0,127,0.4), transparent);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.4s ease;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            color: #ff007f;
+            box-shadow: 0 0 25px #ff007f;
+        }
+    </style>
+</head>
+<body>
+    <button>Button</button>
+</body>
+</html>

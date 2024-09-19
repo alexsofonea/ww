@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        p {
+            color: #000;
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-size: 18px;
+            position: relative;
+        }
+
+        p::before {
+            content: '';
+            width: 100%;
+            position: absolute;
+            height: 2px;
+            background-color: #000;
+            bottom: -5px;
+            visibility: hidden;
+        }
+
+        p:hover::before {
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <a href="#">
+        <p>Shop Now</p>
+    </a>
+</body>
+</html>

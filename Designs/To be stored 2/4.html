@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+            background: #23272a;
+            border: 2px solid #08f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75px;
+            width: 300px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.4s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+    <button>Button</button>
+</body>
+</html>

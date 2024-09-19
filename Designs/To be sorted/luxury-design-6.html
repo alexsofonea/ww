@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap');
+
+        body{
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'SUSE';
+        }
+
+        #container{
+            height: 520px;
+            width: 300px;
+        }
+
+        img{
+            width: 100%;
+        }
+
+        #details{
+            width: 100%;
+            text-align: center;
+            position: relative;
+            top: 5px;
+        }
+
+        #details p{
+            margin: 5px;
+        }
+
+        #details p:nth-child(2){
+            color: rgb(202, 152, 105);
+        }
+
+        #container #details p:nth-child(1){
+            border-top: solid 1px rgb(255, 255, 255);
+            padding: 5px;
+            transition: all 200ms;
+        }
+
+        #container:hover #details p:nth-child(1){
+            border-top: solid 1px rgb(202, 152, 105);
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img src="asset_image_1.jpg">
+        <div id="details">
+            <p>5520RG-001</p>
+            <p>Rose and White Gold</p>
+            <p>GRAND COMPLICATIONS</p>
+        </div>
+    </div>
+</body>
+</html>
