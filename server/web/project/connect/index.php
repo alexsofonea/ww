@@ -24,7 +24,7 @@
             <h1><font class="ww">ww</font>Connect</h1>
         </div>
 
-        <img src="/assets/logos/wwConnect.png" class="bg">
+        <div class="bgContainer" style="background-image: url('/assets/logos/wwConnect.png')"></div>
 
         <div class="content">
             <div class="tabs">

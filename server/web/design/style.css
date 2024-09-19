@@ -1,0 +1,91 @@
+
+.fullFrame {
+ width: 100%;
+ aspect-ratio: 32 / 9;
+ background-size: cover;
+ background-position: center;
+ border-radius: 20px;
+ margin-bottom: 20px;
+ position: relative;
+}
+.fullFrame h4 {
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ font-size: 40px;
+ font-weight: bold;
+ color: #000000;
+ margin: 0;
+}
+.menu h4 {
+ font-size: 30px;
+ font-weight: bold;
+ color: #000000;
+ margin: 0;
+}
+.grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+ grid-gap: 20px;
+}
+.element {
+ border-radius: 20px;
+ position: relative;
+}
+.element iframe {
+ background-color: #ffffff;
+ border-radius: 20px;
+ border: none;
+ width: calc(100% - 0px);
+ aspect-ratio: 16 / 9;
+}
+.element p {
+ margin: 0;
+ padding-top: 10px;
+ font-size: 20px;
+ font-weight: bold;
+}
+.element img {
+ width: 30px;
+ height: 30px;
+ margin: 10px;
+ position: absolute;
+ bottom: 10px;
+ right: 10px;
+}
+.contents {
+ margin: 0;
+ left: inherit;
+ right: 0;
+ padding: 20px;
+ width: calc(80% - 40px);
+ height: calc(100vh - 100px);
+ max-width: none;
+ padding-top: 80px;
+ overflow-y: scroll;
+}
+.menu {
+ padding: 20px;
+ width: calc(20% - 40px);
+ height: calc(100vh - 40px);
+ background-color: #dcdcdc;
+}
+.search {
+ padding: 10px;
+ width: calc(80% - 120px);
+ position: fixed;
+ top: 10px;
+ right: 80px;
+ height: 20px;
+ border-radius: 50px;
+ z-index: 100;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+ .search {
+     -webkit-backdrop-filter: blur(10px);
+     backdrop-filter: blur(10px);
+     background-color: rgba(255, 255, 255, 0.3);
+ }
+}

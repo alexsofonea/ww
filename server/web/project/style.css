@@ -37,6 +37,9 @@ body {
     cursor: pointer;
     box-shadow: 2px 2px 6px rgba(255, 255, 255, 0.69), -2px -2px 6px #ffffff, inset 2px 2px 6px rgba(0, 0, 0, 0.1), inset -2px -2px 6px rgba(255, 255, 255, 0.7);
 }
+#tags2 tag {
+    margin-top: 20px;
+}
 h1, h2, p {
     margin: 0;
 }
@@ -54,6 +57,13 @@ h2:has(img) {
     width: calc(100% - 40px);
     margin-bottom: 20px;
     border-radius: 30px;
+}
+.card:not(.card:has(.row)):not(.card:has(.embed)):not(.card:has(.form)):not(.card:has(div)):not(.card:has(p)) {
+    padding-bottom: 0px !important;
+    cursor: pointer;
+}
+.card table a {
+    float: right;
 }
 .switch {
     font-size: 17px;
@@ -111,9 +121,6 @@ input:checked + .slider:before {
 .card table:first-of-type {
     margin-bottom: 10px;
 }
-.card p {
-    margin-bottom: 10px;
-}
 .card table tr td:nth-child(2) {
     text-align: right;
 }
@@ -149,14 +156,33 @@ p.project img {
     margin-bottom: 20px;
     padding-top: 20px;
     padding-left: 30px;
-    padding-bottom: 17px;
+    padding-bottom: 25px;
     position: static;
     position: -webkit-sticky;
     top: 0px;
     width: calc(100% + 50px);
     transform: translateX(-40px);
     z-index: 9;
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
+.tabs::-webkit-scrollbar {
+  width: 3px;
+  height: 3px
+}
+.tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tabs::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 20px;
+}
+.tabs::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .tabs a {
     display: inline;
     font-size: 30px;
@@ -179,6 +205,7 @@ p.project img {
     opacity: 0;
     transform: translateX(200px);
     transition: all 0.2s;
+    padding-bottom: 100px;
 }
 .tabGroup.active {
     position: inherit;
@@ -222,8 +249,21 @@ p.project img {
     opacity: 0.6;
     pointer-events: none;
 }
+.embed.center {
+    text-align: center;
+}
+.embed font {
+    font-size: 24px;
+    display: block;
+}
+.embed a {
+	float: right;
+}
 .card.disabled h2 img {
     filter: saturate(0);
+}
+h2 img {
+    border-radius: 5px;
 }
 hr {
     margin-bottom: 20px;
@@ -246,13 +286,17 @@ hr {
     margin-top: 10px;
 }
 
-img.bg {
-    width: 120vw;
+.bgContainer {
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     z-index: -1;
     top: 0;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
+    background-size: 120%;
+    background-position: 50% -100%;
     filter: blur(100px);
     opacity: 0.2;
 }

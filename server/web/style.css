@@ -54,7 +54,7 @@ body {
 	border-radius: 40px;
 	padding: 20px;
 	box-shadow: 8px 8px 16px rgba(255, 255, 255, 0.69),
-		-8px -8px 16px rgba(255, 255, 255, 1);
+		-8px -8px 16px rgba(255, 255, 255, 0.5);
 }
 
 body:has(img.bg) .card {
@@ -72,6 +72,7 @@ body:has(img.bg) .card {
 	width: var(--width-of-input);
 }
 
+
 .input {
 	color: #000;
 	font-size: 1.6rem;
@@ -84,6 +85,11 @@ body:has(img.bg) .card {
 	border-bottom: var(--border-height) solid var(--border-before-color);
 }
 
+
+.form.mini .input {
+	font-size: 16px;
+}
+
 .input-border {
 	position: absolute;
 	background: var(--border-after-color);
@@ -94,15 +100,32 @@ body:has(img.bg) .card {
 	transition: 0.3s;
 }
 
-input:hover {
-	background: var(--input-hovered-color);
+.form:has(textarea) .input-border {
+	bottom: 2px;
+}
+.form textarea {
+	resize: vertical;
+}
+.form a {
+	float: right;
+	transform: translateY(-55px);
+}
+.form.mini a {
+	transform: translateY(-45px);
+}
+.card .embed:first-child	{
+	margin-top: 0;
 }
 
-input:focus {
+/*input:hover, textarea:hover {
+	background: var(--input-hovered-color);
+}*/
+
+input:focus, textarea:focus {
 	outline: none;
 }
 
-input:focus~.input-border {
+input:focus~.input-border, textarea:focus~.input-border {
 	width: 100%;
 }
 
@@ -166,6 +189,7 @@ a {
 	font-size: 12px;
 	line-height: 16px;
 	font-weight: 900;
+	cursor: pointer;
 	transition: color 0.1s, background-color 0.1s, padding 0.2s ease-in;
 }
 
@@ -187,7 +211,7 @@ a:active::before {
 	background-color: #000;
 }
 
-a:hover::before,
+a:not(a:has(svg)):hover::before,
 a:focus::before,
 a.active::before {
 	transform-origin: left top;
@@ -200,7 +224,7 @@ a.active::before {
     padding: 10px;
 }
 .records p {
-    margin: 0;
+    margin: 0 !important;
 }
 .records p:nth-child(1) {
     width: 20%;
@@ -215,9 +239,9 @@ a.active::before {
     width: calc(100% - 20px);
     height: fit-content;
     background-color: #FFF;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 10px;
-    overflow: auto;
+				margin-top: 10px;
 }
 .embed xmp {
     margin: 0;
@@ -264,4 +288,132 @@ circle {
  100% {
   stroke-dashoffset: -125px;
  }
+}
+
+
+
+/* Action Menu */
+
+
+
+@keyframes actionMenuPopUp {
+	from {
+					top: var(--t1);
+					left: calc(var(--l) + 120px);
+					width: 0px;
+					height: 0px;
+	}
+	to {
+					top: var(--t);
+					left: var(--l);
+					width: 120px;
+					height: var(--h);
+	}
+}
+@keyframes actionMenuPopUpBig {
+	from {
+					top: var(--t1);
+					left: calc(var(--l) + 120px);
+					width: 0px;
+					height: 0px;
+	}
+	to {
+					top: var(--t);
+					left: var(--l);
+					width: 200px;
+					height: var(--h);
+	}
+}
+.actionMenu {
+	top: var(--t);
+	left: var(--l);
+	width: 120px;
+	height: var(--h);
+	position: absolute;
+	width: 120px;
+	height: fit-content;
+	border-radius: 20px;
+	padding: 10px;
+	text-align: left;
+	z-index: 997;
+	overflow: hidden;
+	animation: actionMenuPopUp 0.2s;
+	transition: all 0.2s !important;
+	box-shadow:  8px 8px 16px #b0b0b0,
+									-8px -8px 16px #ffffff,
+									inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+									inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+
+	user-select: none !important;
+}
+.actionMenu.big {
+	width: 200px;
+	animation: actionMenuPopUpBig 0.2s;
+}
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+	.actionMenu {
+					-webkit-backdrop-filter: blur(10px);
+					backdrop-filter: blur(10px);
+					background-color: rgba(255, 255, 255, 0.3);
+	}
+	.studio .user {
+					-webkit-backdrop-filter: blur(10px);
+					backdrop-filter: blur(10px);
+	}
+}
+.actionMenu .action {
+	width: 100px;
+	height: 20px !important;
+	z-index: 997;
+	padding: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+.actionMenu.big .action {
+	width: 180px !important;
+}
+.actionMenu .action:hover {
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+.actionMenu .action:not(:last-child) {
+	margin-bottom: 5px;
+}
+.action svg {
+	transform: translateY(-3px);
+	fill: #FDD94D;
+	margin-right: 10px;
+}
+.action img {
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	transform: translateY(-4px);
+}
+.actionMenu hr {
+	border: #CCC 0.5px solid;
+	margin-top: 4.5px;
+	margin-bottom: 4.5px;
+}
+.actionMenu .action p {
+	margin: 0;
+	width: 4ch !important;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline-block;
+	font-size: 18px;
+	transform: translateY(-2px);
+	color: #000;
+}
+.actionMenu.big .action p {
+	width: 9ch !important;
+}
+.actionMenuBg {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 996;
 }
