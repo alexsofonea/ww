@@ -26,16 +26,22 @@
                 <img src="/assets/logos/wwDesign.png">
             </div>
             <div class="options">
-                <br /><br /><br /><br />
-                <div class="form mini">
-                    <select class="input" style="appearance: none; -webkit-appearance: none; -moz-appearance: none; background-color: transparent; outline: none;">
-                        <option selected disabled hidden>Cathegory</option>
-                        <option>Simple</option>
-                        <option>Classic</option>
-                        <option>Playful</option>
-                        <option>Luxury</option>
-                    </select>
-                    <span class="input-border"></span>
+                <br /><br /><br /><br />  
+                <div class="version" data-open="false">
+                    <p id="versionPlaceholder" onclick="version();">Style <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
+
+                    <?php
+                        include "../db.php";
+                        $sql = "SELECT * FROM wwDesignCathegory";
+                        $stmt = $conn->query($sql);
+                        while ($row2 = $stmt->fetch()) {
+                            echo "<style>@font-face {
+                                    font-family: $row2[name];
+                                    src: url('/design/assets/fonts/$row2[font]');
+                                }</style>";
+                            echo "<p class='v' onclick='' style='font-family: $row2[name]; line-height: 1.5;'><img src='/assets/icons/props.svg'> $row2[name]</p>";
+                        }
+                    ?>
                 </div>
                 <div class="form mini">
                     <input class="input" placeholder="Type">
@@ -49,50 +55,19 @@
                     <textarea class="input" id="cssInput" placeholder="Add CSS" required="" rows="10" onkeyup="render()"></textarea>
                     <span class="input-border"></span>
                 </div>
+                <div class="form mini">
+                    <textarea class="input" id="jsInput" placeholder="Add loading JS" required="" rows="10" onkeyup="render()"></textarea>
+                    <span class="input-border"></span>
+                </div>
+                <div class="form mini">
+                    <textarea class="input" id="jsInput" placeholder="Add additional JS" required="" rows="10" onkeyup="render()"></textarea>
+                    <span class="input-border"></span>
+                </div>
+                <a href="" style="float: right;">Submit</a>
+                <br /><br /><br /><br />
             </div>
 
         </div>
-
-        <style>
-            .form pre {
-                display: none;
-            }
-            .mainContainer {
-                display: flex;
-                flex-direction: row;
-            }
-            .preview {
-                height: calc(100vh - 20px);
-                padding: 10px;
-                aspect-ratio: 1;
-                max-width: calc(70% - 10px);
-                background-color: #ffffff;
-                position: relative;
-            }
-            .preview iframe {
-                width: 100%;
-                height: 100%;
-                border: none;
-            }
-            .preview img {
-                width: 50%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-            .options {
-                width: calc(100vw - 100vh - 20px);
-                padding: 10px;
-                min-width: calc(30% - 20px);
-                height: calc(100vh - 20px);
-                overflow: scroll;
-            }
-
-            iframe body {
-                margin: 0;
-            }
-        </style>
         <script>
             function render() {
                 var html = document.getElementById("htmlInput").value;
@@ -119,15 +94,58 @@
     <div class="menu">
         <h4><font class="ww">WW</font>Design</h4>
 
-        <a href="javascript:changecontents('simple')" class="active">Simple</a>
-        <a href="javascript:changecontents('classic')">Classic</a>
-        <a href="javascript:changecontents('playful')">Playful</a>
-        <a href="javascript:changecontents('luxury')">Luxury</a>
+        <br /><br />
+
+        <?php
+            include "../db.php";
+            $sql = "SELECT * FROM wwDesignCathegory";
+            $stmt = $conn->query($sql);
+            while ($row2 = $stmt->fetch()) {
+                echo "<style>@font-face {
+                        font-family: $row2[name];
+                        src: url('/design/assets/fonts/$row2[font]');
+                    }</style>";
+                echo "<a href='javascript:changecontents(\"$row2[name]\")'><font style='font-family: $row2[name]; font-size: 20px;'>$row2[name]</font></a>";
+            }
+        ?>
     </div>
 
     <div class="search">
-
+        <table>
+            <tr>
+                <td><img src="/assets/icons/filter.svg"></td>
+                <td><input type="text" placeholder="Search"></td>
+                <td><img src="/assets/icons/search.svg"></td>
+            </tr>
+        </table>
     </div>
+
+    <style>
+        .search table {
+            width: 100%;
+        }
+        .search img {
+            width: 20px;
+            aspect-ratio: 1;
+            object-fit: contain;
+            transform: translateY(2px);
+        }
+        .search input {
+            width: 100%;
+            padding: 0px 5px;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            font-size: 18px;
+        }
+        .search tr td:first-child {
+            width: 30px;
+        }
+        .search tr td:last-child {
+            width: 30px;
+            text-align: right;
+        }
+    </style>
 
     <div class="contents active" id="simple">
         <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
@@ -181,6 +199,67 @@
             <?php } ?>
         </div>
     </div>
+
+    <div class="editor">
+        <iframe></iframe>
+        <div class="options">   
+            <div class="version" data-open="false">
+                <p id="versionPlaceholder" onclick="version();">Style <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
+
+                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
+                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
+                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
+                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
+                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
+                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
+            </div>
+        </div>
+    </div>
+    <div class="backgroundBlur"></div>
+
+    <style>
+        .editor {
+            position: fixed;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            width: 70%;
+            height: 70%;
+            background-color: #f0f0f0;
+            z-index: 100;
+            border-radius: 40px;
+            padding: 20px;
+        }
+        .editor iframe {
+            height: 100%;
+            aspect-ratio: 1;
+            border: none;
+            background-color: #FFF;
+            border-radius: 20px;
+        }
+        .backgroundBlur {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99;
+        }
+        .editor .options {
+            width: calc(100% - 70vh - 20px);
+            height: 100%;
+            overflow: scroll;
+            float: right;
+            min-width: inherit !important;
+        }
+        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+            .backgroundBlur {
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+        }
+    </style>
 
     <?php } ?>
 

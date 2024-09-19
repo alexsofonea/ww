@@ -65,3 +65,28 @@ function getOffset(el) {
         top: rect.top + window.scrollY
     };
 }
+
+
+function version() {
+    var version = document.getElementsByClassName('version')[0];
+    var v = document.getElementsByClassName('v');
+    if (version.getAttribute("data-open") == "false") {
+        var pos = 30;
+        for (var i = 0; i < v.length; i++) {
+            v[i].style.display = "block";
+            v[i].style.top = (5 + pos) + "px";
+            pos += 40;
+        }
+        version.style.height = (pos + 20) + "px";
+        version.getElementsByTagName("svg")[0].style.transform = "rotate(180deg)";
+        version.setAttribute("data-open", "true");
+    } else {
+        for (var i = 0; i < v.length; i++) {
+            v[i].style.top = "5px";
+            v[i].style.display = "none";
+        }
+        version.getElementsByTagName("svg")[0].style.transform = "rotate(0deg)";
+        version.setAttribute("data-open", "false");
+        version.style.height = "45px";
+    }
+}
