@@ -52,22 +52,46 @@
                     <span class="input-border"></span>
                 </div>
                 <div class="form mini">
-                    <textarea class="input" id="cssInput" placeholder="Add CSS" required="" rows="10" onkeyup="render()"></textarea>
+                    <textarea class="input" id="cssInput" placeholder="Add CSS" required="" rows="10" onkeyup="parseCSS(this)"></textarea>
                     <span class="input-border"></span>
                 </div>
-                <div class="form mini">
+                <!--<div class="form mini">
                     <textarea class="input" id="jsInput" placeholder="Add loading JS" required="" rows="10" onkeyup="render()"></textarea>
                     <span class="input-border"></span>
                 </div>
                 <div class="form mini">
                     <textarea class="input" id="jsInput" placeholder="Add additional JS" required="" rows="10" onkeyup="render()"></textarea>
                     <span class="input-border"></span>
-                </div>
+                </div>-->
                 <a href="" style="float: right;">Submit</a>
                 <br /><br /><br /><br />
             </div>
 
         </div>
+        <style>
+            .form.op div {
+                width: 100%;
+                display: block;
+            }
+            .form.op div input {
+                padding: 10px;
+                border-radius: 10px;
+                background-color: #FFF;
+                border: none;
+                outline: none;
+                margin-bottom: 5px;
+            }
+            .form.op div input:first-child {
+                width: 170px;
+                text-align: right;
+                background-color: transparent;
+            }
+            .form.op div input:last-child {
+                width: calc(100% - 240px);
+                margin-left: 10px;
+                text-align: left;
+            }
+        </style>
         <script>
             function render() {
                 var html = document.getElementById("htmlInput").value;
@@ -87,6 +111,45 @@
                 el.style.top = "50%";
                 el.style.left = "50%";
                 el.style.transform = "translate(-50%, -50%)";
+            }
+            function parseCSS(css) {
+                const cssObj = {};
+                const rules = css.value.match(/[^{]*\{[^}]*\}/g);
+
+                var parent = css.parentElement;
+                parent.classList.add("op");
+                parent.innerHTML = "";
+
+                rules.forEach(rule => {
+                    const [selectors, properties] = rule.split('{');
+                    const selector = selectors.trim().toLowerCase();
+
+                    const propertyObj = {};
+                    properties
+                    .trim()
+                    .slice(0, -1)
+                    .split(';')
+                    .filter(prop => prop.trim())
+                    .forEach(prop => {
+                        const [key, value] = prop.split(':');
+                        propertyObj[key.trim()] = value.trim();
+                    });
+
+                    cssObj[selector] = propertyObj;
+                });
+
+                Object.keys(cssObj).forEach(selector => {
+                    const properties = cssObj[selector];
+                    if (selector != "")
+                        parent.innerHTML += `<div><input type='text' value='${selector}'></div>`;
+                    Object.keys(properties).forEach(property => {
+                        const value = properties[property];
+                        if (value != "")
+                            parent.innerHTML += `<div><input type='text' value='${property}'><input type='text' value='${value}'></div>`;
+                    });
+                });
+
+                return cssObj;
             }
         </script>
     <?php } else { ?>
