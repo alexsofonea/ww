@@ -28,7 +28,7 @@
             <div class="options">
                 <br /><br /><br /><br />  
                 <div class="version" data-open="false">
-                    <p id="versionPlaceholder" onclick="version();">Style <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
+                    <p onclick="version(this.parentElement);">Collection <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
 
                     <?php
                         include "../db.php";
@@ -39,63 +39,71 @@
                                     font-family: $row2[name];
                                     src: url('/design/assets/fonts/$row2[font]');
                                 }</style>";
-                            echo "<p class='v' onclick='' style='font-family: $row2[name]; line-height: 1.5;'><img src='/assets/icons/props.svg'> $row2[name]</p>";
+                            echo "<p class='v' value='$row2[name]' onclick='select(this)'><img src='/assets/icons/props.svg'><font style='font-family: $row2[name]; line-height: 1.5;'>$row2[name]</font></p>";
                         }
                     ?>
                 </div>
-                <div class="form mini">
-                    <input class="input" placeholder="Type">
-                    <span class="input-border"></span>
+                <div class="version" data-open="false">
+                    <p onclick="version(this.parentElement);">Type <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
+
+                    <?php
+                        include "../db.php";
+                        $sql = "SELECT * FROM wwDesignTypes";
+                        $stmt = $conn->query($sql);
+                        while ($row2 = $stmt->fetch()) {
+                            echo "<p class='v' value='$row2[id]' onclick='select(this)'><img src='/assets/icons/props.svg'> $row2[name]</p>";
+                        }
+                    ?>
                 </div>
+                <hr />
                 <div class="form mini">
                     <textarea class="input" id="htmlInput" placeholder="Add HTML" required="" rows="10" onkeyup="render()"></textarea>
+                    <span class="input-border"></span>
+                </div>
+                <hr />
+                <div class="form mini">
+                    <input class="input" id="name" placeholder="Variation Name" value="Default Style">
                     <span class="input-border"></span>
                 </div>
                 <div class="form mini">
                     <textarea class="input" id="cssInput" placeholder="Add CSS" required="" rows="10" onkeyup="parseCSS(this)"></textarea>
                     <span class="input-border"></span>
                 </div>
-                <!--<div class="form mini">
+                <a onclick="addVariation(this)" style="float: right;">Add Variation</a><br /><br /><br />
+                <hr />
+                <div class="form mini op" name="variables">
+                    <div>
+                        <input placeholder="Variable Name">
+                        <input placeholder="Default Value">
+                    </div>
+                </div>
+                <a onclick="addVariable(this)" style="float: right;">Add Variable</a><br /><br /><br />
+                <hr />
+                <div class="form mini">
                     <textarea class="input" id="jsInput" placeholder="Add loading JS" required="" rows="10" onkeyup="render()"></textarea>
                     <span class="input-border"></span>
                 </div>
                 <div class="form mini">
-                    <textarea class="input" id="jsInput" placeholder="Add additional JS" required="" rows="10" onkeyup="render()"></textarea>
+                    <textarea class="input" id="jsInput2" placeholder="Add additional JS" required="" rows="10" onkeyup="render()"></textarea>
                     <span class="input-border"></span>
-                </div>-->
-                <a href="" style="float: right;">Submit</a>
+                </div>
+                <a href="javascript: save()" style="float: right;">Submit</a>
                 <br /><br /><br /><br />
             </div>
 
         </div>
-        <style>
-            .form.op div {
-                width: 100%;
-                display: block;
-            }
-            .form.op div input {
-                padding: 10px;
-                border-radius: 10px;
-                background-color: #FFF;
-                border: none;
-                outline: none;
-                margin-bottom: 5px;
-            }
-            .form.op div input:first-child {
-                width: 170px;
-                text-align: right;
-                background-color: transparent;
-            }
-            .form.op div input:last-child {
-                width: calc(100% - 240px);
-                margin-left: 10px;
-                text-align: left;
-            }
-        </style>
         <script>
+            var cssCode = Array(), defalutCSS = "";
+
+            function addVariation(el) {
+                el.outerHTML = "<div class='form mini'><input class='input' placeholder='Variation Name'><span class='input-border'></span></div><div class='form mini'><textarea class='input' id='cssInput' placeholder='Add CSS' required='' rows='10' onkeyup='parseCSS(this)'></textarea><span class='input-border'></span></div><a onclick='addVariation(this)' style='float: right;'>Add Variation</a>";
+            }
+            function addVariable(el) {
+                el.outerHTML = "<div class='form mini op' name='variables'><div><input placeholder='Variable Name'><input placeholder='Default Value'></div></div><a onclick='addVariable(this)' style='float: right;'>Add Variable</a>";
+            }
             function render() {
                 var html = document.getElementById("htmlInput").value;
-                var css = document.getElementById("cssInput").value;
+                var css = defalutCSS;
                 if (html == "" || css == "") return;
                 var iframe = document.createElement("iframe");
                 document.querySelector(".preview").innerHTML = "";
@@ -116,9 +124,9 @@
                 const cssObj = {};
                 const rules = css.value.match(/[^{]*\{[^}]*\}/g);
 
+                if (defalutCSS == "") defalutCSS = css.value;
+
                 var parent = css.parentElement;
-                parent.classList.add("op");
-                parent.innerHTML = "";
 
                 rules.forEach(rule => {
                     const [selectors, properties] = rule.split('{');
@@ -138,6 +146,11 @@
                     cssObj[selector] = propertyObj;
                 });
 
+                if (cssObj.length == 0) return;
+
+                parent.classList.add("op");
+                parent.innerHTML = "";
+
                 Object.keys(cssObj).forEach(selector => {
                     const properties = cssObj[selector];
                     if (selector != "")
@@ -149,7 +162,32 @@
                     });
                 });
 
-                return cssObj;
+                cssCode.push(cssObj);
+            }
+
+            function getVariables() {
+                var variables = Array();
+                var vars = document.getElementsByName("variables");
+                for (var i = 0; i < vars.length; i++) {
+                    var children = vars[i].getElementsByTagName("input");
+                    variables.push({
+                        children[0].value: children[1].value
+                    });
+                }
+                return variables;
+            }
+
+            function save() {
+                var data = {
+                    'collection': document.getElementsByClassName("version")[0].getAttribute("value"),
+                    'type': document.getElementsByClassName("version")[1].getAttribute("value"),
+                    'name': document.getElementById("name").value,
+                    'css': cssCode,
+                    'variables': getVariables(),
+                    'js': document.getElementById("jsInput").value,
+                    'additionalJS': document.getElementById("jsInput2").value
+                };
+                console.log(data);
             }
         </script>
     <?php } else { ?>
@@ -264,7 +302,32 @@
     </div>
 
     <div class="editor">
-        <iframe></iframe>
+        <iframe srcdoc='<style>
+                        wwDesign-button.natural.style-1{
+                            height: fit-content;
+                            width: fit-content;
+                            background-color: #8BC34A;
+                            padding: 12px 24px;
+                            font-size: 18px;
+                            border-radius: 6px;
+                            user-select: none;
+                            color: #33691E;
+                            font-weight: 500;
+                            transition: all 200ms ease-out;
+
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                        }
+
+                        wwDesign-button.natural.style-1:hover{
+                            transform: translate(-50%, -50%) scale(1.05);
+                            background-color: #7CB342;
+                        }
+                    </style>
+
+                    <wwDesign-button class="natural style-1">Follow Us</wwDesign-button>'></iframe>
         <div class="options">   
             <div class="version" data-open="false">
                 <p id="versionPlaceholder" onclick="version();">Style <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
@@ -276,6 +339,31 @@
                 <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
                 <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
             </div>
+
+            <p>Properties</p>
+
+            <div class="form op">
+                <div>
+                    <input value="Text Color" disabled>
+                    <input placeholder="#33691E">
+                </div>
+                <div>
+                    <input value="Background Color" disabled>
+                    <input placeholder="#8BC34A">
+                </div>
+                <div>
+                    <input value="Hover Effect Color" disabled>
+                    <input placeholder="#7CB342">
+                </div>
+                <div>
+                    <input value="Border Radius" disabled>
+                    <input placeholder="20px">
+                </div>
+            </div>
+
+            <p>Code</p>
+
+            <div class="embed"><xmp><wwDesign-button class="natural style-1">Follow Us</wwDesign-button></xmp></div>
         </div>
     </div>
     <div class="backgroundBlur"></div>
@@ -293,6 +381,9 @@
             border-radius: 40px;
             padding: 20px;
         }
+        .editor .embed {
+            overflow-X: scroll;
+        }
         .editor iframe {
             height: 100%;
             aspect-ratio: 1;
@@ -309,7 +400,7 @@
             z-index: 99;
         }
         .editor .options {
-            width: calc(100% - 70vh - 20px);
+            width: calc(100% - 70vh - 30px);
             height: 100%;
             overflow: scroll;
             float: right;

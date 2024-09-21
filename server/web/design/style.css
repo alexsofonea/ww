@@ -127,3 +127,29 @@
 iframe body {
     margin: 0;
 }
+
+.form.op div {
+    width: 100%;
+    display: block;
+}
+.form.op div input {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #FFF;
+    border: none;
+    outline: none;
+    margin-bottom: 5px;
+}
+.form.op div input:first-child {
+    width: 170px;
+    text-align: right;
+    background-color: transparent;
+}
+.form.op div input:last-child {
+    width: calc(100% - 240px);
+    margin-left: 10px;
+    text-align: left;
+}
+.form.mini .input {
+    border-bottom: 1px solid transparent !important;
+}
