@@ -62,7 +62,7 @@
                 </div>
                 <hr />
                 <div class="form mini">
-                    <input class="input" id="name" placeholder="Variation Name" value="Default Style">
+                    <input class="input" name="styleName" placeholder="Variation Name" value="Default Style">
                     <span class="input-border"></span>
                 </div>
                 <div class="form mini">
@@ -96,7 +96,7 @@
             var cssCode = Array(), defalutCSS = "";
 
             function addVariation(el) {
-                el.outerHTML = "<div class='form mini'><input class='input' placeholder='Variation Name'><span class='input-border'></span></div><div class='form mini'><textarea class='input' id='cssInput' placeholder='Add CSS' required='' rows='10' onkeyup='parseCSS(this)'></textarea><span class='input-border'></span></div><a onclick='addVariation(this)' style='float: right;'>Add Variation</a>";
+                el.outerHTML = "<div class='form mini'><input class='input' name='styleName' placeholder='Variation Name'><span class='input-border'></span></div><div class='form mini'><textarea class='input' id='cssInput' placeholder='Add CSS' required='' rows='10' onkeyup='parseCSS(this)'></textarea><span class='input-border'></span></div><a onclick='addVariation(this)' style='float: right;'>Add Variation</a>";
             }
             function addVariable(el) {
                 el.outerHTML = "<div class='form mini op' name='variables'><div><input placeholder='Variable Name'><input placeholder='Default Value'></div></div><a onclick='addVariable(this)' style='float: right;'>Add Variable</a>";
@@ -149,6 +149,7 @@
                 if (cssObj.length == 0) return;
 
                 parent.classList.add("op");
+                parent.setAttribute("name", "css");
                 parent.innerHTML = "";
 
                 Object.keys(cssObj).forEach(selector => {
@@ -165,29 +166,63 @@
                 cssCode.push(cssObj);
             }
 
+            function reParseCSS() {
+                var cssObj = Array();
+                document.getElementsByName("css").forEach(el => {
+                    const inputs = el.getElementsByTagName("input");
+                    var selector = inputs[0].value;
+                    cssObj[selector] = Array();
+                    for (var i = 1; i < inputs.length - 1; i += 2) {
+                        var property = inputs[i].value;
+                        var value = inputs[i + 1].value;
+                        console.log(property, value);
+                        cssObj[selector][property] = value;
+                    }
+                });
+                console.log(cssObj);
+            }
+
             function getVariables() {
                 var variables = Array();
                 var vars = document.getElementsByName("variables");
                 for (var i = 0; i < vars.length; i++) {
                     var children = vars[i].getElementsByTagName("input");
                     variables.push({
-                        children[0].value: children[1].value
+                        [children[0].value]: children[1].value
                     });
                 }
                 return variables;
             }
 
             function save() {
+                var names = Array();
+                document.getElementsByName("styleName").forEach(el => {
+                    names.push(el.value);
+                });
                 var data = {
-                    'collection': document.getElementsByClassName("version")[0].getAttribute("value"),
-                    'type': document.getElementsByClassName("version")[1].getAttribute("value"),
-                    'name': document.getElementById("name").value,
+                    'category': document.getElementsByClassName("version")[0].getAttribute("value") ?? "",
+                    'type': document.getElementsByClassName("version")[1].getAttribute("value") ?? "",
+                    'name': names,
                     'css': cssCode,
+                    'html': document.getElementById("htmlInput").value,
                     'variables': getVariables(),
                     'js': document.getElementById("jsInput").value,
                     'additionalJS': document.getElementById("jsInput2").value
                 };
+
+                //if (!data.collection || !data.type || !data.name || !data.css.length || !data.variables.length || !data.js || !data.additionalJS)
+                    //return;
+
                 console.log(data);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/design/save.php",
+                    data: data,
+                    success: function (response) {
+                        console.log(response);
+                    }
+                });
             }
         </script>
     <?php } else { ?>
