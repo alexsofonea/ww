@@ -39,7 +39,7 @@
                                     font-family: $row2[name];
                                     src: url('/design/assets/fonts/$row2[font]');
                                 }</style>";
-                            echo "<p class='v' value='$row2[name]' onclick='select(this)'><img src='/assets/icons/props.svg'><font style='font-family: $row2[name]; line-height: 1.5;'>$row2[name]</font></p>";
+                            echo "<p class='v' value='$row2[id]' onclick='select(this)'><img src='/assets/icons/props.svg'><font style='font-family: $row2[name]; line-height: 1.5;'>$row2[name]</font></p>";
                         }
                     ?>
                 </div>
@@ -148,18 +148,21 @@
 
                 if (cssObj.length == 0) return;
 
-                parent.classList.add("op");
-                parent.setAttribute("name", "css");
                 parent.innerHTML = "";
+                parent.setAttribute("class", "css");
 
                 Object.keys(cssObj).forEach(selector => {
+                    var p = document.createElement("div");
+                    p.setAttribute("name", "css");
+                    p.setAttribute("class", "form mini op");
+                    parent.appendChild(p);
                     const properties = cssObj[selector];
                     if (selector != "")
-                        parent.innerHTML += `<div><input type='text' value='${selector}'></div>`;
+                        p.innerHTML += `<div><input type='text' value='${selector}'></div>`;
                     Object.keys(properties).forEach(property => {
                         const value = properties[property];
                         if (value != "")
-                            parent.innerHTML += `<div><input type='text' value='${property}'><input type='text' value='${value}'></div>`;
+                            p.innerHTML += `<div><input type='text' value='${property}'><input type='text' value='${value}'></div>`;
                     });
                 });
 
@@ -167,19 +170,24 @@
             }
 
             function reParseCSS() {
-                var cssObj = Array();
-                document.getElementsByName("css").forEach(el => {
-                    const inputs = el.getElementsByTagName("input");
-                    var selector = inputs[0].value;
-                    cssObj[selector] = Array();
-                    for (var i = 1; i < inputs.length - 1; i += 2) {
-                        var property = inputs[i].value;
-                        var value = inputs[i + 1].value;
-                        console.log(property, value);
-                        cssObj[selector][property] = value;
-                    }
+                var css = [];
+                document.querySelectorAll('.css').forEach(ele => {
+                    console.log(ele);
+                    var cssObj = {};
+                    ele.querySelectorAll('[name="css"]').forEach(el => {
+                        const inputs = el.getElementsByTagName("input");
+                        var selector = inputs[0].value;
+                        var data = {};
+                        for (var i = 1; i < inputs.length - 1; i += 2) {
+                            var property = inputs[i].value;
+                            var value = inputs[i + 1].value;
+                            data[property] = value;
+                        }
+                        cssObj[selector] = data;
+                    });
+                    css.push(cssObj);
                 });
-                console.log(cssObj);
+                return css;
             }
 
             function getVariables() {
@@ -203,7 +211,7 @@
                     'category': document.getElementsByClassName("version")[0].getAttribute("value") ?? "",
                     'type': document.getElementsByClassName("version")[1].getAttribute("value") ?? "",
                     'name': names,
-                    'css': cssCode,
+                    'css': reParseCSS(),
                     'html': document.getElementById("htmlInput").value,
                     'variables': getVariables(),
                     'js': document.getElementById("jsInput").value,

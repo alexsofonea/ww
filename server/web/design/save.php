@@ -6,14 +6,15 @@ foreach ($_POST['css'] as $key => $content) {
     $id = hash('md5', uniqid());
     $css = json_encode($content);
     $name = $_POST['name'][$key];
+    $variables = json_encode($_POST['variables']);
     if ($_POST['name'][$key] == "Default Style")
-        $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$mainId', '$_POST[category]', '$_POST[type]', '$name', '$_POST[html]', '$css', '$_POST[js]','$_POST[additionalJS]', $_POST[variables]);";
+        $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$mainId', '$_POST[category]', '$_POST[type]', '$name', '$_POST[html]', '$css', '$_POST[js]','$_POST[additionalJS]', '$variables');";
     else 
-        $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$id', '', '', '$name', '$mainId', '$css', '', '', '');";
+        $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$id', NULL, NULL, '$name', '$mainId', '$css', '', '', '');";
 }
 
 echo $sql;
 
-//include "../db.php";
-//$stmt = $conn->query($sql);
+include "../db.php";
+$stmt = $conn->query($sql);
 ?>
