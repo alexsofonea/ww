@@ -32,9 +32,22 @@
 
                     <?php
                         include "../db.php";
-                        $sql = "SELECT * FROM wwDesignCathegory";
+                        $sql = "SELECT id, `name`, font FROM wwDesignCathegory
+                                UNION
+                                SELECT id, `name`, '' AS font FROM wwDesignTypes";
                         $stmt = $conn->query($sql);
-                        while ($row2 = $stmt->fetch()) {
+                        $cathegories = [];
+                        $types = [];
+                        while ($row = $stmt->fetch()) {
+                            if ($row['font'] == "") {
+                                $types[$row['id']] = $row;
+                            } else {
+                                $cathegories[$row['id']] = $row;
+                            }
+                        }
+
+
+                        foreach ($cathegories as $row2) {
                             echo "<style>@font-face {
                                     font-family: $row2[name];
                                     src: url('/design/assets/fonts/$row2[font]');
@@ -47,10 +60,7 @@
                     <p onclick="version(this.parentElement);">Type <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
 
                     <?php
-                        include "../db.php";
-                        $sql = "SELECT * FROM wwDesignTypes";
-                        $stmt = $conn->query($sql);
-                        while ($row2 = $stmt->fetch()) {
+                        foreach ($types as $row2) {
                             echo "<p class='v' value='$row2[id]' onclick='select(this)'><img src='/assets/icons/props.svg'> $row2[name]</p>";
                         }
                     ?>
@@ -70,6 +80,12 @@
                     <span class="input-border"></span>
                 </div>
                 <a onclick="addVariation(this)" style="float: right;">Add Variation</a><br /><br /><br />
+
+                <div class="version" id="versionPreview" data-open="false" data-nr="0">
+                    <p onclick="version(this.parentElement);">Preview <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
+
+                    <p class='v' value='0' onclick='select(this); render();'><img src='/assets/icons/props.svg'> Style 0</p>
+                </div>
                 <hr />
                 <div class="form mini op" name="variables">
                     <div>
@@ -92,148 +108,71 @@
             </div>
 
         </div>
-        <script>
-            var cssCode = Array(), defalutCSS = "";
-
-            function addVariation(el) {
-                el.outerHTML = "<div class='form mini'><input class='input' name='styleName' placeholder='Variation Name'><span class='input-border'></span></div><div class='form mini'><textarea class='input' id='cssInput' placeholder='Add CSS' required='' rows='10' onkeyup='parseCSS(this)'></textarea><span class='input-border'></span></div><a onclick='addVariation(this)' style='float: right;'>Add Variation</a>";
-            }
-            function addVariable(el) {
-                el.outerHTML = "<div class='form mini op' name='variables'><div><input placeholder='Variable Name'><input placeholder='Default Value'></div></div><a onclick='addVariable(this)' style='float: right;'>Add Variable</a>";
-            }
-            function render() {
-                var html = document.getElementById("htmlInput").value;
-                var css = defalutCSS;
-                if (html == "" || css == "") return;
-                var iframe = document.createElement("iframe");
-                document.querySelector(".preview").innerHTML = "";
-                document.querySelector(".preview").appendChild(iframe);
-
-                var doc = iframe.contentWindow.document;
-                doc.open();
-                doc.write(html + "<style>" + css + "</style>");
-                doc.close();
-
-                var el = doc.body.firstChild;
-                el.style.position = "absolute";
-                el.style.top = "50%";
-                el.style.left = "50%";
-                el.style.transform = "translate(-50%, -50%)";
-            }
-            function parseCSS(css) {
-                const cssObj = {};
-                const rules = css.value.match(/[^{]*\{[^}]*\}/g);
-
-                if (defalutCSS == "") defalutCSS = css.value;
-
-                var parent = css.parentElement;
-
-                rules.forEach(rule => {
-                    const [selectors, properties] = rule.split('{');
-                    const selector = selectors.trim().toLowerCase();
-
-                    const propertyObj = {};
-                    properties
-                    .trim()
-                    .slice(0, -1)
-                    .split(';')
-                    .filter(prop => prop.trim())
-                    .forEach(prop => {
-                        const [key, value] = prop.split(':');
-                        propertyObj[key.trim()] = value.trim();
-                    });
-
-                    cssObj[selector] = propertyObj;
-                });
-
-                if (cssObj.length == 0) return;
-
-                parent.innerHTML = "";
-                parent.setAttribute("class", "css");
-
-                Object.keys(cssObj).forEach(selector => {
-                    var p = document.createElement("div");
-                    p.setAttribute("name", "css");
-                    p.setAttribute("class", "form mini op");
-                    parent.appendChild(p);
-                    const properties = cssObj[selector];
-                    if (selector != "")
-                        p.innerHTML += `<div><input type='text' value='${selector}'></div>`;
-                    Object.keys(properties).forEach(property => {
-                        const value = properties[property];
-                        if (value != "")
-                            p.innerHTML += `<div><input type='text' value='${property}'><input type='text' value='${value}'></div>`;
-                    });
-                });
-
-                cssCode.push(cssObj);
-            }
-
-            function reParseCSS() {
-                var css = [];
-                document.querySelectorAll('.css').forEach(ele => {
-                    console.log(ele);
-                    var cssObj = {};
-                    ele.querySelectorAll('[name="css"]').forEach(el => {
-                        const inputs = el.getElementsByTagName("input");
-                        var selector = inputs[0].value;
-                        var data = {};
-                        for (var i = 1; i < inputs.length - 1; i += 2) {
-                            var property = inputs[i].value;
-                            var value = inputs[i + 1].value;
-                            data[property] = value;
-                        }
-                        cssObj[selector] = data;
-                    });
-                    css.push(cssObj);
-                });
-                return css;
-            }
-
-            function getVariables() {
-                var variables = Array();
-                var vars = document.getElementsByName("variables");
-                for (var i = 0; i < vars.length; i++) {
-                    var children = vars[i].getElementsByTagName("input");
-                    variables.push({
-                        [children[0].value]: children[1].value
-                    });
-                }
-                return variables;
-            }
-
-            function save() {
-                var names = Array();
-                document.getElementsByName("styleName").forEach(el => {
-                    names.push(el.value);
-                });
-                var data = {
-                    'category': document.getElementsByClassName("version")[0].getAttribute("value") ?? "",
-                    'type': document.getElementsByClassName("version")[1].getAttribute("value") ?? "",
-                    'name': names,
-                    'css': reParseCSS(),
-                    'html': document.getElementById("htmlInput").value,
-                    'variables': getVariables(),
-                    'js': document.getElementById("jsInput").value,
-                    'additionalJS': document.getElementById("jsInput2").value
-                };
-
-                //if (!data.collection || !data.type || !data.name || !data.css.length || !data.variables.length || !data.js || !data.additionalJS)
-                    //return;
-
-                console.log(data);
-
-                $.ajax({
-                    type: "POST",
-                    url: "/design/save.php",
-                    data: data,
-                    success: function (response) {
-                        console.log(response);
-                    }
-                });
-            }
-        </script>
+        <script src="/design/admin.js"></script>
     <?php } else { ?>
+        <?php
+            include "../db.php";
+            $sql = "SELECT 
+                        wwDesign.id,
+                        wwDesignCathegory.id AS cathegoryId,
+                        wwDesignCathegory.name AS cathegory,
+                        wwDesignCathegory.font AS cathegoryFont,
+                        wwDesignCathegory.logo AS cathegoryLogo,
+                        wwDesignTypes.id AS `typeId`,
+                        wwDesignTypes.name AS `type`,
+                        wwDesign.html,
+                        wwDesign.css,
+                        wwDesign.js,
+                        wwDesign.aditionalJs,
+                        wwDesign.variables
+                    FROM wwDesign
+                    LEFT JOIN wwDesignCathegory ON wwDesign.category = wwDesignCathegory.id
+                    LEFT JOIN wwDesignTypes ON wwDesign.type = wwDesignTypes.id ORDER BY wwDesign.category DESC";
+            $stmt = $conn->query($sql);
+            $cathegories = [];
+            $types = [];
+            $designs = [];
+            while ($row = $stmt->fetch()) {
+                if ($row['cathegoryId'] == null) {
+                    $designs[$row['cathegoryId']][$row['html']][6][] = $row['css']; 
+                } else {
+                    $cathegories[$row['cathegoryId']] = [$row['cathegory'], $row['cathegoryFont'], $row['cathegoryLogo']];
+                    $types[$row['typeId']] = $row['type'];
+
+                    $designs[$row['cathegoryId']][$row['id']] = [
+                        $row['type'],
+                        $row['html'],
+                        $row['css'],
+                        $row['js'],
+                        $row['aditionalJs'],
+                        $row['variables'],
+                        []];
+                    //var_dump($row);
+                }
+            }
+
+            function convertToCSS($json) {
+                // Decode the JSON into an array
+                $cssArray = json_decode($json, true);
+                $cssString = '';
+            
+                // Loop through each CSS object in the array
+                //foreach ($cssArray as $cssObj) {
+                    foreach ($cssArray as $selector => $properties) {
+                        $cssString .= "$selector {\n";
+            
+                        // Loop through each property for the selector
+                        foreach ($properties as $property => $value) {
+                            $cssString .= "  $property: $value;\n";
+                        }
+            
+                        $cssString .= "}\n";
+                    }
+                //}
+            
+                return $cssString;
+            }
+        ?>
 
     <div class="menu">
         <h4><font class="ww">WW</font>Design</h4>
@@ -241,15 +180,12 @@
         <br /><br />
 
         <?php
-            include "../db.php";
-            $sql = "SELECT * FROM wwDesignCathegory";
-            $stmt = $conn->query($sql);
-            while ($row2 = $stmt->fetch()) {
+            foreach ($cathegories as $key => $value) {
                 echo "<style>@font-face {
-                        font-family: $row2[name];
-                        src: url('/design/assets/fonts/$row2[font]');
+                        font-family: font$value[0];
+                        src: url('/design/assets/fonts/$value[1]');
                     }</style>";
-                echo "<a href='javascript:changecontents(\"$row2[name]\")'><font style='font-family: $row2[name]; font-size: 20px;'>$row2[name]</font></a>";
+                echo "<a href='javascript:changecontents(\"$value[0]\")'><font style='font-family: font$value[0]; font-size: 20px;'>$value[0]</font></a>";
             }
         ?>
     </div>
@@ -264,87 +200,39 @@
         </table>
     </div>
 
-    <style>
-        .search table {
-            width: 100%;
-        }
-        .search img {
-            width: 20px;
-            aspect-ratio: 1;
-            object-fit: contain;
-            transform: translateY(2px);
-        }
-        .search input {
-            width: 100%;
-            padding: 0px 5px;
-            border: none;
-            outline: none;
-            background-color: transparent;
-            font-size: 18px;
-        }
-        .search tr td:first-child {
-            width: 30px;
-        }
-        .search tr td:last-child {
-            width: 30px;
-            text-align: right;
-        }
-    </style>
+    <?php foreach ($cathegories as $key => $value) { ?>
+        <div class="contents active" id="<?php echo $value[0]; ?>">
+            <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
+                <h4><font class="ww">WW</font>Design <font style='font-family: font<?php echo $value[0]; ?> !important;'><?php echo $value[0]; ?></font></h4>
+            </div>
+            <div class="grid">
+                <?php foreach ($designs[$key] as $id => $row) { ?>
+                    <div class="element">
+                        <iframe srcdoc='
+                            <style>
+                                wwElement { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+                                <?php echo convertToCSS($row[2]); ?>
+                            </style>
+                            <?php echo $row[1]; ?>
+                            <script>
+                                var element = document.querySelector("wwElement");
+                                <?php echo $row[3]; ?>
+                            </script>
+                        '></iframe>
+                        <img onclick="createActionMenuBig(this)" data-actions="someFunc();props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
+                    </div>
+                <?php } ?>
+                <?php /*for ($i = 0; $i < 50; $i++) { ?>
+                    <div class="element">
+                        <iframe></iframe>
+                        <img onclick="createActionMenuBig(this)" data-actions="someFunc();props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
+                    </div>
+                <?php }*/ ?>
+            </div>
+        </div>
+    <?php } ?>
 
-    <div class="contents active" id="simple">
-        <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
-            <h4><font class="ww">WW</font>Design</h4>
-        </div>
-        <div class="grid">
-            <?php for ($i = 0; $i < 50; $i++) { ?>
-                <div class="element">
-                    <iframe></iframe>
-                    <img onclick="createActionMenuBig(this)" data-actions="someFunc();props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
-                </div>
-            <?php } ?>
-        </div>
-    </div>
-    <div class="contents" id="classic">
-        <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
-            <h4><font class="ww">WW</font>Design</h4>
-        </div>
-        <div class="grid">
-            <?php for ($i = 0; $i < 50; $i++) { ?>
-                <div class="element">
-                    <iframe></iframe>
-                    <img onclick="createActionMenuBig(this)" data-actions="someFunc();props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
-                </div>
-            <?php } ?>
-        </div>
-    </div>
-    <div class="contents" id="playful">
-        <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
-            <h4><font class="ww">WW</font>Design</h4>
-        </div>
-        <div class="grid">
-            <?php for ($i = 0; $i < 50; $i++) { ?>
-                <div class="element">
-                    <iframe></iframe>
-                    <img onclick="createActionMenuBig(this)" data-actions="someFunc();props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
-                </div>
-            <?php } ?>
-        </div>
-    </div>
-    <div class="contents" id="luxury">
-        <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
-            <h4><font class="ww">WW</font>Design</h4>
-        </div>
-        <div class="grid">
-            <?php for ($i = 0; $i < 50; $i++) { ?>
-                <div class="element">
-                    <iframe></iframe>
-                    <img onclick="createActionMenuBig(this)" data-actions="someFunc();props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
-                </div>
-            <?php } ?>
-        </div>
-    </div>
-
-    <div class="editor">
+    <!--<div class="editor">
         <iframe srcdoc='<style>
                         wwDesign-button.natural.style-1{
                             height: fit-content;
@@ -409,54 +297,7 @@
             <div class="embed"><xmp><wwDesign-button class="natural style-1">Follow Us</wwDesign-button></xmp></div>
         </div>
     </div>
-    <div class="backgroundBlur"></div>
-
-    <style>
-        .editor {
-            position: fixed;
-            top: 50%;
-            right: 50%;
-            transform: translate(50%, -50%);
-            width: 70%;
-            height: 70%;
-            background-color: #f0f0f0;
-            z-index: 100;
-            border-radius: 40px;
-            padding: 20px;
-        }
-        .editor .embed {
-            overflow-X: scroll;
-        }
-        .editor iframe {
-            height: 100%;
-            aspect-ratio: 1;
-            border: none;
-            background-color: #FFF;
-            border-radius: 20px;
-        }
-        .backgroundBlur {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99;
-        }
-        .editor .options {
-            width: calc(100% - 70vh - 30px);
-            height: 100%;
-            overflow: scroll;
-            float: right;
-            min-width: inherit !important;
-        }
-        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-            .backgroundBlur {
-                -webkit-backdrop-filter: blur(10px);
-                backdrop-filter: blur(10px);
-                background-color: rgba(255, 255, 255, 0.3);
-            }
-        }
-    </style>
+    <div class="backgroundBlur"></div>-->
 
     <?php } ?>
 

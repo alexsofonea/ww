@@ -7,7 +7,7 @@ foreach ($_POST['css'] as $key => $content) {
     $css = json_encode($content);
     $name = $_POST['name'][$key];
     $variables = json_encode($_POST['variables']);
-    if ($_POST['name'][$key] == "Default Style")
+    if ($key == array_key_first($_POST['css']))
         $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$mainId', '$_POST[category]', '$_POST[type]', '$name', '$_POST[html]', '$css', '$_POST[js]','$_POST[additionalJS]', '$variables');";
     else 
         $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$id', NULL, NULL, '$name', '$mainId', '$css', '', '', '');";
