@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" contents="viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>New wwProject</title>
+    <title>wwDesign Library</title>
+    <link rel="icon" href="/assets/logos/wwDesign.png">
     <link rel="stylesheet" href="/assets/font/stylesheet.css">
     <link rel="stylesheet" href="/assets/logo-font/stylesheet.css">
     <link rel="stylesheet" href="/style.css">
@@ -120,6 +121,7 @@
                         wwDesignCathegory.logo AS cathegoryLogo,
                         wwDesignTypes.id AS `typeId`,
                         wwDesignTypes.name AS `type`,
+                        wwDesign.style,
                         wwDesign.html,
                         wwDesign.css,
                         wwDesign.js,
@@ -127,14 +129,14 @@
                         wwDesign.variables
                     FROM wwDesign
                     LEFT JOIN wwDesignCathegory ON wwDesign.category = wwDesignCathegory.id
-                    LEFT JOIN wwDesignTypes ON wwDesign.type = wwDesignTypes.id ORDER BY wwDesign.category DESC";
+                    LEFT JOIN wwDesignTypes ON wwDesign.type = wwDesignTypes.id ORDER BY wwDesign.type DESC";
             $stmt = $conn->query($sql);
             $cathegories = [];
             $types = [];
             $designs = [];
             while ($row = $stmt->fetch()) {
-                if ($row['cathegoryId'] == null) {
-                    $designs[$row['cathegoryId']][$row['html']][6][] = $row['css']; 
+                if ($row['typeId'] == NULL) {
+                    $designs[$row['cathegoryId']][$row['html']][5][] = [$row['style'], $row['css']];
                 } else {
                     $cathegories[$row['cathegoryId']] = [$row['cathegory'], $row['cathegoryFont'], $row['cathegoryLogo']];
                     $types[$row['typeId']] = $row['type'];
@@ -142,11 +144,11 @@
                     $designs[$row['cathegoryId']][$row['id']] = [
                         $row['type'],
                         $row['html'],
-                        $row['css'],
                         $row['js'],
                         $row['aditionalJs'],
                         $row['variables'],
-                        []];
+                        [[$row['style'], $row['css']]]
+                    ];
                     //var_dump($row);
                 }
             }
@@ -207,19 +209,19 @@
             </div>
             <div class="grid">
                 <?php foreach ($designs[$key] as $id => $row) { ?>
-                    <div class="element">
+                    <div class="element" id="element<?php echo $id; ?>" data-html="<?php echo $row[1]; ?>" data-variation='<?php echo json_encode($row[5]); ?>' data-var='<?php echo $row[4]; ?>'>
                         <iframe srcdoc='
                             <style>
-                                wwElement { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-                                <?php echo convertToCSS($row[2]); ?>
+                                body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; }
+                                <?php echo convertToCSS($row[5][0][1]); ?>
                             </style>
                             <?php echo $row[1]; ?>
                             <script>
                                 var element = document.querySelector("wwElement");
-                                <?php echo $row[3]; ?>
+                                <?php echo $row[2]; ?>
                             </script>
                         '></iframe>
-                        <img onclick="createActionMenuBig(this)" data-actions="someFunc();props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
+                        <img onclick="createActionMenuBig(this)" data-actions="editor('<?php echo $id; ?>');props;Copy Snippet|someFunc();props;Customize" src="/assets/icons/props.svg" >
                     </div>
                 <?php } ?>
                 <?php /*for ($i = 0; $i < 50; $i++) { ?>
@@ -232,72 +234,117 @@
         </div>
     <?php } ?>
 
-    <!--<div class="editor">
-        <iframe srcdoc='<style>
-                        wwDesign-button.natural.style-1{
-                            height: fit-content;
-                            width: fit-content;
-                            background-color: #8BC34A;
-                            padding: 12px 24px;
-                            font-size: 18px;
-                            border-radius: 6px;
-                            user-select: none;
-                            color: #33691E;
-                            font-weight: 500;
-                            transition: all 200ms ease-out;
-
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                        }
-
-                        wwDesign-button.natural.style-1:hover{
-                            transform: translate(-50%, -50%) scale(1.05);
-                            background-color: #7CB342;
-                        }
-                    </style>
-
-                    <wwDesign-button class="natural style-1">Follow Us</wwDesign-button>'></iframe>
+    <div class="editor" id="editor" style="opacity: 0; pointer-events: none;">
+        <iframe srcdoc=''></iframe>
         <div class="options">   
-            <div class="version" data-open="false">
-                <p id="versionPlaceholder" onclick="version();">Style <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
-
-                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
-                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
-                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
-                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
-                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
-                <p class="v" onclick=""><img src="/assets/icons/props.svg"> Something</p>
+            <div class="version" data-open="false" id="styleVar">
+                <p id="versionPlaceholder" onclick="version(this.parentElement);">Style <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
             </div>
 
             <p>Properties</p>
 
             <div class="form op">
-                <div>
-                    <input value="Text Color" disabled>
-                    <input placeholder="#33691E">
-                </div>
-                <div>
-                    <input value="Background Color" disabled>
-                    <input placeholder="#8BC34A">
-                </div>
-                <div>
-                    <input value="Hover Effect Color" disabled>
-                    <input placeholder="#7CB342">
-                </div>
-                <div>
-                    <input value="Border Radius" disabled>
-                    <input placeholder="20px">
-                </div>
             </div>
+
+            <a href="javascript: updateView()">Update</a>
 
             <p>Code</p>
 
-            <div class="embed"><xmp><wwDesign-button class="natural style-1">Follow Us</wwDesign-button></xmp></div>
+            <div class="embed"><xmp></xmp></div>
         </div>
     </div>
-    <div class="backgroundBlur"></div>-->
+    <div class="backgroundBlur" style="opacity: 0; pointer-events: none;" onclick="dismissEditor(this)"></div>
+
+
+    <script>
+        var edit = document.getElementById("editor");
+        function editor(el) {
+            removeActionMenu();
+
+            el = document.getElementById("element" + el);
+            edit.querySelector("iframe").srcdoc = el.querySelector("iframe").getAttribute("srcdoc");
+
+            var form = edit.querySelector(".form.op");
+            form.innerHTML = "";
+            JSON.parse(el.getAttribute("data-var")).forEach(value => {
+                let [key, val] = Object.entries(value)[0];
+                form.innerHTML += `<div name="vars">
+                    <input value="${key}" disabled>
+                    <input placeholder="${val}" value="${val}">
+                </div>`;
+            });
+
+            var version = edit.querySelector(".version");
+            version.querySelectorAll(".v").forEach(el => {
+                el.remove();
+            });
+            JSON.parse(el.getAttribute("data-variation")).forEach((value) => {
+                version.innerHTML += `<p class="v" value='${value[1]}' onclick="select(this); updateView();"><img src="/assets/icons/props.svg"> ${value[0]}</p>`;
+            });
+
+            edit.querySelector("xmp").innerText = el.getAttribute("data-html");
+
+            edit.style.opacity = 1;
+            edit.style.pointerEvents = "all";
+            var bg = document.querySelector(".backgroundBlur")
+            bg.style.opacity = 1;
+            bg.style.pointerEvents = "all";
+        }
+        function getVars() {
+            var vars = {};
+            edit.querySelectorAll("div[name='vars']").forEach(el => {
+                let key = el.querySelectorAll("input")[0].value.toLowerCase().replace(/\s+/g, '-');
+                vars[key] = el.querySelectorAll("input")[1].value;
+            });
+            return vars;
+        }
+        function dismissEditor(e) {
+            var edit = document.getElementById("editor");
+            edit.style.opacity = 0;
+            edit.style.pointerEvents = "none";
+            e.style.opacity = 0;
+            e.style.pointerEvents = "none";
+        }
+        function updateView() {
+            var css = "body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; } " + convertToCSS(edit.querySelector(".version").getAttribute("value"));
+            css = css.replace(/\$([^\;]+)\;/g, function(match, p1) {
+                return getVars()[p1] + ";";
+            });
+            console.log(css);
+            if (css != "")
+                render2(edit.querySelector("iframe"), css);
+        }
+        function render2(iframe, css) {
+            var doc = iframe.contentWindow.document;
+            var styleTag = doc.querySelector('style');
+            if (styleTag) {
+                styleTag.innerHTML = css;
+            } else {
+                styleTag = doc.createElement('style');
+                styleTag.innerHTML = css;
+                doc.head.appendChild(styleTag);
+            }
+        }
+        function convertToCSS(css) {
+            let cssString = '';
+
+            css = JSON.parse(css);
+            console.log(css);
+
+            
+            for (const selector in css) {
+                cssString += `${selector} {\n`;
+        
+                for (const property in css[selector]) {
+                    const value = css[selector][property];
+                    cssString += `  ${property}: ${value};\n`;
+                }
+                cssString += `}\n`;
+            }
+
+            return cssString;
+        }
+    </script>
 
     <?php } ?>
 

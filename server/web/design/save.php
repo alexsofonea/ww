@@ -10,7 +10,7 @@ foreach ($_POST['css'] as $key => $content) {
     if ($key == array_key_first($_POST['css']))
         $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$mainId', '$_POST[category]', '$_POST[type]', '$name', '$_POST[html]', '$css', '$_POST[js]','$_POST[additionalJS]', '$variables');";
     else 
-        $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$id', NULL, NULL, '$name', '$mainId', '$css', '', '', '');";
+        $sql .= "INSERT INTO `wwDesign`(`id`, `category`, `type`, `style`, `html`, `css`, `js`, `aditionalJs`, `variables`) VALUES ('$id', '$_POST[category]', NULL, '$name', '$mainId', '$css', '', '', '');";
 }
 
 echo $sql;

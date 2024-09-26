@@ -26,7 +26,7 @@ function render() {
     doc.write("<script>var element = document.querySelector('wwElement'); " + document.getElementById("jsInput").value + "</script>");
     doc.close();
 
-    var el = doc.body.firstChild;
+    var el = doc.body;
     el.style.position = "absolute";
     el.style.top = "50%";
     el.style.left = "50%";
