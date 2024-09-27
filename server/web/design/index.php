@@ -146,7 +146,7 @@
                         $row['html'],
                         $row['js'],
                         $row['aditionalJs'],
-                        $row['variables'],
+                        json_decode($row['variables']),
                         [[$row['style'], $row['css']]]
                     ];
                     //var_dump($row);
@@ -154,25 +154,27 @@
             }
 
             function convertToCSS($json) {
-                // Decode the JSON into an array
                 $cssArray = json_decode($json, true);
                 $cssString = '';
             
-                // Loop through each CSS object in the array
-                //foreach ($cssArray as $cssObj) {
-                    foreach ($cssArray as $selector => $properties) {
-                        $cssString .= "$selector {\n";
+                foreach ($cssArray as $selector => $properties) {
+                    $cssString .= "$selector {\n";
             
-                        // Loop through each property for the selector
-                        foreach ($properties as $property => $value) {
-                            $cssString .= "  $property: $value;\n";
-                        }
-            
-                        $cssString .= "}\n";
+                    foreach ($properties as $property => $value) {
+                        $cssString .= "  $property: $value;\n";
                     }
-                //}
             
+                    $cssString .= "}\n";
+                }
                 return $cssString;
+            }
+            function replaceVariablesInCSS($css, $variables) {
+                $pattern = '/\$(.+?);/';
+                $css = preg_replace_callback($pattern, function($matches) use ($variables) {
+                    $variableName = ucwords(str_replace('-', ' ', $matches[1]));
+                    return $variables->$variableName . ";";
+                }, $css);
+                return $css;
             }
         ?>
 
@@ -209,11 +211,11 @@
             </div>
             <div class="grid">
                 <?php foreach ($designs[$key] as $id => $row) { ?>
-                    <div class="element" id="element<?php echo $id; ?>" data-html="<?php echo $row[1]; ?>" data-variation='<?php echo json_encode($row[5]); ?>' data-var='<?php echo $row[4]; ?>'>
+                    <div class="element" id="element<?php echo $id; ?>" data-html="<?php echo $row[1]; ?>" data-variation='<?php echo json_encode($row[5]); ?>' data-var='<?php echo json_encode($row[4]); ?>'>
                         <iframe srcdoc='
                             <style>
                                 body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; }
-                                <?php echo convertToCSS($row[5][0][1]); ?>
+                                <?php echo replaceVariablesInCSS(convertToCSS($row[5][0][1]), $row[4]); ?>
                             </style>
                             <?php echo $row[1]; ?>
                             <script>
@@ -256,95 +258,7 @@
     <div class="backgroundBlur" style="opacity: 0; pointer-events: none;" onclick="dismissEditor(this)"></div>
 
 
-    <script>
-        var edit = document.getElementById("editor");
-        function editor(el) {
-            removeActionMenu();
-
-            el = document.getElementById("element" + el);
-            edit.querySelector("iframe").srcdoc = el.querySelector("iframe").getAttribute("srcdoc");
-
-            var form = edit.querySelector(".form.op");
-            form.innerHTML = "";
-            JSON.parse(el.getAttribute("data-var")).forEach(value => {
-                let [key, val] = Object.entries(value)[0];
-                form.innerHTML += `<div name="vars">
-                    <input value="${key}" disabled>
-                    <input placeholder="${val}" value="${val}">
-                </div>`;
-            });
-
-            var version = edit.querySelector(".version");
-            version.querySelectorAll(".v").forEach(el => {
-                el.remove();
-            });
-            JSON.parse(el.getAttribute("data-variation")).forEach((value) => {
-                version.innerHTML += `<p class="v" value='${value[1]}' onclick="select(this); updateView();"><img src="/assets/icons/props.svg"> ${value[0]}</p>`;
-            });
-
-            edit.querySelector("xmp").innerText = el.getAttribute("data-html");
-
-            edit.style.opacity = 1;
-            edit.style.pointerEvents = "all";
-            var bg = document.querySelector(".backgroundBlur")
-            bg.style.opacity = 1;
-            bg.style.pointerEvents = "all";
-        }
-        function getVars() {
-            var vars = {};
-            edit.querySelectorAll("div[name='vars']").forEach(el => {
-                let key = el.querySelectorAll("input")[0].value.toLowerCase().replace(/\s+/g, '-');
-                vars[key] = el.querySelectorAll("input")[1].value;
-            });
-            return vars;
-        }
-        function dismissEditor(e) {
-            var edit = document.getElementById("editor");
-            edit.style.opacity = 0;
-            edit.style.pointerEvents = "none";
-            e.style.opacity = 0;
-            e.style.pointerEvents = "none";
-        }
-        function updateView() {
-            var css = "body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; } " + convertToCSS(edit.querySelector(".version").getAttribute("value"));
-            css = css.replace(/\$([^\;]+)\;/g, function(match, p1) {
-                return getVars()[p1] + ";";
-            });
-            console.log(css);
-            if (css != "")
-                render2(edit.querySelector("iframe"), css);
-        }
-        function render2(iframe, css) {
-            var doc = iframe.contentWindow.document;
-            var styleTag = doc.querySelector('style');
-            if (styleTag) {
-                styleTag.innerHTML = css;
-            } else {
-                styleTag = doc.createElement('style');
-                styleTag.innerHTML = css;
-                doc.head.appendChild(styleTag);
-            }
-        }
-        function convertToCSS(css) {
-            let cssString = '';
-
-            css = JSON.parse(css);
-            console.log(css);
-
-            
-            for (const selector in css) {
-                cssString += `${selector} {\n`;
-        
-                for (const property in css[selector]) {
-                    const value = css[selector][property];
-                    cssString += `  ${property}: ${value};\n`;
-                }
-                cssString += `}\n`;
-            }
-
-            return cssString;
-        }
-    </script>
+    <script src="/design/script.js"></script>
 
     <?php } ?>
 

@@ -146,13 +146,11 @@ function reParseCSS(cssEle = -1) {
 }
 
 function getVariables() {
-    var variables = Array();
+    var variables = {};
     var vars = document.getElementsByName("variables");
     for (var i = 0; i < vars.length; i++) {
         var children = vars[i].getElementsByTagName("input");
-        variables.push({
-            [children[0].value]: children[1].value
-        });
+        variables[children[0].value] = children[1].value;
     }
     return variables;
 }
