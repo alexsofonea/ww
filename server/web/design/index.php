@@ -66,6 +66,13 @@
                         }
                     ?>
                 </div>
+                <?php
+                    $uploadText = "Update picture. Drag & drop it here.";
+                    $upload = "/setup/cloudapi/upload-design.php";
+                    $fileName = hash("md2", uniqid());
+                    $otherFunc = "show(data)";
+                    include "../setup/cloudapi/index.php";
+                ?>
                 <hr />
                 <div class="form mini">
                     <textarea class="input" id="htmlInput" placeholder="Add HTML" required="" rows="10" onkeyup="render()"></textarea>
@@ -205,14 +212,14 @@
     </div>
 
     <?php foreach ($cathegories as $key => $value) { ?>
-        <div class="contents active" id="<?php echo $value[0]; ?>">
+        <div class="contents" id="<?php echo $value[0]; ?>">
             <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
                 <h4><font class="ww">WW</font>Design <font style='font-family: font<?php echo $value[0]; ?> !important;'><?php echo $value[0]; ?></font></h4>
             </div>
             <div class="grid">
                 <?php foreach ($designs[$key] as $id => $row) { ?>
-                    <div class="element" id="element<?php echo $id; ?>" data-html="<?php echo $row[1]; ?>" data-variation='<?php echo json_encode($row[5]); ?>' data-var='<?php echo json_encode($row[4]); ?>'>
-                        <iframe srcdoc='
+                    <div class="element" id="element<?php echo $id; ?>" data-html="<?php echo base64_encode($row[1]); ?>" data-variation='<?php echo base64_encode(json_encode($row[5])); ?>' data-var='<?php echo base64_encode(json_encode($row[4])); ?>'>
+                        <iframe onload="scaleIframes()" srcdoc='
                             <style>
                                 body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; }
                                 <?php echo replaceVariablesInCSS(convertToCSS($row[5][0][1]), $row[4]); ?>
@@ -259,6 +266,34 @@
 
 
     <script src="/design/script.js"></script>
+
+    <script>
+        function scaleIframes(iframe) {
+            console.log(iframe);
+            const iframeDocument = iframe.document;
+            const iframeBody = iframeDocument.body;
+
+            // Get the dimensions of the iframe content
+            const iframeWidth = iframeBody.scrollWidth;
+            const iframeHeight = iframeBody.scrollHeight;
+
+            // Get the size of the iframe itself
+            const iframeDisplayWidth = iframe.offsetWidth;
+            const iframeDisplayHeight = iframe.offsetHeight;
+
+            // Calculate the scaling factor
+            const scaleX = iframeDisplayWidth / iframeWidth;
+            const scaleY = iframeDisplayHeight / iframeHeight;
+
+            // Use the smaller scale to fit the content within the iframe
+            const scale = Math.min(scaleX, scaleY);
+
+            // Apply the scaling to the content of the iframe
+            iframeBody.style.transform = `scale(${scale})`;
+            iframeBody.style.transformOrigin = '0 0';
+            iframeBody.style.width = `${iframeWidth}px`; // Keep the original width to ensure proper scaling
+        }
+    </script>
 
     <?php } ?>
 

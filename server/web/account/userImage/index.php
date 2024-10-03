@@ -20,7 +20,7 @@ function getInitials($name) {
 }
 
 function createInitialsImage($initials, $backgroundColor) {
-    $imageSize = 100;
+    $imageSize = 400;
     $image = imagecreatetruecolor($imageSize, $imageSize);
     
     // Convert hex color to RGB
@@ -57,12 +57,12 @@ function createInitialsImage($initials, $backgroundColor) {
     $fontWeight = "Bold";
 
     // Calculate text position
-    $bbox = imagettfbbox(30, 0, $fontFile, $initials);
+    $bbox = imagettfbbox(120, 0, $fontFile, $initials);
     $textX = ($imageSize - ($bbox[2] - $bbox[0])) / 2 - $bbox[0];
     $textY = ($imageSize - ($bbox[1] - $bbox[7])) / 2 - $bbox[7];
 
     // Add text to image
-    imagettftext($image, 30, 0, $textX, $textY, $textColor, $fontFile, $initials, ['text' => $fontWeight]);
+    imagettftext($image, 120, 0, $textX, $textY, $textColor, $fontFile, $initials, ['text' => $fontWeight]);
 
     return $image;
 }

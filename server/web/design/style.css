@@ -71,6 +71,8 @@
     max-width: none;
     padding-top: 80px;
     overflow-y: scroll;
+    
+	transform: translateY(100%);
 }
 
 .menu {

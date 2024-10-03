@@ -15,14 +15,13 @@
     onclick="fileExplore();">
     <p id="drop_zone_text"><?php echo $uploadText; ?></p>
     <form id="form" enctype="multipart/form-data">
-        <input type="file" id="file" name="filesToUpload[]" onchange="selectDone()">
+        <input type="file" id="file" name="filesToUpload[]" onchange="selectDone()" webkitdirectory multiple>
         <?php
             if (isset($fileName)) {
                 echo '<input type="hidden" name="id" value="' . $fileName . '">';
             }
         ?>
     </form>
-    <p id="poweredby"><b>Powerd by</b> Alex Cloud API</p>
 </div>
 
 <style>
@@ -36,7 +35,6 @@
     }
     #poweredby {
         position: absolute;
-        bottom: -10px;
         left: 50%;
         transform: translateX(-50%);
         font-size: 12px;
@@ -100,10 +98,6 @@
 <script src="https://developer.alexsofonea.com/cloud/jquery.js"></script>
 
 <script>
-    function show(el) {
-        if (el != "upload_error")
-            document.querySelector("#drop_zone").outerHTML += `<a href='/design/demo/${el}' target='_blank'>${el}</a>`;
-    }
     function dropHandler(ev) {
         document.getElementById("drop_zone").classList.remove("dropOver");
         document.getElementById("drop_zone").classList.add("dropped");

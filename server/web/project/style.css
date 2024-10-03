@@ -258,6 +258,7 @@ p.project img {
 }
 .embed a {
 	float: right;
+    transform: translateY(-20px)
 }
 .card.disabled h2 img {
     filter: saturate(0);
@@ -307,4 +308,42 @@ hr {
     margin-bottom: 20px;
     aspect-ratio: 1 / 1;
     object-fit: cover;
+}
+
+.fileShow {
+    width: calc(100% - 20px) !important;
+    display: flex !important;
+    height: 20px;
+    flex-direction: row;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.fileShow:nth-child(odd) {
+    background-color: #e0e0e0;
+}
+.fileShow:hover {
+    background-color: #FFF;
+}
+.fileShow img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+.fileShow img.o {
+    padding: 0px;
+    transform: translate(0px, 0px);
+    border-radius: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    transition: 0.3s;
+}
+.fileShow img.o:hover {
+    padding: 5px;
+    transform: translate(5px, -5px);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.fileShow p {
+    height: 20px;
+    padding: 0px 20px;
+    width: calc(100% - 40px - 40px);
 }

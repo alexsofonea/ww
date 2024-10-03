@@ -71,14 +71,72 @@
 
 
             <div class="tabs">
-                <a href="javascript: changeTab(0);" class="active">Capabilities</a>
-                <a href="javascript: changeTab(1);">Keys</a>
-                <a href="javascript: changeTab(2);">Domain</a>
-                <a href="javascript: changeTab(3);">Settings</a>
+                <a href="javascript: changeTab(0);" class="active">Files</a>
+                <a href="javascript: changeTab(1);">Clients</a>
+                <a href="javascript: changeTab(2);">Capabilities</a>
+                <a href="javascript: changeTab(3);">Keys</a>
+                <a href="javascript: changeTab(4);">Domain</a>
+                <a href="javascript: changeTab(5);">Settings</a>
             </div>
 
             <div class="content">
                 <div class="tabGroup active">
+                    <div class="card">
+                        <div class="version" data-open="false" data-nr="0">
+                            <p onclick="version(this.parentElement);">Version <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
+
+                            <p class='v' value='0' onclick='select(this); render();'><img src='/assets/icons/props.svg'> Style 0</p>
+                        </div>
+
+                        <hr />
+
+                        <div class="fileShow">
+                            <img src="/assets/icons/folder.svg">
+                            <p>Folder Name</p>
+                            <img src="/assets/icons/properties.svg" class="o">
+                        </div>
+                        <div class="fileShow">
+                            <img src="/assets/icons/folder.svg">
+                            <p>Folder Name</p>
+                            <img src="/assets/icons/properties.svg" class="o">
+                        </div>
+                        <div class="fileShow">
+                            <img src="/assets/icons/folder.svg">
+                            <p>Folder Name</p>
+                            <img src="/assets/icons/properties.svg" class="o">
+                        </div>
+                        <div class="fileShow">
+                            <img src="/assets/icons/folder.svg">
+                            <p>Folder Name</p>
+                            <img src="/assets/icons/properties.svg" class="o">
+                        </div>
+                        <div class="fileShow">
+                            <img src="/assets/icons/file.svg">
+                            <p>File Name</p>
+                            <img src="/assets/icons/properties.svg" class="o">
+                        </div>
+                    </div>
+                    <div class="card">
+                        <?php
+                            $uploadText = "Deploy a new version. Drag & drop it here.";
+                            $upload = "/project/php/cloudapi/upload.php";
+                            $fileName = hash("md2", uniqid());
+                            $otherFunc = "addFiles(data)";
+                            include "php/cloudapi/index.php";
+                        ?>
+                    </div>
+                </div>
+                <div class="tabGroup">
+                    <div class="card">
+                        <table>
+                            <tr>
+                                <td><h2>Clients</h2></td>
+                                <td><a href="">Invite</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="tabGroup">
                     <div class="card disabled">
                         <table>
                             <tr>
@@ -377,14 +435,14 @@
                 </div>
                 <div class="tabGroup">
                     <div class="card">
-                        <div class="form">
+                        <div class="form mini">
                             <textarea class="input" placeholder="Add a description" required="" rows="7"><?php echo base64_decode($row['description']); ?></textarea>
                             <span class="input-border"></span>
                             <a onclick="updateDescription(this)">Update</a>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="form">
+                        <div class="form mini">
                             <input class="input" placeholder="Add a tag" required="" type="text">
                             <span class="input-border"></span>
                             <a onclick="addTag(this)">Add Tag</a>
@@ -399,11 +457,11 @@
                     </div>
                     <div class="card">
                         <?php
-                            $uploadText = "Update picture. Drag & drop it here.";
+                            /*$uploadText = "Update picture. Drag & drop it here.";
                             $upload = "../setup/cloudapi/upload.php";
                             $fileName = hash("md2", uniqid());
                             $otherFunc = "savePicture('$fileName.jpg')";
-                            include "../setup/cloudapi/index.php";
+                            include "../setup/cloudapi/index.php";*/
                         ?>
                     </div>
                 </div>

@@ -83,7 +83,7 @@
 
         <?php
             $uploadText = "Drag & drop the image file here.";
-            $upload = "cloudapi/upload.php";
+            $upload = "/setup/cloudapi/upload.php";
             $fileName = hash("md2", uniqid());
             $otherFunc = "savePicture('$fileName.jpg')";
             include "cloudapi/index.php";
@@ -104,6 +104,7 @@
 </script>
 
 <script src="/setup/script.js"></script>
+<script src="/script.js"></script>
 
 </body>
 </html>

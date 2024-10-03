@@ -8,7 +8,7 @@ function editor(el) {
 
     var form = edit.querySelector(".form.op");
     form.innerHTML = "";
-    Object.entries(JSON.parse(el.getAttribute("data-var"))).forEach(([key, value]) => {
+    Object.entries(JSON.parse(atob(el.getAttribute("data-var")))).forEach(([key, value]) => {
         form.innerHTML += `<div name="vars">
             <input value="${key}" disabled>
             <input placeholder="${value}" value="${value}">
@@ -19,11 +19,11 @@ function editor(el) {
     version.querySelectorAll(".v").forEach(el => {
         el.remove();
     });
-    JSON.parse(el.getAttribute("data-variation")).forEach((value) => {
+    JSON.parse(atob(el.getAttribute("data-variation"))).forEach((value) => {
         version.innerHTML += `<p class="v" value='${value[1]}' onclick="select(this); updateView();"><img src="/assets/icons/props.svg"> ${value[0]}</p>`;
     });
 
-    edit.querySelector("xmp").innerText = el.getAttribute("data-html");
+    edit.querySelector("xmp").innerText = atob(el.getAttribute("data-html"));
 
     edit.style.opacity = 1;
     edit.style.pointerEvents = "all";
