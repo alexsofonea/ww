@@ -171,8 +171,31 @@ function save() {
         'additionalJS': document.getElementById("jsInput2").value
     };
 
-    //if (!data.collection || !data.type || !data.name || !data.css.length || !data.variables.length || !data.js || !data.additionalJS)
-        //return;
+    var s = data.css.flatMap(cssObj => {
+        const values = [];
+        for (const selector in cssObj) {
+            const properties = cssObj[selector];
+            for (const property in properties) {
+                if (properties[property].includes('$')) {
+                    values.push(properties[property]);
+                }
+            }
+        }
+        return values;
+    });
+
+    const variableKeys = Object.keys(data.variables);
+    const sValues = s.map(value => value.replace('$', '').toLowerCase().replace(/\s+/g, '-').replace(/\b\w/g, char => char.toUpperCase()));
+
+    if (!sValues.every(value => variableKeys.includes(value)) || !variableKeys.every(key => sValues.includes(key))) {
+        alert("Invalid variables.");
+        return;
+    }
+
+    if (data.category == "" || data.type == "" || data.name.length == 0 || data.css.length == 0 || data.variables.length == 0 || data.js == "") {
+        alert("Missing data.");
+        return
+    }
 
     console.log(data);
 

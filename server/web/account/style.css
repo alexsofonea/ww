@@ -30,6 +30,13 @@ h1, h2, h3, h4 {
     padding-top: 100px;
 
 }
+.widget {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.widget::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
 /*@media only screen and (max-width: 600px) {
     .widget {
         top: inherit;
@@ -40,7 +47,7 @@ h1, h2, h3, h4 {
     }
 }*/
 .widget .user-box {
-    overflow: auto;
+    overflow: hidden;
     box-shadow:  8px 8px 16px #b0b0b0,
             -8px -8px 16px #ffffff,
             inset 4px 4px 8px rgba(0, 0, 0, 0.1),
