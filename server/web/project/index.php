@@ -18,6 +18,9 @@
     $stmt = $conn->query($sql);
     if ($row = $stmt->fetch()) {
         $projectId = $row['id'];
+    } else {
+        header("HTTP/1.0 404 Not Found");
+        exit();
     }
 ?>
 
@@ -66,9 +69,7 @@
                         $capabilities[$row2['use']] = true;
                     $keys[$row2['use']][$row2['id']] = $row2;
                 }
-
             ?>
-
 
             <div class="tabs">
                 <a href="javascript: changeTab(0);" class="active">Files</a>
@@ -151,11 +152,11 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAccounts/');">
                                 <img src="/assets/icons/user.svg">
                                 <p>Manage Accounts</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/wwAccounts/connect/');">
+                            <div class="option" onclick="location.assign('wwAccounts/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -179,7 +180,7 @@
                                 <img src="/assets/icons/server.svg">
                                 <p>Manage Server</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/privte-routing');">
+                            <div class="option" onclick="location.assign('wwLiveSocket/privte-routing/');">
                                 <img src="/assets/logos/wwKey.png">
                                 <p>Private Routing</p>
                             </div>
@@ -206,11 +207,11 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAnalytics/');">
                                 <img src="/assets/icons/statistic.svg">
                                 <p>Track Analytics</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwAnalytics/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -230,17 +231,17 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAI/queries/');">
                                 <img src="/assets/icons/queries.svg">
                                 <p>AI Queries</p>
                             </div>
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAI/');">
                                 <img src="/assets/icons/ai.svg">
                                 <p>My Models</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwAI/connect');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -260,21 +261,21 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwKit/');">
                                 <img src="/assets/icons/connections.svg">
                                 <p>Connections</p>
                             </div>
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwKit/aPNS/');">
                                 <img src="/assets/icons/pn.svg">
                                 <p>Push Notification Service</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwKit/purchase/');">
                                 <img src="/assets/icons/money.svg">
                                 <p>Purchase Services</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwKit/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -294,17 +295,17 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwDB/');">
                                 <img src="/assets/icons/db.svg">
                                 <p>Manage Databases</p>
                             </div>
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwDB/queries');">
                                 <img src="/assets/icons/queries.svg">
                                 <p>Queries</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwDB/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>

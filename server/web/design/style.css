@@ -196,7 +196,7 @@ iframe body {
     border: none;
 }
 
-.preview img {
+.preview img:not(.fileShow img) {
     width: 50%;
     position: absolute;
     top: 50%;
@@ -307,4 +307,47 @@ iframe body {
         backdrop-filter: blur(10px);
         background-color: rgba(255, 255, 255, 0.3);
     }
+}
+
+.fileShow {
+    width: calc(100% - 20px) !important;
+    display: flex !important;
+    height: 20px;
+    flex-direction: row;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.fileShow:nth-child(odd) {
+    background-color: #e0e0e0;
+}
+.fileShow:hover {
+    background-color: #CCC;
+}
+.fileShow img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    border-radius: 50px;
+}
+.fileShow img.o {
+    padding: 0px;
+    transform: translate(0px, 0px);
+    border-radius: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    transition: 0.3s;
+}
+.fileShow img.o:hover {
+    padding: 5px;
+    transform: translate(5px, -5px);
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.fileShow p {
+    height: 20px;
+    padding: 0px 20px;
+    width: calc(100% - 40px - 40px);
+    margin: 0;
+}
+.preview:has(.fileShow) {
+    padding: 30px !important;
 }

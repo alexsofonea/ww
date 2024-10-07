@@ -26,11 +26,11 @@
                 <h1><font class="ww">ww</font>Connect</h1>
             </div>
 
-            <div class="bgContainer" style="background-image: url('/assets/logos/wwConnect.png')"></div>
+            <div class="bgContainer" style="background-image: url('/assets/logos/wwAI.png')"></div>
 
             <div class="content">
                 <div class="tabs">
-                    <a><img src="/assets/logos/wwAccounts.png"> <font class="ww">ww</font>Accounts</a>
+                    <a><img src="/assets/logos/wwAccounts.png"> <font class="ww">ww</font>AI</a>
                 </div>
                 <div class="tabGroup active">
                     <div class="card">
@@ -139,6 +139,55 @@
                 </div>
             </div>
         </div>
+    <?php } else if (isset($_GET['use']) && $_GET['use'] == "queries") { ?>
+        <link rel="stylesheet" href="/design/style.css">
+        <div class="mainContainer">
+            <div class="preview" style="padding: 0; height: 100vh;">
+                <div class="fileShow">
+                    <img src="/account/userImage/?name=Test">
+                    <p>User Name</p>
+                    <img src="/assets/icons/properties.svg" class="o">
+                </div>
+                <div class="fileShow">
+                    <img src="/account/userImage/?name=Tst">
+                    <p>User Name</p>
+                    <img src="/assets/icons/properties.svg" class="o">
+                </div>
+                <div class="fileShow">
+                    <img src="/account/userImage/?name=Tet">
+                    <p>User Name</p>
+                    <img src="/assets/icons/properties.svg" class="o">
+                </div>
+                <div class="fileShow">
+                    <img src="/account/userImage/?name=Tes">
+                    <p>User Name</p>
+                    <img src="/assets/icons/properties.svg" class="o">
+                </div>
+            </div>
+            <div class="options">
+                <br /><br /><br /><br />
+
+                <div class="form mini op" name="variables">
+                    <div>
+                        <input value="User Name" disabled>
+                        <input placeholder="Default Value">
+                    </div>
+                    <div>
+                        <input value="User Name" disabled>
+                        <input placeholder="Default Value">
+                    </div>
+                    <div>
+                        <input value="User Name" disabled>
+                        <input placeholder="Default Value">
+                    </div>
+                </div>
+                <br /><br />
+                <a href="javascript: save()" style="float: right;">Save</a>
+                <br /><br /><br />
+            </div>
+
+        </div>
+        <script src="/design/admin.js"></script>
     <?php } else { ?>
         <link rel="stylesheet" href="/design/style.css">
         <div class="mainContainer">
