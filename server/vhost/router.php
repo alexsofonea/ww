@@ -1,6 +1,11 @@
 <?php
 $domain = $_SERVER['HTTP_HOST'];
 
+if ($domain == "gnets.myds.me") {
+    header("Location: https://alexsofonea.com");
+    die();
+}
+
 $rootFolders = [
     'wwdev.systems' => '../../cloud/vhost/wwdev.systems/'
 ];
@@ -15,11 +20,8 @@ if (array_key_exists($domain, $rootFolders)) {
     exit;
 }
 
-echo $_GET['path'];
-
 // Get the requested file path
 $requestedFile = isset($_GET['path']) ? $_GET['path'] : '';
-//echo $requestedFile;
 
 // If the requested path is empty or ends in a directory, look for 'index' file
 if ($requestedFile === '' || substr($requestedFile, -1) === '/') {
@@ -38,8 +40,6 @@ if ($requestedFile === '' || substr($requestedFile, -1) === '/') {
 
 // Create the full path to the requested file
 $fullPath = $rootFolder . '/' . $requestedFile;
-
-//echo $fullPath;
 
 // Check if the file exists and is not a directory
 if (file_exists($fullPath) && !is_dir($fullPath)) {

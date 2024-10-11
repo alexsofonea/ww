@@ -138,7 +138,7 @@ function validateName() {
 function validateDomain() {
     var value = document.getElementById('projectDomain').value;
     if (/^(?!:\/\/)([a-zA-Z0-9-_]{1,63}\.)+[a-zA-Z]{2,}$/.test(value) && value.length != 0) {
-        $.post("/setup/request/domain.php",
+        /*$.post("/setup/request/domain.php",
             {
                 id: id,
                 domain: value
@@ -150,7 +150,8 @@ function validateDomain() {
                     document.getElementById("domainVerifyId").innerHTML = verify;
                     changecontents('domainadd');
                 }
-            });
+            });*/
+        changecontents('picture');
     } else
         changecontents();
 }

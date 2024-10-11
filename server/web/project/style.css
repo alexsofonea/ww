@@ -256,9 +256,14 @@ p.project img {
     font-size: 24px;
     display: block;
 }
+.embed {
+    position: relative;
+}
 .embed a {
-	float: right;
-    transform: translateY(-20px)
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
 }
 .card.disabled h2 img {
     filter: saturate(0);

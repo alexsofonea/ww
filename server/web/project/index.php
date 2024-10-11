@@ -406,32 +406,7 @@
                                 </td>
                             </tr>
                         </table>
-
-                        <div class="form">
-                            <input class="input" placeholder="Enter your domain name" required="" type="text" id="projectName" value="<?php echo $row['domain']; ?>">
-                            <span class="input-border"></span>
-                        </div>
-
-                        <div class="records">
-                            <p>Type</p>
-                            <p>Host</p>
-                            <p>Value</p>
-                        </div>
-                        <div class="records embed">
-                            <p>CNAME</p>
-                            <p>accounts</p>
-                            <p>accounts.namespace.ww.alexsofonea.com</p>
-                        </div>
-                        <div class="records embed">
-                            <p>CNAME</p>
-                            <p>connect</p>
-                            <p>connect.namespace.ww.alexsofonea.com</p>
-                        </div>
-                        <div class="records embed">
-                            <p>ALIAS</p>
-                            <p>@</p>
-                            <p>namespace.ww.alexsofonea.com</p>
-                        </div>
+                        <div class='embed'><xmp><?php echo $row['domain']; ?></xmp><a href='domain'>Manage</a></div>
                     </div>
                 </div>
                 <div class="tabGroup">
