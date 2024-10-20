@@ -188,7 +188,7 @@ a {
 	letter-spacing: 1px;
 	font-size: 12px;
 	line-height: 16px;
-	font-weight: 900;
+	font-weight: bold;
 	cursor: pointer;
 	transition: color 0.1s, background-color 0.1s, padding 0.2s ease-in;
 }

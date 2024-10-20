@@ -14,13 +14,14 @@
     ondragleave="dragLeave(event);"
     onclick="fileExplore();">
     <p id="drop_zone_text"><?php echo $uploadText; ?></p>
-    <form id="form" enctype="multipart/form-data">
-        <input type="file" id="file" name="filesToUpload[]" onchange="selectDone()" webkitdirectory multiple>
+    <form id="form" method="post" enctype="multipart/form-data" action="<?php echo $upload; ?>">
+        <input type="file" id="file" name="filesToUpload[]" onchange="selectDone()" webkitdirectory directory multiple>
         <?php
             if (isset($fileName)) {
                 echo '<input type="hidden" name="id" value="' . $fileName . '">';
             }
         ?>
+        <!--<button type="submit"></button>-->
     </form>
 </div>
 
@@ -99,41 +100,23 @@
 
 <script>
     function dropHandler(ev) {
+        ev.preventDefault();
         document.getElementById("drop_zone").classList.remove("dropOver");
         document.getElementById("drop_zone").classList.add("dropped");
         document.getElementById("drop_zone_text").innerHTML = "<a href='javascript:upload();'>Start uploading</a>";
-
-        ev.preventDefault();
 
         const dataTransfer = new DataTransfer();
 
         if (ev.dataTransfer.items) {
             [...ev.dataTransfer.items].forEach((item, i) => {
-            if (item.kind === "file") {
-                dataTransfer.items.add(item.getAsFile());
-            }
-            });
-        } else {
-            [...ev.dataTransfer.files].forEach((file, i) => {
-                dataTransfer.items.add(item.getAsFile());
+                if (item.kind === "file") {
+                    const file = item.getAsFile();
+                    dataTransfer.items.add(file);
+                }
             });
         }
+
         document.getElementById('file').files = dataTransfer.files;
-    }
-    function selectDone() {
-        upload();
-    }
-    function dragOverHandler(ev) {
-        document.getElementById("drop_zone").classList.add("dropOver");
-        ev.preventDefault();
-    }
-    function dragLeave(ev) {
-        document.getElementById("drop_zone").classList.remove("dropOver");
-        ev.preventDefault();
-    }
-    function fileExplore() {
-        if (document.getElementById('file').files.length == 0)
-            document.getElementById("file").click();
     }
     function upload() {
         document.getElementById("drop_zone").classList.remove("dropOver");
@@ -164,6 +147,21 @@
             contentType: false,
             processData: false
         });
+    }
+    function selectDone() {
+        upload();
+    }
+    function dragOverHandler(ev) {
+        document.getElementById("drop_zone").classList.add("dropOver");
+        ev.preventDefault();
+    }
+    function dragLeave(ev) {
+        document.getElementById("drop_zone").classList.remove("dropOver");
+        ev.preventDefault();
+    }
+    function fileExplore() {
+        if (document.getElementById('file').files.length == 0)
+            document.getElementById("file").click();
     }
     function removeLoading() {
         document.getElementById("drop_zone_text").innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg> Your files were uploaded.';

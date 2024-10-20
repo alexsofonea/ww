@@ -16,10 +16,12 @@ print_r($ret);*/
 //   /var/services/web/ww/server/secureHost/acme-challenge
 //   /var/lib/letsencrypt/.well-known/acme-challenge
 
+$domain = "wwdev.systems";
+
 $ac->loadAccountKey(file_get_contents('cert/account_key.pem'));
 
 $domain_config=array(
-  'wwdev.systems'=>array('challenge'=>'http-01','docroot'=>'/var/lib/letsencrypt')
+  $domain=>array('challenge'=>'http-01','docroot'=>'/var/lib/letsencrypt')
 );
 
 $handler=function($opts){
@@ -34,6 +36,7 @@ $handler=function($opts){
 $private_key=$ac->generateRSAKey(2048);
 
 $fullchain=$ac->getCertificateChain($private_key,$domain_config,$handler);
-file_put_contents('cert/fullchain.pem',$fullchain);
-file_put_contents('cert/private_key.pem',$private_key);
+@mkdir('cert/' . $domain, 0777, true);
+file_put_contents("cert/$domain/fullchain.pem",$fullchain);
+file_put_contents("cert/$domain/private_key.pem",$private_key);
 ?>

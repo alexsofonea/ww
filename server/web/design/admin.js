@@ -187,7 +187,7 @@ function save() {
     const variableKeys = Object.keys(data.variables);
     const sValues = s.map(value => value.replace('$', '').toLowerCase().replace(/\s+/g, '-').replace(/\b\w/g, char => char.toUpperCase()));
 
-    if (!sValues.every(value => variableKeys.includes(value)) || !variableKeys.every(key => sValues.includes(key))) {
+    /*if (!sValues.every(value => variableKeys.includes(value)) || !variableKeys.every(key => sValues.includes(key))) {
         alert("Invalid variables.");
         return;
     }
@@ -195,7 +195,7 @@ function save() {
     if (data.category == "" || data.type == "" || data.name.length == 0 || data.css.length == 0 || data.variables.length == 0 || data.js == "") {
         alert("Missing data.");
         return
-    }
+    }*/
 
     console.log(data);
 

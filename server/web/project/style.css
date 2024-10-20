@@ -186,6 +186,7 @@ p.project img {
 .tabs a {
     display: inline;
     font-size: 30px;
+    font-weight: bold;
 }
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     .tabs {
