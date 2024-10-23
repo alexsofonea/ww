@@ -187,14 +187,14 @@ function save() {
     const variableKeys = Object.keys(data.variables);
     const sValues = s.map(value => value.replace('$', '').toLowerCase().replace(/\s+/g, '-').replace(/\b\w/g, char => char.toUpperCase()));
 
+    if (data.category == "" || data.type == "" || data.name.length == 0 || data.css.length == 0 || data.variables.length == 0) {
+        alert("Missing data.");
+        return
+    }
+
     /*if (!sValues.every(value => variableKeys.includes(value)) || !variableKeys.every(key => sValues.includes(key))) {
         alert("Invalid variables.");
         return;
-    }
-
-    if (data.category == "" || data.type == "" || data.name.length == 0 || data.css.length == 0 || data.variables.length == 0 || data.js == "") {
-        alert("Missing data.");
-        return
     }*/
 
     console.log(data);
@@ -205,6 +205,11 @@ function save() {
         data: data,
         success: function (response) {
             console.log(response);
+            if (response.includes("error")) {
+                alert(response);
+            } else {
+                alert("Success");
+            }
         }
     });
 }

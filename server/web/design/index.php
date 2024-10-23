@@ -211,8 +211,10 @@
         </table>
     </div>
 
-    <?php foreach ($cathegories as $key => $value) { ?>
-        <div class="contents" id="<?php echo $value[0]; ?>">
+    <?php $active = " active";
+        foreach ($cathegories as $key => $value) {
+    ?>
+        <div class="contents<?php echo $active; ?>" id="<?php echo $value[0]; ?>">
             <div class="fullFrame" style="background-image: url('/assets/temp/design.png')">
                 <h4><font class="ww">WW</font>Design <font style='font-family: font<?php echo $value[0]; ?> !important;'><?php echo $value[0]; ?></font></h4>
             </div>
@@ -241,7 +243,7 @@
                 <?php }*/ ?>
             </div>
         </div>
-    <?php } ?>
+    <?php $active = ""; } ?>
 
     <div class="editor" id="editor" style="opacity: 0; pointer-events: none;">
         <iframe srcdoc=''></iframe>
