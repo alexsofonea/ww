@@ -18,6 +18,9 @@
     $stmt = $conn->query($sql);
     if ($row = $stmt->fetch()) {
         $projectId = $row['id'];
+    } else {
+        header("HTTP/1.0 404 Not Found");
+        exit();
     }
 ?>
 
@@ -38,47 +41,60 @@
                 $sql = "SELECT
                             `keys`.id,
                             `keys`.name,
+                            `keys`.`projectId` AS kId,
                             apps.url AS `use`,
                             capabilities.capId
                         FROM `keys`
                         LEFT JOIN capabilities ON capabilities.capId = `keys`.use
                         RIGHT JOIN apps ON `keys`.`use` = apps.id
-                        WHERE capabilities.id = '$projectId' OR capabilities.id IS NULL
+                        WHERE (capabilities.id = '$projectId' OR capabilities.id IS NULL)
 
                         UNION
 
                         SELECT
                             `keys`.id,
                             `keys`.name,
+                            `keys`.`projectId` AS kId,
                             apps.url AS `use`,
                             capabilities.capId
                         FROM capabilities
                         LEFT JOIN apps ON `capabilities`.`capId` = apps.id
                         LEFT JOIN `keys` ON capabilities.capId = `keys`.use
-                        WHERE capabilities.id = '$projectId' OR `keys`.id IS NULL;";
+                        WHERE (capabilities.id = '$projectId' OR `keys`.id IS NULL);";
                 $stmt = $conn->query($sql);
                 
                 $keys = array();
                 $capabilities = array();
 
                 while ($row2 = $stmt->fetch()) {
-                    if ($row2['capId'] != null)
+                    if ($row2['capId'] != null) {
                         $capabilities[$row2['use']] = true;
-                    $keys[$row2['use']][$row2['id']] = $row2;
+                        if ($row2['kId'] == $projectId)
+                            $keys[$row2['use']][$row2['id']] = $row2;
+                    }
                 }
-
             ?>
 
-
             <div class="tabs">
-                <a href="javascript: changeTab(0);" class="active">Capabilities</a>
-                <a href="javascript: changeTab(1);">Keys</a>
-                <a href="javascript: changeTab(2);">Domain</a>
-                <a href="javascript: changeTab(3);">Settings</a>
+                <a href="javascript: changeTab('capabilities');" class="active">Capabilities</a>
+                <a href="javascript: changeTab('keys');">Keys</a>
+                <a href="javascript: changeTab('files');">Files</a>
+                <a href="javascript: changeTab('clients');">Clients</a>
+                <a href="javascript: changeTab('domain');">Domain</a>
+                <a href="javascript: changeTab('settings');">Settings</a>
             </div>
 
+            <?php
+                $sql = "SELECT * FROM `hosting` WHERE id = '$projectId' ORDER BY v;";
+                $stmt = $conn->query($sql);
+                $versions = array();
+                while ($row3 = $stmt->fetch()) {
+                    $versions[$row3['v']] = $row3['root'];
+                }
+            ?>
+
             <div class="content">
-                <div class="tabGroup active">
+                <div class="tabGroup active" id="capabilities">
                     <div class="card disabled">
                         <table>
                             <tr>
@@ -93,11 +109,11 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAccounts/');">
                                 <img src="/assets/icons/user.svg">
                                 <p>Manage Accounts</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/wwAccounts/connect/');">
+                            <div class="option" onclick="location.assign('wwAccounts/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -121,7 +137,7 @@
                                 <img src="/assets/icons/server.svg">
                                 <p>Manage Server</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/privte-routing');">
+                            <div class="option" onclick="location.assign('wwLiveSocket/privte-routing/');">
                                 <img src="/assets/logos/wwKey.png">
                                 <p>Private Routing</p>
                             </div>
@@ -148,11 +164,11 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAnalytics/');">
                                 <img src="/assets/icons/statistic.svg">
                                 <p>Track Analytics</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwAnalytics/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -172,17 +188,17 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAI/queries/');">
                                 <img src="/assets/icons/queries.svg">
                                 <p>AI Queries</p>
                             </div>
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwAI/');">
                                 <img src="/assets/icons/ai.svg">
                                 <p>My Models</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwAI/connect');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -202,21 +218,21 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwKit/');">
                                 <img src="/assets/icons/connections.svg">
                                 <p>Connections</p>
                             </div>
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwKit/aPNS/');">
                                 <img src="/assets/icons/pn.svg">
                                 <p>Push Notification Service</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwKit/purchase/');">
                                 <img src="/assets/icons/money.svg">
                                 <p>Purchase Services</p>
                             </div>
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwKit/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
@@ -236,24 +252,24 @@
                         </table>
 
                         <div class="row">
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwDB/');">
                                 <img src="/assets/icons/db.svg">
                                 <p>Manage Databases</p>
                             </div>
-                            <div class="option">
+                            <div class="option" onclick="location.assign('wwDB/queries');">
                                 <img src="/assets/icons/queries.svg">
                                 <p>Queries</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="option" onclick="location.assign('/<?php echo $_GET['user']; ?>/<?php echo $_GET['id']; ?>/connect');">
+                            <div class="option" onclick="location.assign('wwDB/connect/');">
                                 <img src="/assets/logos/wwConnect.png">
                                 <p><font class="ww">ww</font>Connect</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tabGroup">
+                <div class="tabGroup" id="keys">
                     <div class="card">
                         <table>
                             <tr>
@@ -319,7 +335,78 @@
                         ?>
                     </div>
                 </div>
-                <div class="tabGroup">
+                <div class="tabGroup" id="files">
+                    <div class="card">
+                        <div class="version" data-open="false">
+                            <p onclick="version(this.parentElement);">Version <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></p>
+                            <?php
+                                $root = null;
+                                $rootV = null;
+                                foreach ($versions as $version => $r) {
+                                    if ($root == null) {
+                                        $root = $r;
+                                        $rootV = $version;
+                                    }
+                                    echo "<p class='v' value='$version' onclick='select(this);'><img src='/assets/icons/props.svg'> $version</p>";
+                                }
+                            ?>
+                        </div>
+
+                        <hr />
+
+                        <?php if (isset($root)) {
+                            $path = "../cloud/vhost/" . $root;
+                            $files = scandir(directory: $path);
+
+                            $folders = [];
+                            $filesList = [];
+
+                            foreach ($files as $file) {
+                                if ($file !== '.' && $file !== '..' && $file !== '@eaDir' && $file !== '.DS_Store') {
+                                    $filePath = $path . $file;
+                                    if (is_dir($filePath)) {
+                                        $folders[] = $file;
+                                    } else {
+                                        $filesList[] = $file;
+                                    }
+                                }
+                            }
+
+                            sort($folders);
+                            sort($filesList);
+
+                            foreach ($folders as $folder) {
+                                echo "<div class='fileShow' onclick='changeTab('files:$folder');'><img src='/assets/icons/folder.svg'><p>$folder</p><img src='/assets/icons/properties.svg' class='o'></div>";
+                            }
+
+                            foreach ($filesList as $file) {
+                                echo "<div class='fileShow' style='cursor: default;'><img src='/assets/icons/file.svg'><p>$file</p><img src='/assets/icons/properties.svg' class='o'></div>";
+                            }
+                        } else {
+                            echo "<center><p>No files.</p></center>";
+                        } ?>
+                    </div>
+                    <div class="card">
+                        <?php
+                            $uploadText = "Deploy a new version. Drag & drop it here.";
+                            $upload = "/project/php/cloudapi/upload.php";
+                            $fileName = hash("md2", uniqid());
+                            $otherFunc = "addFiles(data)";
+                            include "php/cloudapi/index.php";
+                        ?>
+                    </div>
+                </div>
+                <div class="tabGroup" id="clients">
+                    <div class="card">
+                        <table>
+                            <tr>
+                                <td><h2>Clients</h2></td>
+                                <td><a href="">Invite</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="tabGroup" id="domain">
                     <div class="card disabled">
                         <table>
                             <tr>
@@ -338,7 +425,7 @@
                     <div class="card disabled">
                         <table>
                             <tr>
-                                <td><h2><img src="/assets/logos/wwSecure DataBase.png"> Custom Domain</h2></td>
+                                <td><h2><img src="/assets/logos/wwAccounts.png"> <font class="ww">ww</font>Accounts Domain</h2></td>
                                 <td>
                                     <label class="switch">
                                         <input type="checkbox" onchange="switchCapability(this)" checked>
@@ -348,43 +435,33 @@
                             </tr>
                         </table>
 
-                        <div class="form">
-                            <input class="input" placeholder="Enter your domain name" required="" type="text" id="projectName" value="<?php echo $row['domain']; ?>">
-                            <span class="input-border"></span>
-                        </div>
-
-                        <div class="records">
-                            <p>Type</p>
-                            <p>Host</p>
-                            <p>Value</p>
-                        </div>
-                        <div class="records embed">
-                            <p>CNAME</p>
-                            <p>accounts</p>
-                            <p>accounts.namespace.ww.alexsofonea.com</p>
-                        </div>
-                        <div class="records embed">
-                            <p>CNAME</p>
-                            <p>connect</p>
-                            <p>connect.namespace.ww.alexsofonea.com</p>
-                        </div>
-                        <div class="records embed">
-                            <p>ALIAS</p>
-                            <p>@</p>
-                            <p>namespace.ww.alexsofonea.com</p>
-                        </div>
+                        <div class="embed"><xmp><?php echo $row['publicId']; ?>.<?php echo $row['ownerName']; ?>.accounts.ww.alexsofonea.com</xmp></div>
+                    </div>
+                    <div class="card disabled">
+                        <table>
+                            <tr>
+                                <td><h2><img src="/assets/logos/wwSecure DataBase.png"> Custom Domain</h2></td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" onchange="switchCapability(this)" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class='embed'><xmp><?php echo $row['domain']; ?></xmp><a href='domain'>Manage</a></div>
                     </div>
                 </div>
-                <div class="tabGroup">
+                <div class="tabGroup" id="settings">
                     <div class="card">
-                        <div class="form">
+                        <div class="form mini">
                             <textarea class="input" placeholder="Add a description" required="" rows="7"><?php echo base64_decode($row['description']); ?></textarea>
                             <span class="input-border"></span>
                             <a onclick="updateDescription(this)">Update</a>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="form">
+                        <div class="form mini">
                             <input class="input" placeholder="Add a tag" required="" type="text">
                             <span class="input-border"></span>
                             <a onclick="addTag(this)">Add Tag</a>
@@ -396,15 +473,6 @@
                                         echo "<tag onclick='removeTag(this)'>$tag</tag>";
                             ?>
                         </div>
-                    </div>
-                    <div class="card">
-                        <?php
-                            $uploadText = "Update picture. Drag & drop it here.";
-                            $upload = "../setup/cloudapi/upload.php";
-                            $fileName = hash("md2", uniqid());
-                            $otherFunc = "savePicture('$fileName.jpg')";
-                            include "../setup/cloudapi/index.php";
-                        ?>
                     </div>
                 </div>
             </div>
@@ -427,5 +495,6 @@
 </script>
 
 <script src="/project/script.js"></script>
+<script src="/script.js"></script>
 
 </html>

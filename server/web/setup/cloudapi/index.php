@@ -100,6 +100,10 @@
 <script src="https://developer.alexsofonea.com/cloud/jquery.js"></script>
 
 <script>
+    function show(el) {
+        if (el != "upload_error")
+            document.querySelector("#drop_zone").outerHTML += `<a href='/design/demo/${el}' target='_blank'>${el}</a>`;
+    }
     function dropHandler(ev) {
         document.getElementById("drop_zone").classList.remove("dropOver");
         document.getElementById("drop_zone").classList.add("dropped");
@@ -143,7 +147,7 @@
 
         var formData = new FormData(document.getElementById("form"));
         $.ajax({
-            url: "cloudapi/upload.php",
+            url: "<?php echo $upload; ?>",
             type: 'POST',
             data: formData,
             success: function (data) {

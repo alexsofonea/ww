@@ -12,6 +12,6 @@
     $pId = generateProjectId($_POST['name']);
     $pId2 = generateProjectId($_POST['myname']);
     include "../../db.php";
-    $sql = "INSERT INTO `projects`(`id`, `publicId`, `ownerName`, `owner`, `name`, `description`, `tags`, `picture`, `domain`, `domainVerify`) VALUES ('$id', '$pId', '$pId2', (SELECT `accountid` FROM `session` WHERE `id`='$_COOKIE[session]'), '$_POST[name]', '', '', '', '', '')";
+    $sql = "INSERT INTO `projects`(`id`, `publicId`, `ownerName`, `owner`, `name`, `description`, `tags`, `picture`, `domain`) VALUES ('$id', '$pId', '$pId2', (SELECT `accountid` FROM `session` WHERE `id`='$_COOKIE[session]'), '$_POST[name]', '', '', '', '')";
     $stmt = $conn->query($sql);
 ?>

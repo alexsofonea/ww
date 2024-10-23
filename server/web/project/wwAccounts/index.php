@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/assets/font/stylesheet.css">
     <link rel="stylesheet" href="/assets/logo-font/stylesheet.css">
     <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/project/style.css">
+    <script src="/script.js"></script>
 </head>
 
 <?php
@@ -17,6 +17,7 @@
 
 <body>
     <?php if (isset($_GET['use']) && $_GET['use'] == "connect") { ?>
+        <link rel="stylesheet" href="/project/style.css">
         <div class="container">
             <p class="project"><img src="<?php echo $picture; ?>"> <a href="/<?php echo $name; ?>"><?php echo $name; ?></a> / <b><a href="/<?php echo $name; ?>/<?php echo $_GET['id']; ?>"><?php echo $_GET['id']; ?></a></b></p><br />
 
@@ -139,20 +140,54 @@
             </div>
         </div>
     <?php } else { ?>
-        <div class="container">
-            <p class="project"><img src="<?php echo $picture; ?>"> <a href="/<?php echo $name; ?>"><?php echo $name; ?></a> / <b><a href="/<?php echo $name; ?>/<?php echo $_GET['id']; ?>"><?php echo $_GET['id']; ?></a></b></p><br />
+        <link rel="stylesheet" href="/design/style.css">
+        <div class="mainContainer">
+            <div class="preview" style="padding: 0; height: 100vh; overflow: auto;">
+                <?php
+                    $sql = "SELECT * FROM `wwAccounts` WHERE `for` = (SELECT id FROM `projects` WHERE publicId = '$_GET[id]' AND `ownerName` = '$_GET[user]');";
+                    $stmt = $conn->query($sql);
+                    while ($row2 = $stmt->fetch()) {
+                        $usr = json_encode(array("name" => $row2['name'], "mail" => $row2['mail'], "picture" => $row2['picture'], "code" => $row2['code'], "confirm" => $row2['confirm']));
+                        echo "
+                            <div class='fileShow' data-usr='$usr' onclick='showUsr(this)'>
+                                <p>" . $row2['name'] . "</p>
+                                <img src='/assets/icons/properties.svg' class='o' onclick='createActionMenuBig(this)' data-actions='remoteLogIn();see;Remote Log In|resetPassword();password;Reset Password|contact();envelope;Contact|confirm();user;Authorize User|delete();trash;Delete User'>
+                            </div>
+                        ";
+                    }
+                ?>
+                <br /><br /><br /><br />
+            </div>
+            <div class="options">
+                <br /><br /><br /><br />
 
-            <div class="topKit">
-                <img src="/assets/logos/wwAccounts.png">
-                <h1><font class="ww">ww</font>Accounts</h1>
+                <div class="form mini op" id="usr">
+                    
+                </div>
+                <br /><br />
+                <!--<a href="javascript: save()" style="float: right;">Save</a>-->
+                <br /><br /><br />
             </div>
 
-            <div class="bgContainer" style="background-image: url('/assets/logos/wwAccounts.png')"></div>
-
-            <div class="content">
-
-            </div>
         </div>
+        <script>
+            function showUsr(el) {
+                el = JSON.parse(el.getAttribute('data-usr'));
+                var picture = el['picture'].includes(".") ? "https://cloud-api.studio.alexsofonea.com/" + el['picture'] : "/account/userImage/?name=" + el['name'] + "&color=" + el['picture'];
+                var confirm = el['confirm'] == 1 ? "<div style='background-color: #2a9d8f !important; width: fit-content; padding: 5px; border-radius: 5px; font-size: 12px;'>Account Confirmed</div>" : "<div style='background-color: #c1121f; width: fit-content; padding: 5px; border-radius: 5px; font-size: 12px;'>Account Not Confirmed</div>";
+                document.getElementById('usr').innerHTML = `
+                    <center><img src="${picture}" style="width: 50px; aspect-ratio: 1; object-fit: cover; border-radius: 50px;"><br /><br />${confirm}<br /><center>
+                    <div>
+                        <input value="User Name" disabled>
+                        <input placeholder="Default Value" value="${el['name']}">
+                    </div>
+                    <div>
+                        <input value="Mail" disabled>
+                        <input placeholder="Default Value" value="${el['mail']}">
+                    </div>`;
+            }
+        </script>
+        <script src="/design/admin.js"></script>
     <?php } ?>
 </body>
 

@@ -48,22 +48,20 @@
             <p>Value</p>
         </div>
         <div class="records embed">
-            <p>TXT</p>
-            <p>ww-domain-verification</p>
-            <p id="domainVerifyId"></p>
+            <p>ANAME</p>
+            <p>@</p>
+            <p id="domainVerifyId">namespace.ww.alexsofonea.com</p>
         </div>
 
         <br />
         <p>Note that it might take some time to verify the domain.</p>
 
-        <a href="javascript:changecontents('domainconfirm2')" class="action">Skip verification</a>
-
-        <button class="action" onclick="verfiyDomain(this)">Verify</button>
+        <button class="action" onclick="changecontents('picture')">Continue</button>
     </div>
     <div class="contents" id="domainconfirm">
         <a href="javascript:changecontents('domain')">Back</a>
         <h1>Note that some functionality might not be available without a domain.</h1>
-        <button class="action" onclick="changecontents('domainconfirm2')">I understand</button>
+        <button class="action" onclick="changecontents('picture')">I understand</button>
     </div>
     <div class="contents" id="domainconfirm2">
         <a href="javascript:changecontents('domainadd')">Back</a>
@@ -83,7 +81,7 @@
 
         <?php
             $uploadText = "Drag & drop the image file here.";
-            $upload = "cloudapi/upload.php";
+            $upload = "/setup/cloudapi/upload.php";
             $fileName = hash("md2", uniqid());
             $otherFunc = "savePicture('$fileName.jpg')";
             include "cloudapi/index.php";
@@ -104,6 +102,7 @@
 </script>
 
 <script src="/setup/script.js"></script>
+<script src="/script.js"></script>
 
 </body>
 </html>

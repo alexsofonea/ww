@@ -1,0 +1,8 @@
+AddType application/x-httpd-php .php .html
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^confirm/([^/]+)(?:/(.*))?$ confirm/index.php?mail=$1&code=$2 [L,QSA,NC]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^forgot/([^/]+)(?:/(.*))?$ forgot/index.php?mail=$1&code=$2 [L,QSA,NC]
+</IfModule>

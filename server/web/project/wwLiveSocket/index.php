@@ -65,6 +65,35 @@
                 </div>
             </div>
         </div>
+    <?php } else if (isset($_GET['use']) && $_GET['use'] == "privte-routing") { ?>
+        <div class="container">
+            <p class="project"><img src="<?php echo $picture; ?>"> <a href="/<?php echo $name; ?>"><?php echo $name; ?></a> / <b><a href="/<?php echo $name; ?>/<?php echo $_GET['id']; ?>"><?php echo $_GET['id']; ?></a></b></p><br />
+
+            <div class="topKit">
+                <img src="/assets/logos/wwKey.png">
+                <h1><font class="ww">ww</font>LiveSocket Private Routing</h1>
+            </div>
+
+            <div class="bgContainer" style="background-image: url('/assets/logos/wwKey.png')"></div>
+
+            <div class="content">
+                <div class="card">
+                    <table>
+                        <tr>
+                            <td><h2>Route encrypted server connection trough <font class="ww">ww</font> Servers.</h2></td>
+                            <td>
+                                <label class="switch" value="wwLiveSocket Private Routing">
+                                    <input type="checkbox" onchange="switchCapability(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>This feature is intended for secure live server connection that require additional encryption. Connections will be slower.</p>
+                </div>
+            </div>
+        </div>
     <?php } else { ?>
         <div class="container">
             <p class="project"><img src="<?php echo $picture; ?>"> <a href="/<?php echo $name; ?>"><?php echo $name; ?></a> / <b><a href="/<?php echo $name; ?>/<?php echo $_GET['id']; ?>"><?php echo $_GET['id']; ?></a></b></p><br />
@@ -74,11 +103,23 @@
                 <h1><font class="ww">ww</font>LiveSocket Server</h1>
             </div>
 
-            <div class="bgContainer" style="background-image: url('/assets/logos/wLiveSocket Server.png')"></div>
+            <div class="bgContainer" style="background-image: url('/assets/logos/wwLiveSocket Server.png')"></div>
 
             <div class="content">
-                <div class="tabGroup active">
+                <div class="card">
+                    <table>
+                        <tr>
+                            <td><h2>Route encrypted server connection trough <font class="ww">ww</font> Servers.</h2></td>
+                            <td>
+                                <label class="switch" value="wwLiveSocket Private Routing">
+                                    <input type="checkbox" onchange="switchCapability(this)">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
 
+                    <p>This feature is intended for secure live server connection that require additional encryption. Connections will be slower.</p>
                 </div>
             </div>
         </div>

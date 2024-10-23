@@ -1,43 +1,47 @@
 var id, verify;
 var curentContents = 0;
 function changecontents(c = -1) {
-    var contentss = document.getElementsByClassName("contents");
+    var contents = document.getElementsByClassName("contents");
 
     if (typeof c === "string")
-        c = [...contentss].findIndex(tab => tab.id === c);
+        c = [...contents].findIndex(tab => tab.id === c);
 
     if (curentContents < c && c != -1) {
-        for (const cont of contentss) {
-            cont.style.transform = `translateY(100%)`;
-        }
-        contentss[curentContents].style.transition = `transform 0.4s ease-in-out`;
-        contentss[c].style.transition = `transform 0.4s ease-in-out`;
-        contentss[curentContents].style.transform = `translateY(-100%)`;
-        contentss[c].classList.add("active");
-        contentss[c].style.transform = `translateY(0%)`;
+        console.log(1);
+        contents[curentContents].style.transition = `transform 0.4s ease-in-out`;
+        contents[c].style.transition = `transform 0.4s ease-in-out`;
+        contents[curentContents].style.transform = `translateY(-100%)`;
+        contents[c].classList.add("active");
+        contents[c].style.transform = `translateY(0%)`;
+        for (var i = 0; i < c; i++)
+            contents[i].style.transform = `translateY(-100%)`;
+        for (var i = c + 1; i < contents.length; i++)
+            contents[i].style.transform = `translateY(100%)`;
         setTimeout(function () {
-            contentss[curentContents].classList.remove("active");
-            contentss[curentContents].style.transition = `none`;
-            contentss[c].style.transition = `none`;
+            contents[curentContents].classList.remove("active");
+            contents[curentContents].style.transition = `none`;
+            contents[c].style.transition = `none`;
             curentContents = c;
         }, 400);
     } else if (curentContents > c && c != -1) {
-        for (const cont of contentss) {
-            cont.style.transform = `translateY(-100%)`;
-        }
-        contentss[curentContents].style.transition = `transform 0.4s ease-in-out`;
-        contentss[c].style.transition = `transform 0.4s ease-in-out`;
-        contentss[curentContents].style.transform = `translateY(100%)`;
-        contentss[c].classList.add("active");
-        contentss[c].style.transform = `translateY(0%)`;
+        console.log(2);
+        contents[curentContents].style.transition = `transform 0.4s ease-in-out`;
+        contents[c].style.transition = `transform 0.4s ease-in-out`;
+        contents[curentContents].style.transform = `translateY(100%)`;
+        contents[c].classList.add("active");
+        contents[c].style.transform = `translateY(0%)`;
+        for (var i = 0; i < c; i++)
+            contents[i].style.transform = `translateY(-100%)`;
+        for (var i = c + 1; i < contents.length; i++)
+            contents[i].style.transform = `translateY(100%)`;
         setTimeout(function () {
-            contentss[curentContents].classList.remove("active");
-            contentss[curentContents].style.transition = `none`;
-            contentss[c].style.transition = `none`;
+            contents[curentContents].classList.remove("active");
+            contents[curentContents].style.transition = `none`;
+            contents[c].style.transition = `none`;
             curentContents = c;
         }, 400);
     } else if (c == curentContents || c == -1) {
-        var curentSlide = contentss[curentContents];
+        var curentSlide = contents[curentContents];
         var h = Number(curentSlide.getAttribute("data-h") ?? 0);
         var time = 100;
 
@@ -134,7 +138,7 @@ function validateName() {
 function validateDomain() {
     var value = document.getElementById('projectDomain').value;
     if (/^(?!:\/\/)([a-zA-Z0-9-_]{1,63}\.)+[a-zA-Z]{2,}$/.test(value) && value.length != 0) {
-        $.post("/setup/request/domain.php",
+        /*$.post("/setup/request/domain.php",
             {
                 id: id,
                 domain: value
@@ -146,7 +150,8 @@ function validateDomain() {
                     document.getElementById("domainVerifyId").innerHTML = verify;
                     changecontents('domainadd');
                 }
-            });
+            });*/
+        changecontents('picture');
     } else
         changecontents();
 }
