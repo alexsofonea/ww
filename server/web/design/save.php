@@ -4,7 +4,7 @@ $sql = "";
 $mainId = hash('md5', uniqid());
 foreach ($_POST['css'] as $key => $content) {
     $id = hash('md5', uniqid());
-    $css = json_encode($content);
+    $css = str_replace("'", "\'", json_encode($content));
     $name = $_POST['name'][$key];
     $variables = json_encode($_POST['variables']);
     if ($key == array_key_first($_POST['css']))

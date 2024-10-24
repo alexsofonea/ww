@@ -1,4 +1,10 @@
 AddType application/x-httpd-php .php .html
+
+<FilesMatch "\.(pem|cert|key|csr|crt|p12|pfx)$">
+    Require all denied
+    ErrorDocument 404 "Not Found"
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -9,6 +15,16 @@ AddType application/x-httpd-php .php .html
     RewriteCond %{REQUEST_URI} !(.*)/$
     RewriteRule ^(.*)$ /$1/ [R=301,L]
 
+    # wwServer Status
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^server/status/([^/]+)/?$ server/status/index.php?id=$1 [NC,L]
+
+    # wwLibraries
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^lib/([^/]+)/([^/]+)/?$ lib/lib.php?key=$1&lib=$2 [NC,L]
+
     # wwConnect
 
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -16,6 +32,9 @@ AddType application/x-httpd-php .php .html
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^connect/([^/]+)/([^/]+)/([^/]+)/?$ connect/$2/$3/index.php?id=$1 [NC,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^connect/([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$ connect/$2/$3/index.php?id=$1&param=$4 [NC,L]
 
     # wwDesign
     RewriteCond %{REQUEST_FILENAME} !-f

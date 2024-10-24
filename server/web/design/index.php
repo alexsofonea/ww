@@ -14,6 +14,13 @@
     <script src="/setup/script.js"></script>
 </head>
 
+<style>
+    .userBox {
+        max-height: 90vh !important;
+        overflow: scroll;
+    }
+</style>
+
 <body>
 
     <?php

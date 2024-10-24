@@ -91,6 +91,9 @@ class Sockett implements MessageComponentInterface {
 
             // Detach the connection and clean up
             $this->clients->detach($conn);
+            
+            shell_exec('ping -c1 ww.alexsofonea.com/server/socker/unset.php?id=' . $this->clientChannel[$conn->resourceId]);
+
             unset($this->clientIds[$conn->resourceId]);
             unset($this->clientChannel[$conn->resourceId]);
         }
