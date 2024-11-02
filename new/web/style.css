@@ -94,6 +94,20 @@ img[src$=".svg"], svg {
     transition: all 0.3s ease-in-out;
 }
 
+.bar #colapse {
+    width: 15px;
+    height: 15px;
+    padding: 5px;
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+    position: fixed;
+    top: 30px;
+    left: 281.5px;
+    border-radius: 50px;
+    z-index: 999;
+    transform: rotate(90deg);
+}
+
 .sub {
     padding-left: 32px;
     height: 0;
@@ -166,7 +180,7 @@ img[src$=".svg"], svg {
     overflow: scroll;
 }
 .topBar {
-    width: calc(100% - 300px);
+    width: calc(100% - 295px);
     height: 60px;
 
     align-items: center;
@@ -176,6 +190,7 @@ img[src$=".svg"], svg {
     position: fixed;
     top: 0;
     right: 0;
+    z-index: 999;
 }
 
 .topBar img.profile {
@@ -293,4 +308,18 @@ img[src$=".svg"], svg {
     .content, .topBar {
         width: calc(100% - 230px);
     }
+}
+
+
+iframe {
+    width: calc(100% + 30px);
+    height: calc(100% + 30px + 60px);
+    border: none;
+    transform: translate(-15px, -75px);
+    z-index: -1;
+    padding-top: 60px;
+    box-sizing: border-box;
+}
+iframe body {
+    margin-top: 60px;
 }
