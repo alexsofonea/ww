@@ -48,6 +48,18 @@ function loadPage(url) {
         .then(response => response.text())
         .then(data => {
             document.getElementById('content').innerHTML = getContentDiv(data);
+            const onloadMatch = data.match(/<body[^>]*onload=["']?([^"'>]*)["']?/i);
+            if (onloadMatch && onloadMatch[1]) {
+                const onloadFunctionName = onloadMatch[1].split('(')[0]; // Extract the function name without parentheses
+                console.log(`Found onload function: ${onloadFunctionName}`);
+
+                // Step 2: Check if the function exists and then call it
+                if (typeof window[onloadFunctionName] === 'function') {
+                    window[onloadFunctionName]();
+                } else {
+                    console.log(`Function ${onloadFunctionName} is not defined.`);
+                }
+            }
             history.pushState(null, null, url);
         })
         .catch(() => {
@@ -82,11 +94,14 @@ function encodeHTMLQuotes(htmlString) {
 }
 
 Object.prototype.loadEditorPage = function(url, style = "") {
+    const unixTime = Math.floor(Date.now() / 1000);
+    var newContent = `<script src="/builder/editor.js?cache=${unixTime}"></script>
+		              <link rel="stylesheet" href="/builder/editor.css?cache=${unixTime}">`;
     fetch(url)
         .then(response => response.text())
         .then(data => {
             const baseUrl = url.substring(0, url.lastIndexOf('/') + 1);
-            this.outerHTML = "<iframe sandbox='allow-scripts' srcdoc='" + encodeHTMLQuotes(data.replace(/assets\//g, baseUrl + 'assets/')) + style + "'></iframe>";
+            this.outerHTML = "<iframe sandbox='allow-scripts' srcdoc='" + encodeHTMLQuotes(data.replace(/assets\//g, baseUrl + 'assets/').replace(/<body([^>]*)>/, `<body$1>${newContent}`)) + "'></iframe>";
         })
         .catch(error => {
             console.log('Error loading page: ', url, error);

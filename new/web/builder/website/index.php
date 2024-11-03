@@ -40,7 +40,7 @@
 
 <script>
     function loadWebEditor() {
-        document.querySelector("#editor").loadEditorPage('/cloud/demo/index.html');
+        document.querySelector("#editor").loadEditorPage('/cloud/demo/index.php');
     }
 </script>
 

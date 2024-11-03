@@ -1,11 +1,12 @@
+.cursor {
+    display: none !important;
+}
 .wwEditWidget {
     width: fit-content;
     height: fit-content;
-    padding: 10px;
-    border: 1px solid #e9ecef;
-    border-radius: 15px;
-    min-width: 200px;
-    min-height: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 99999;
 }
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     .wwEditWidget {
@@ -13,4 +14,105 @@
         backdrop-filter: blur(10px);
         background-color: rgba(255, 255, 255, 0.3);
     }
+}
+.wwEditOveray {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+    pointer-events: none;
+}
+.wwEditWidget .separator {
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(5px);
+}
+.wwEditWidget .version {
+	color: #000;
+	padding: 0px 10px;
+	border-radius: 10px;
+	z-index: 999;
+	width: calc(100% - 0px);
+    min-width: 200px;
+	transition: all 0.2s;
+	height: 45px;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+}
+.wwEditWidget .version p {
+	font-size: 14px;
+	transition: all 0.2s;
+	margin: 0;
+	padding: 14px 0;
+    transform: translateY(4px);
+}
+.wwEditWidget .version p:first-child {
+    transform: translateY(-6px);
+}
+.wwEditWidget .version svg:not(.v svg), .wwEditWidget .version img[src$=".svg"]:not(.v img) {
+	float: right;
+	transition: all 0.2s;
+    transform: translateY(6px);
+}
+.wwEditWidget .version img:not(.v img) {
+	display: none;
+}
+.wwEditWidget .version .v img[src$=".svg"], .wwEditWidget .version .v img[src$=".png"] {
+	float: left;
+	width: 25px;
+	height: 25px;
+    transform: translate(-4px, 2px);
+}
+.wwEditWidget .version .v img[src$=".png"] {
+	margin-left: 10px;
+}
+.wwEditWidget .version .v {
+	font-size: 16px;
+	color: #000;
+	padding: 6px 10px 9px 5px;
+	background-color: transparent;
+	border-radius: 5px;
+	width: calc(100% - 30px);
+	transition: all 0.2s;
+	margin: 0;
+
+	position: absolute;
+	top: 5px;
+	display: none;
+}
+.wwEditWidget .version .v:first-child {
+	margin-top: -10px !important;
+}
+.wwEditWidget .version .v:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.wwEditWidget .version svg, .wwEditWidget .version img[src$=".svg"] {
+	fill: #999;
+	transform: translateY(-1px);
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+
+
+img[src$=".svg"]:not(.version img), svg:not(.version svg) {
+    mask-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, .3));
+    -webkit-mask-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, .3));
+    width: 35px;
+    height: 35px;
+    filter: invert();
+    padding: 5px;
+    border-radius: 4px;
+}
+img[src$=".svg"]:not(.version img):hover, svg:not(.version svg):hover {
+    background-color: rgba(255, 255, 255, .3);
+}
+* {
+    outline: none;
+}
+
+.wwEditorText, .wwEditorElement, .wwEditorImage, .wwEditorSection {
+    transition: transform 0.2s;
 }
