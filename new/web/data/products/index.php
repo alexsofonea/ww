@@ -16,7 +16,7 @@
 
 </style>
 
-<body onload="loadWebEditor()">
+<body>
     <?php include '/volume1/web/web-admin/nav.php'; ?>
     <div class="content" id="content">
         <div class="topBar">
@@ -29,37 +29,30 @@
             <img src="/assets/icons/star.svg">
 
             <div class="left">
-                <h4>Overview</h4>
+                <h4>Manage Products</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="element w40">
+                
+            </div>
+            <div class="element w60">
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="element w30">
+                
+            </div>
+            <div class="element w50">
+                
+            </div>
+            <div class="element w40">
+                
             </div>
         </div>
 
-        <style>
-            #editor {
-                height: calc(100% + 30px + 60px);
-            }
-            iframe {
-                width: calc(100% + 30px);
-                height: calc(100% + 30px + 60px);
-                border: none;
-                transform: translate(-15px, -75px);
-                z-index: -1;
-                padding-top: 60px;
-                box-sizing: border-box;
-            }
-            iframe body {
-                margin-top: 60px;
-            }
-        </style>
 
-        <div id="editor"></div>
-        
-
-        <script>
-            function loadWebEditor() {
-                document.querySelector("#editor").loadEditorPage('/cloud/demo/index.php');
-            }
-        </script>
     </div>
 </body>
-
 </html>

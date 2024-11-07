@@ -29,19 +29,7 @@
             <img src="/assets/icons/star.svg">
 
             <div class="left">
-                <h4>Analitycs</h4>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="element w20">
-                
-            </div>
-            <div class="element w20">
-                
-            </div>
-            <div class="element w60">
-                
+                <h4>Mail Sender</h4>
             </div>
         </div>
         <div class="row">

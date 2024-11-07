@@ -8,6 +8,15 @@ function showSub(el) {
             el.style.marginTop = "0";
             svg.style.transform = "rotate(-90deg)";
             el.setAttribute("open", "0");
+            let height = el.offsetHeight;
+            if (el.parentElement.classList.contains('sub')) { 
+                let height2 = 0;
+                Array.from(el.parentElement.children).forEach(child => {
+                    height2 += child.offsetHeight + 5;
+                });
+                height2 -= height + 5;
+                el.parentElement.style.height = height2 + "px";
+            }
         } else {
             let height = 0;
             Array.from(el.children).forEach(child => {
@@ -18,10 +27,18 @@ function showSub(el) {
             el.style.height = height + "px";
             svg.style.transform = "rotate(0deg)";
             el.setAttribute("open", "1");
+            if (el.parentElement.classList.contains('sub')) { 
+                let height2 = 0;
+                Array.from(el.parentElement.children).forEach(child => {
+                    height2 += child.offsetHeight + 5;
+                });
+                height2 += height + 5;
+                el.parentElement.style.height = height2 + "px";
+            }
         }
     }
 }
-function colapse() {
+function collapse() {
     var bar = document.getElementsByClassName("bar")[0];
     var content = document.getElementsByClassName("content")[0];
 
@@ -73,12 +90,20 @@ document.addEventListener("click", function (e) {
         if (e.target.classList.contains("active") || e.target.hasAttribute("onclick")) return;
         const url = e.target.getAttribute("href");
 
+        loadPage(url);
+
         document.querySelectorAll(".button").forEach(button => {
             button.classList.remove("active");
         });
         e.target.classList.add("active");
-
-        loadPage(url);
+        if (e.target.parentElement.classList.contains("sub")) {
+            console.log(e.target.parentElement);
+            var p = e.target.parentElement.previousSibling;
+            if (p.parentElement.classList.contains("sub"))
+                p.parentElement.previousSibling.classList.add("active");
+            else
+                p.classList.add("active");
+        }
     }
 });
 
@@ -93,7 +118,7 @@ function encodeHTMLQuotes(htmlString) {
       .replace(/`/g, "&#96;");      // Replace backticks
 }
 
-Object.prototype.loadEditorPage = function(url, style = "") {
+Object.prototype.loadEditorPage = function(url) {
     const unixTime = Math.floor(Date.now() / 1000);
     var newContent = `<script src="/builder/editor.js?cache=${unixTime}"></script>
 		              <link rel="stylesheet" href="/builder/editor.css?cache=${unixTime}">`;
@@ -101,7 +126,18 @@ Object.prototype.loadEditorPage = function(url, style = "") {
         .then(response => response.text())
         .then(data => {
             const baseUrl = url.substring(0, url.lastIndexOf('/') + 1);
-            this.outerHTML = "<iframe sandbox='allow-scripts' srcdoc='" + encodeHTMLQuotes(data.replace(/assets\//g, baseUrl + 'assets/').replace(/<body([^>]*)>/, `<body$1>${newContent}`)) + "'></iframe>";
+            this.innerHTML = "<iframe sandbox='allow-scripts' srcdoc='" + encodeHTMLQuotes(data.replace(/assets\//g, baseUrl + 'assets/').replace(/<body([^>]*)>/, `<body$1>${newContent}`)) + "'></iframe>";
+        })
+        .catch(error => {
+            console.log('Error loading page: ', url, error);
+        });
+};
+Object.prototype.loadSimplePage = function(url, additional = "") {
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            const baseUrl = url.substring(0, url.lastIndexOf('/') + 1);
+            this.innerHTML = additional + "<iframe sandbox='allow-scripts' srcdoc='" + encodeHTMLQuotes(data.replace(/assets\//g, baseUrl + 'assets/')) + "'></iframe>";
         })
         .catch(error => {
             console.log('Error loading page: ', url, error);

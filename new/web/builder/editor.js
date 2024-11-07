@@ -44,13 +44,10 @@ document.body.addEventListener('click', function(event) {
 
             switch (element.classList[element.classList.length - 1]) {
                 case 'wwEditorText':
-                    wwEditor.innerHTML = `<img src="/assets/icons/editor/bold.svg">
-                    <img src="/assets/icons/editor/italic.svg">
-                    <img src="/assets/icons/editor/underline.svg">
-                    <div class="separator"></div>
+                    wwEditor.innerHTML = `
                     <img src="/assets/icons/editor/up.svg" onclick="moveUp(this)">
                     <img src="/assets/icons/editor/down.svg" onclick="moveDown(this)">
-                    <img src="/assets/icons/editor/duplicate.svg" onclick="deuplicate(this)">`;
+                    <img src="/assets/icons/editor/duplicate.svg" onclick="duplicate(this)">`;
                     element.contenteditable = true;
                     element.focus();
                     break;
@@ -67,12 +64,12 @@ document.body.addEventListener('click', function(event) {
                 case 'wwEditorElement':
                     wwEditor.innerHTML = `<img src="/assets/icons/editor/up.svg" onclick="moveUp(this)">
                     <img src="/assets/icons/editor/down.svg" onclick="moveDown(this)">
-                    <img src="/assets/icons/editor/duplicate.svg" onclick="deuplicate(this)">`;
+                    <img src="/assets/icons/editor/duplicate.svg" onclick="duplicate(this)">`;
                     break;
                 case 'wwEditorSection':
                     wwEditor.innerHTML = `<img src="/assets/icons/editor/up.svg" onclick="moveUp(this)">
                     <img src="/assets/icons/editor/down.svg" onclick="moveDown(this)">
-                    <img src="/assets/icons/editor/duplicate.svg" onclick="deuplicate(this)">`;
+                    <img src="/assets/icons/editor/duplicate.svg" onclick="duplicate(this)">`;
                     break;
                 default:
                     return;
@@ -101,41 +98,39 @@ document.addEventListener('DOMContentLoaded', () => {
         const elements = document.querySelectorAll(`.${className}`);
 
         elements.forEach(element => {
-            element.addEventListener('mouseenter', function() {
-                if (element.wwEditWidget === undefined && element.wwEdit === undefined) {
-                    hover(element);
-
-                    /*elementsToHover.forEach(className => {
-                        for (const e of document.getElementsByClassName(className))
-                            unhover(e);
-                    });*/
-
-                    let parentElement = element.parentElement;
-                    while (parentElement) {
-                        if (checkClass(parentElement) && parentElement.wwEdit) {
-                            parentElement.wwEdit.remove();
-                            parentElement.wwEdit = undefined;
-                        }
-                        parentElement = parentElement.parentElement;
-                    }
-
-                    element.addEventListener('mouseleave', function() {
-                        unhover(element);
-                        let parentElement = element.parentElement;
-                        while (parentElement) {
-                            if (checkClass(parentElement)) {
-                                hover(parentElement);
-                                break;
-                            }
-                            parentElement = parentElement.parentElement;
-                        }
-                    });
-                }
-            });
-
+            prepHover(element);
         });
     });
 });
+
+function prepHover(element) {
+    element.addEventListener('mouseenter', function() {
+        if (element.wwEditWidget === undefined && element.wwEdit === undefined) {
+            hover(element);
+
+            let parentElement = element.parentElement;
+            while (parentElement) {
+                if (checkClass(parentElement) && parentElement.wwEdit) {
+                    parentElement.wwEdit.remove();
+                    parentElement.wwEdit = undefined;
+                }
+                parentElement = parentElement.parentElement;
+            }
+
+            element.addEventListener('mouseleave', function() {
+                unhover(element);
+                let parentElement = element.parentElement;
+                while (parentElement) {
+                    if (checkClass(parentElement)) {
+                        hover(parentElement);
+                        break;
+                    }
+                    parentElement = parentElement.parentElement;
+                }
+            });
+        }
+    });
+}
 
 function hover(element) {
     if (element.wwEditWidget === undefined && element.wwEdit === undefined) {
@@ -238,4 +233,9 @@ function moveUp(el) {
             }, 100);
         }, 200);
     }
+}
+
+function duplicate(el) {
+    var clone = selectedElement.cloneNode(true);
+    selectedElement.after(clone);
 }

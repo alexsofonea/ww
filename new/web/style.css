@@ -94,7 +94,7 @@ img[src$=".svg"], svg {
     transition: all 0.3s ease-in-out;
 }
 
-.bar #colapse {
+.bar #collapse {
     width: 15px;
     height: 15px;
     padding: 5px;
@@ -129,7 +129,7 @@ img[src$=".svg"], svg {
     background-color: #f8f9fa;
 }
 
-.sub .button:not(.sub .button:last-child):before {
+.sub .button:not(.sub .button:not(.sub .sub .button):last-child):before {
     content: '';
     display: block;
     position: absolute;
@@ -143,6 +143,17 @@ img[src$=".svg"], svg {
 .sub .button:first-child:before {
     height: 50px !important;
     top: -10px !important;
+}
+
+.sub .ss .button:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -15px;
+    top: -5px;
+    width: 1px;
+    height: 40px;
+    background-color: #e9ecef;
 }
 
 .sub .button:nth-last-child(2):before {
@@ -163,7 +174,7 @@ img[src$=".svg"], svg {
     border-radius: 0 0 0 20px;
 }
 
-.sub .button {
+.sub .button, .ss {
     position: relative;
 }
 
@@ -237,6 +248,7 @@ img[src$=".svg"], svg {
     background: linear-gradient(145deg, #ebebeb, #ffffff);
     box-shadow:  18px 18px 36px #e5e5e5,
                 -18px -18px 36px #ffffff;
+    position: relative;
 }
 .row .element.w10 {
     width: calc(10% - 30px);
@@ -315,16 +327,8 @@ img[src$=".svg"], svg {
 
 
 iframe {
-    width: calc(100% + 30px);
-    height: calc(100% + 30px + 60px);
     border: none;
-    transform: translate(-15px, -75px);
-    z-index: -1;
-    padding-top: 60px;
     box-sizing: border-box;
-}
-iframe body {
-    margin-top: 60px;
 }
 
 
@@ -353,7 +357,7 @@ iframe body {
     transform: translate(0px, 0px);
     border-radius: 50px;
     background-color: rgba(0, 0, 0, 0);
-    transition: 0.3s;
+    transition: 0.2s all linear;
 }
 .fileShow img.o:hover {
     padding: 5px;
@@ -440,4 +444,25 @@ iframe body {
         backdrop-filter: blur(10px);
         background-color: rgba(255, 255, 255, 0.3);
     }
+}
+
+
+button {
+	color: #090909;
+	padding: 0.7em 1.7em;
+	font-size: 18px;
+	border-radius: 30px;
+	background: #e8e8e8;
+	cursor: pointer;
+	border: 1px solid #e8e8e8;
+	transition: all 0.3s;
+    box-shadow: 4px 4px 8px #c5c5c5, -4px -4px 8px #ffffff;
+}
+
+button:hover {
+	border: 1px solid white;
+}
+
+button:active {
+	box-shadow: 4px 4px 12px #c5c5c5, -4px -4px 12px #ffffff;
 }

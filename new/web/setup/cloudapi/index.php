@@ -22,7 +22,7 @@
             }
         ?>
     </form>
-    <p id="poweredby"><b>Powered by</b> Alex Cloud API</p>
+    <p id="poweredby"><b>Powerd by</b> Alex Cloud API</p>
 </div>
 
 <style>
@@ -33,7 +33,6 @@
         transition: all 0.2s;
         position: relative;
         width: calc(100% - 40px);
-        height: calc(100% - 40px);
     }
     #poweredby {
         position: absolute;

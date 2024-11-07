@@ -29,7 +29,7 @@
             <img src="/assets/icons/star.svg">
 
             <div class="left">
-                <h4>Apple Platform Analitycs</h4>
+                <h4>SEO Overview</h4>
             </div>
         </div>
 
