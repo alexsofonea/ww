@@ -39,7 +39,7 @@
             <div class="element w60">
                 <canvas id="topSalesChart" height="200px"></canvas>
                 <script>
-                    const topSalesChart = new Chart(document.getElementById('topSalesChart').getContext('2d'), {
+                    new Chart(document.getElementById('topSalesChart').getContext('2d'), {
                         type: 'bar',
                         data: {
                             labels: ['Item A', 'Item B', 'Item C', 'Item D', 'Item E'], // Example items
@@ -108,7 +108,7 @@
             <div class="element w50">
                 <canvas id="revenueChart" height="400px"></canvas>
                 <script>
-                    const revenueChart = new Chart(document.getElementById('revenueChart').getContext('2d'), {
+                    new Chart(document.getElementById('revenueChart').getContext('2d'), {
                         type: 'line',
                         data: {
                             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -162,7 +162,7 @@
             <div class="element w50">
                 <canvas id="conversionRateChart" height="400px"></canvas>
                 <script>
-                    const conversionRateChart = new Chart(document.getElementById('conversionRateChart').getContext('2d'), {
+                    new Chart(document.getElementById('conversionRateChart').getContext('2d'), {
                         type: 'line',
                         data: {
                             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],

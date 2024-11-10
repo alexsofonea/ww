@@ -39,18 +39,14 @@
             <div class="element w70">
                 <canvas id="visitorsChart" height="100px"></canvas>
                 <script>
-                    const labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                    const visitorsData = [200, 250, 180, 300, 350, 400, 450];
-                    const uniqueVisitorsData = [150, 190, 140, 240, 280, 320, 370];
-
-                    const visitorsChart = new Chart(document.getElementById('visitorsChart').getContext('2d'), {
+                    new Chart(document.getElementById('visitorsChart').getContext('2d'), {
                         type: 'line',
                         data: {
-                            labels: labels,  // Days of the week
+                            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],  // Days of the week
                             datasets: [
                                 {
                                     label: 'Visitors',
-                                    data: visitorsData,
+                                    data: [200, 250, 180, 300, 350, 400, 450],
                                     borderColor: 'rgba(75, 192, 192, 1)',
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                     borderWidth: 2,
@@ -58,7 +54,7 @@
                                 },
                                 {
                                     label: 'Unique Visitors',
-                                    data: uniqueVisitorsData,
+                                    data: [150, 190, 140, 240, 280, 320, 370],
                                     borderColor: 'rgba(153, 102, 255, 1)',
                                     backgroundColor: 'rgba(153, 102, 255, 0.2)',
                                     borderWidth: 2,
@@ -103,7 +99,7 @@
             <div class="element w30">
                 <canvas id="viewsChart" height="100px"></canvas>
                     <script>
-                        const viewsChart = new Chart(document.getElementById('viewsChart').getContext('2d'), {
+                        new Chart(document.getElementById('viewsChart').getContext('2d'), {
                             type: 'radar',
                             data: {
                                 labels: ['Home', 'About', 'Services', 'Contact', 'Blog', 'Portfolio', 'FAQ'],
@@ -160,7 +156,7 @@
             <div class="element w40">
                 <canvas id="regionChart" height="200px"></canvas>
                 <script>
-                    const regionChart = new Chart(document.getElementById('regionChart').getContext('2d'), {
+                    new Chart(document.getElementById('regionChart').getContext('2d'), {
                         type: 'doughnut',
                         data: {
                             labels: ['USA', 'Canada', 'UK', 'Germany', 'Australia'],
@@ -200,7 +196,7 @@
             <div class="element w60">
                 <canvas id="timeOfDayChart" height="200px"></canvas>
                 <script>
-                    const timeOfDayChart = new Chart(document.getElementById('timeOfDayChart').getContext('2d'), {
+                    new Chart(document.getElementById('timeOfDayChart').getContext('2d'), {
                         type: 'bar',
                         data: {
                             labels: ['12 AM', '3 AM', '6 AM', '9 AM', '12 PM', '3 PM', '6 PM', '9 PM'],
@@ -251,7 +247,7 @@
             <div class="element w50">
                 <canvas id="retentionChart" height="200px"></canvas>
                 <script>
-                    const retentionChart = new Chart(document.getElementById('retentionChart').getContext('2d'), {
+                    new Chart(document.getElementById('retentionChart').getContext('2d'), {
                         type: 'line',
                         data: {
                             labels: ['Day 1', 'Day 7', 'Day 14', 'Day 30', 'Day 60', 'Day 90'],
@@ -306,7 +302,7 @@
             <div class="element w50">
                 <canvas id="retentionTimeChart" height="200px"></canvas>
                 <script>
-                    const retentionTimeChart = new Chart(document.getElementById('retentionTimeChart').getContext('2d'), {
+                    new Chart(document.getElementById('retentionTimeChart').getContext('2d'), {
                         type: 'bar',
                         data: {
                             labels: ['< 1 min', '1-5 mins', '5-15 mins', '15-30 mins', '30-60 mins', '> 1 hr'],

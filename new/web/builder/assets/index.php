@@ -47,11 +47,9 @@
             </div>
             <div class="element w20">
                 <h4>Storage</h4>
-                <canvas id="chart" height="200px"></canvas>
+                <canvas id="storageChart" height="200px"></canvas>
                 <script>
-                    const ctx = document.getElementById('chart').getContext('2d');
-
-                    const storageChart = new Chart(ctx, {
+                    new Chart(document.getElementById('storageChart').getContext('2d'), {
                         type: 'pie',
                         data: {
                             labels: ['Page Files', 'Assets', 'Free Space'],

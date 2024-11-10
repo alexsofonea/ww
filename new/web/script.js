@@ -66,6 +66,7 @@ function loadPage(url) {
         .then(data => {
             document.getElementById('content').innerHTML = getContentDiv(data);
             const onloadMatch = data.match(/<body[^>]*onload=["']?([^"'>]*)["']?/i);
+            runScriptsFromHTML(getContentDiv(data));
             if (onloadMatch && onloadMatch[1]) {
                 const onloadFunctionName = onloadMatch[1].split('(')[0]; // Extract the function name without parentheses
                 console.log(`Found onload function: ${onloadFunctionName}`);
@@ -143,3 +144,19 @@ Object.prototype.loadSimplePage = function(url, additional = "") {
             console.log('Error loading page: ', url, error);
         });
 };
+function runScriptsFromHTML(htmlString) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    const scripts = doc.querySelectorAll('script');
+    scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        if (script.textContent) {
+            newScript.textContent = script.textContent;
+        }
+        if (script.src) {
+            newScript.src = script.src;
+        }
+        document.body.appendChild(newScript);
+        document.body.removeChild(newScript);
+    });
+}
