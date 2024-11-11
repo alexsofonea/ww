@@ -68,7 +68,20 @@
             }
         </style>
 
-        <img class="studio" src="AI.gif">
+        <video id="player" class="studio" loop muted autoplay playsinline></video>
+
+        <script>
+            function supportsHEVCAlpha() {
+                const navigator = window.navigator;
+                const ua = navigator.userAgent.toLowerCase()
+                const hasMediaCapabilities = !!(navigator.mediaCapabilities && navigator.mediaCapabilities.decodingInfo)
+                const isSafari = ((ua.indexOf('safari') != -1) && (!(ua.indexOf('chrome')!= -1) && (ua.indexOf('version/')!= -1)))
+                return isSafari && hasMediaCapabilities
+            }
+
+            const player = document.getElementById('player');
+            player.src = supportsHEVCAlpha() ? 'ai.mov' : 'ai.webm';
+        </script>
 
         <div class="input">
             <input type="text" placeholder="Describe your logo. WW will use the branding settings specified in the SEO.">

@@ -160,3 +160,33 @@ function runScriptsFromHTML(htmlString) {
         document.body.removeChild(newScript);
     });
 }
+
+function version(version) {
+    var v = version.getElementsByClassName('v');
+    if (version.getAttribute("data-open") == "false") {
+        var pos = 30;
+        for (var i = 0; i < v.length; i++) {
+            v[i].style.display = "block";
+            v[i].style.top = (5 + pos) + "px";
+            pos += 40;
+        }
+        version.style.height = (pos + 20) + "px";
+        version.getElementsByTagName("svg")[0].style.transform = "translateY(6px) rotate(180deg)";
+        version.setAttribute("data-open", "true");
+    } else {
+        for (var i = 0; i < v.length; i++) {
+            v[i].style.top = "5px";
+            v[i].style.display = "none";
+        }
+        version.getElementsByTagName("svg")[0].style.transform = "translateY(6px) rotate(0deg)";
+        version.setAttribute("data-open", "false");
+        version.style.height = "45px";
+    }
+}
+function select(el) {
+    var p = el.parentElement.getElementsByTagName("p")[0];
+    p.innerHTML = `<b>` + el.innerHTML + `</b><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>`;
+    p.getElementsByTagName("img")[0].remove();
+    el.parentElement.setAttribute("value", el.getAttribute("value") || p.textContent || p.innerText);
+    p.click();
+}

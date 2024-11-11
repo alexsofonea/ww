@@ -466,3 +466,19 @@ button:hover {
 button:active {
 	box-shadow: 4px 4px 12px #c5c5c5, -4px -4px 12px #ffffff;
 }
+
+.tags {
+    max-width: 100%;
+    white-space: normal;
+    height: fit-content;
+}
+.tags tag {
+    background-color: #FFF;
+    color: #000;
+    padding: 7px 10px;
+    border-radius: 50px;
+    margin-right: 5px;
+    display: inline-block;
+    cursor: pointer;
+    box-shadow: 2px 2px 6px rgba(255, 255, 255, 0.69), -2px -2px 6px #ffffff, inset 2px 2px 6px rgba(0, 0, 0, 0.1), inset -2px -2px 6px rgba(255, 255, 255, 0.7);
+}
