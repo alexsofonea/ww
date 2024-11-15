@@ -68,7 +68,7 @@ function getOffset(el) {
 
 
 function version(version) {
-    var v = version.getElementsByClassName('v');
+    var v = version.parentElement.getElementsByClassName('v');
     if (version.getAttribute("data-open") == "false") {
         var pos = 30;
         for (var i = 0; i < v.length; i++) {
@@ -76,9 +76,10 @@ function version(version) {
             v[i].style.top = (5 + pos) + "px";
             pos += 40;
         }
-        version.style.height = (pos + 20) + "px";
+        console.log(pos);
         version.getElementsByTagName("svg")[0].style.transform = "rotate(180deg)";
         version.setAttribute("data-open", "true");
+        version.parentElement.style.height = (pos + 20) + "px";
     } else {
         for (var i = 0; i < v.length; i++) {
             v[i].style.top = "5px";
@@ -86,7 +87,7 @@ function version(version) {
         }
         version.getElementsByTagName("svg")[0].style.transform = "rotate(0deg)";
         version.setAttribute("data-open", "false");
-        version.style.height = "45px";
+        version.parentElement.style.height = "45px";
     }
 }
 function select(el) {

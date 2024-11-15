@@ -1,3 +1,30 @@
+# Open your Mind Hackathon FAQ
+
+#### 1.⁠ ⁠Cum am descrie WW în trei propoziții?
+WW este o platformă inovatoare destinată construirii site-urilor web, dezvoltării aplicațiilor native și creării unui brand personal sau de afaceri. 
+
+#### 2.⁠ ⁠Ce tehnologii sunt utilizate în dezvoltarea WW?  
+WW a fost dezvoltat folosind JavaScript, PHP, SQL și modele AI furnizate de Hugging Face, Apple și Meta. Infrastructura se bazează pe servere Synology, optimizate printr-o structură Apache personalizată.  
+
+#### 3.⁠ ⁠Ce semnificație are numele WW?
+Numele WW este o prescurtare inspirată de "www" (world wide web), reflectând scopul său de a simplifica procesul de dezvoltare web și de a extinde posibilitățile către alte domenii.  
+
+#### 4.⁠ ⁠Cum poate fi testată platforma WW?
+Platforma WW poate fi testată accesând [ww.alexsofonea.com](https://ww.alexsofonea.com).
+Folositi username `alex@alexsofonea.com` si parola `1qaz?1qaz`.
+Am pregatit un proiect demo `Studio: Set Designer & Planner`.  
+
+#### 5.⁠ ⁠Ce funcționalități sunt deja implementate în WW?
+Mare parte din tot ce inseamna ww, este deja construit, insa legatura dintre backend si dashboard-urile de developer respectiv client nu este inca facuta, motiv pentru care acesta este un demo. Analitycs, Branding Suite, SEO si wwBuilder sunt in mare parte terminate, insa wwLiveUpdates, Sales si Community sunt inca in dezvoltare.
+
+#### 6.⁠ ⁠Cum se poate folosi wwLogo Generator?
+Pentru a utiliza serviciul wwLogo Generator, trebuie să introduceți o descriere a logoului pe care doriți să îl generați. După ce trimiteți descrierea, procesul de generare durează aproximativ un minut, rezultând un logo complet personalizat.  
+
+#### 7.⁠ ⁠Ce tip de infrastructură folosește WW pentru a susține platforma?
+WW utilizează servere personalizate proprii, asigurând astfel independența completă față de infrastructuri externe.
+
+
+
 # ww: All-in-One Full Stack Development Solution
 
 Welcome to **ww**!
